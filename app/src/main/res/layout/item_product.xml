@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/green"
+    >
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="3dp"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+
+        <ImageView
+            android:id="@+id/hit"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/hit"
+            app:layout_constraintStart_toStartOf="@id/avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/hit" />
+
+        <ImageView
+            android:id="@+id/pictureDiscount"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:src="@drawable/discount"
+            app:layout_constraintEnd_toEndOf="@id/avatar"
+            app:layout_constraintTop_toTopOf="@id/hit"
+            tools:src="@drawable/discount" />
+
+        <TextView
+            android:id="@+id/textDiscount"
+            android:layout_width="35dp"
+            android:layout_height="20dp"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/pictureDiscount"
+            app:layout_constraintTop_toTopOf="@id/pictureDiscount"
+            tools:text="-10%"
+
+            />
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="160dp"
+            android:layout_height="150dp"
+            android:layout_margin="8dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hit"
+            tools:src="@drawable/banan" />
+
+        <ImageButton
+            android:id="@+id/buttonLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="@id/avatar"
+            app:layout_constraintTop_toTopOf="@id/avatar"
+            tools:src="@drawable/like_24"
+
+            />
+
+        <TextView
+            android:id="@+id/txItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/avatar"
+            app:layout_constraintStart_toStartOf="@id/avatar"
+            app:layout_constraintTop_toBottomOf="@id/avatar"
+            tools:text="Продукт" />
+
+        <TextView
+            android:id="@+id/Price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/avatar"
+            app:layout_constraintStart_toStartOf="@id/avatar"
+            app:layout_constraintTop_toBottomOf="@id/txItem"
+            tools:text="Price" />
+
+        <TextView
+            android:id="@+id/newPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/avatar"
+            app:layout_constraintStart_toStartOf="@id/avatar"
+            app:layout_constraintTop_toBottomOf="@id/Price"
+            tools:text="New Price" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupDiscount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="pictureDiscount, textDiscount, newPrice"
+
+            />
+
+        <Button
+            android:id="@+id/buttonAddToBin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Добавить"
+            app:layout_constraintEnd_toEndOf="@id/avatar"
+            app:layout_constraintStart_toStartOf="@id/avatar"
+            app:layout_constraintTop_toBottomOf="@id/newPrice" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

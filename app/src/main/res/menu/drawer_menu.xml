@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/allProducts"
+            android:icon="@drawable/first_24"
+            android:title="Весь ассортимент" />
+
+        <item
+            android:id="@+id/fruit"
+            android:icon="@drawable/second_24"
+            android:title="Фрукты" />
+        <item
+            android:id="@+id/vegetable"
+            android:icon="@drawable/third_24"
+            android:title="Овощи" />
+        <item
+            android:id="@+id/bakery"
+            android:icon="@drawable/fourth_24"
+            android:title="Бакалея"
+            />
+
+
+        <item
+            android:id="@+id/hit"
+            android:icon="@drawable/hit_24"
+            android:title="Хиты продаж" />
+        <item
+            android:id="@+id/discount"
+            android:icon="@drawable/discount_24"
+            android:title="Акция" />
+        <item
+            android:id="@+id/favorite"
+            android:icon="@drawable/like_24"
+            android:title="Избранное" />
+
+    </group>
+
+</menu>
