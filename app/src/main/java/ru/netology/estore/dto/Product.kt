@@ -9,7 +9,8 @@ data class Product(
     val oneUnit:Double,
     val unitWeight:String,
     var isHit:Boolean = false,
-    var isAction:Boolean = false,
+    var isDiscount:Boolean = false,
     var minusPercent:Int = 0,
-    var isFavorite:Boolean = false
+    var isFavorite:Boolean = false,
+    var weight:Double = 0.0
 )

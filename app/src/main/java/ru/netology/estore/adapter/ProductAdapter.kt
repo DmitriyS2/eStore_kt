@@ -13,28 +13,37 @@ import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.getSumWithTwoDecimal
 import androidx.recyclerview.widget.ListAdapter
 
-class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
+interface Listener {
+    fun like(product: Product)
+}
 
+class ProductAdapter (private val listener: Listener) : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
 
     //class ProductAdapter  : ListAdapter<Product, ProductHolder>(PostDiffCallback())
 
-    var productList = ArrayList<Product>()
+    //var productList = ArrayList<Product>()
+    var productList = emptyList<Product>()
 
-    class ProductHolder(item: View) : RecyclerView.ViewHolder(item) {
+    class ProductHolder(item: View, val listener: Listener) : RecyclerView.ViewHolder(item) {
         val binding = ItemProductBinding.bind(item)
 
         fun bind(product: Product) = with(binding) {
-            hit.isVisible = product.isHit
+            if(product.isHit) {
+                hit.visibility = View.VISIBLE
+            } else {
+                hit.visibility = View.INVISIBLE
+            }
 
-            if(product.isAction) {
-                groupDiscount.isVisible = product.isAction
+
+            if(product.isDiscount) {
+                groupDiscount.visibility = View.VISIBLE
                 textDiscount.text = "-${product.minusPercent}%"
                 Price.alpha = 0.3f
                 newPrice.text = "${getSumWithTwoDecimal(product.price*(100-product.minusPercent)/100).toString()} руб за 1 ${product.unitWeight}"
 
             } else {
                 Price.alpha = 1f
-                groupDiscount.visibility = View.GONE
+                groupDiscount.visibility = View.INVISIBLE
             }
 
             if(product.isFavorite) {
@@ -49,19 +58,20 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
 
             Price.text = "${product.price.toString()} руб за 1 ${product.unitWeight}"
 
+            buttonLike.setOnClickListener {
+                listener.like(product)
+            }
+
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_product, parent, false)
-        return ProductHolder(view)
+        return ProductHolder(view, listener)
     }
 
     override fun onBindViewHolder(holder: ProductHolder, position: Int) {
-        //holder.bind(MainActivity.Service.cellArray[position])
-        //Log.d("MyLog", "position=$position text=${cellList[position].text}")
         holder.bind(productList[position])
-
     }
 
     override fun getItemCount(): Int {
@@ -69,10 +79,10 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
     }
 
 
-    fun addProduct(product: Product) {
-        productList.add(product)
-        notifyDataSetChanged()
-    }
+//    fun addProduct(product: Product) {
+//        productList.add(product)
+//        notifyDataSetChanged()
+//    }
 
     fun changeProduct(colorBack:String = "", colorText:String = "", text:String = "", position: Int) {
 //        if(!colorBack.isNullOrEmpty()) cellList[position].backColor = colorBack
@@ -81,16 +91,17 @@ class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
         notifyDataSetChanged()
     }
 
-    fun addAllProduct(list: List<Product>) {
-        productList.clear()
-        productList.addAll(list)
+//    fun addAllProduct(list: List<Product>) {
+//        productList.clear()
+//        productList.addAll(list)
 //        for (index in 0..120) {
 //            Log.d("MyLog", "indexH=$index textCELLIST=${cellList[index].text}")
 //            Log.d("MyLog", "indexH=$index textLIST=${list[index].text}")
 //        }
         //notifyDataSetChanged()
-    }
+//    }
 }
+
 class PostDiffCallback : DiffUtil.ItemCallback<Product>() {
     override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
         return oldItem.id == newItem.id
