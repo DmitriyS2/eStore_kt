@@ -12,5 +12,7 @@ data class Product(
     var isDiscount:Boolean = false,
     var minusPercent:Int = 0,
     var isFavorite:Boolean = false,
-    var weight:Double = 0.0
+    var weight:Double = 0.0,
+    var inBasket:Boolean = false,
+    var sum: Double = 0.0
 )

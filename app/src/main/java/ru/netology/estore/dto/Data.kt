@@ -1,5 +1,6 @@
 package ru.netology.estore.dto
 
+import android.util.Log
 import ru.netology.estore.R
 import kotlin.math.roundToInt
 
@@ -25,7 +26,7 @@ object Data {
         R.drawable.loaf, R.drawable.baranki, R.drawable.sushki, R.drawable.cookies
     )
 
-    val fruitsName = listOf("Бананы", "Яблоки", "Груши", "Виноград", "Арбуз", "Апельсин")
+    val fruitsName = listOf("Бананы", "Яблоки", "Груши", "Виноград", "Арбуз", "Апельсины")
     val vegetablesName = listOf("Картофель", "Капуста", "Морковь", "Перец", "Лук", "Чеснок")
     val bakeryName =
         listOf("Ржаной хлеб", "Белый хлеб", "Батон", "Баранки", "Сушки", "Печенье")
@@ -37,6 +38,7 @@ object Data {
     val hitGroup = "Хиты продаж"
     val discountGroup = "АКЦИЯ!!!"
     val favoriteGroup = "Избранное"
+    val basketGroup = "Корзина"
 
 
     val fruitsPrice = listOf(109.5, 89.9, 179.0, 211.5, 25.0, 189.9)
@@ -62,7 +64,7 @@ object Data {
 
     fun fillFruits():List<Product> {
         val fruits = arrayListOf<Product>()
-        for (i in 0 until fruitsPicture.size) {
+        for (i in fruitsPicture.indices) {
             fruits.add(
                 Product(
                     id = idProduct++,
@@ -80,7 +82,7 @@ object Data {
 
     fun fillVegetable():List<Product> {
         val vegetables = arrayListOf<Product>()
-        for (i in 0 until fruitsPicture.size) {
+        for (i in fruitsPicture.indices) {
             vegetables.add(
                 Product(
                     id = idProduct++,
@@ -98,7 +100,7 @@ object Data {
 
     fun fillBakery():List<Product> {
         val bakeries = arrayListOf<Product>()
-        for (i in 0 until fruitsPicture.size) {
+        for (i in fruitsPicture.indices) {
             bakeries.add(
                 Product(
                     id = idProduct++,
@@ -133,6 +135,73 @@ object Data {
         } as ArrayList
         return allProducts
     }
+
+    fun addToBasket(product: Product):ArrayList<Product> {
+        allProducts = allProducts.map {
+            if (it != product) it else it.copy(
+                inBasket = !it.inBasket,
+                weight = (if (!it.inBasket) it.oneUnit else 0.0),
+                sum = if(it.inBasket) 0.0 else  (it.oneUnit*(if(it.isDiscount) (it.price*(100-it.minusPercent)/100) else it.price))
+            )
+        } as ArrayList
+        Log.d("MyLog", "${allProducts.filter { it.id ==product.id }}")
+        return allProducts
+    }
+
+    fun addToBasketAgain(product: Product):ArrayList<Product> {
+        allProducts = allProducts.map {
+            if (it != product) it else it.copy(
+                weight =  it.oneUnit,
+                sum = (it.oneUnit*(if(it.isDiscount) (it.price*(100-it.minusPercent)/100) else it.price))
+            )
+        } as ArrayList
+        Log.d("MyLog", "${allProducts.filter { it.id ==product.id }}")
+        return allProducts
+    }
+
+    fun deleteFromBasket(product: Product):ArrayList<Product> {
+        allProducts = allProducts.map {
+            if (it != product) it else it.copy(
+                inBasket = false,
+                weight =  0.0,
+                sum = 0.0
+            )
+        } as ArrayList
+        Log.d("MyLog", "${allProducts.filter { it.id ==product.id }}")
+        return allProducts
+    }
+
+    fun weightPLus(product: Product):ArrayList<Product> {
+        allProducts = allProducts.map {
+            if (it != product) it else it.copy(
+                weight = getSumWithTwoDecimal(it.weight+it.oneUnit, 10.0),
+                sum = getSumWithTwoDecimal((it.weight + it.oneUnit)*(if(it.isDiscount) (it.price*(100-it.minusPercent)/100) else it.price), 10.0)
+            )
+        } as ArrayList
+        Log.d("MyLog", "${allProducts.filter { it.id ==product.id }}")
+        return allProducts
+    }
+
+    fun weightMinus(product: Product):ArrayList<Product> {
+        allProducts = allProducts.map {
+            if (it != product) it else it.copy(
+                weight = getSumWithTwoDecimal(it.weight-it.oneUnit, 10.0),
+                sum = getSumWithTwoDecimal((it.weight - it.oneUnit)*(if(it.isDiscount) (it.price*(100-it.minusPercent)/100) else it.price), 10.0)
+            )
+        } as ArrayList
+        Log.d("MyLog", "${allProducts.filter { it.id ==product.id }}")
+        return allProducts
+    }
+
+    fun deleteFromBasketWeightZero():ArrayList<Product> {
+        allProducts = allProducts.map {
+            if (it.inBasket && it.weight==0.0) it.copy(
+                inBasket = false
+            ) else it
+        } as ArrayList
+        //Log.d("MyLog", "${allProducts.filter { it.id ==product.id }}")
+        return allProducts
+    }
 }
 
-fun getSumWithTwoDecimal(number:Double):Double = (number*100).roundToInt()/100.0
+fun getSumWithTwoDecimal(number:Double, del:Double):Double = (number*del.toInt()).roundToInt()/del

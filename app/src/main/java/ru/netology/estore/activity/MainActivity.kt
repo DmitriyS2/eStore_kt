@@ -9,23 +9,14 @@ import ru.netology.estore.R
 import ru.netology.estore.adapter.ProductAdapter
 import ru.netology.estore.databinding.ActivityMainBinding
 import ru.netology.estore.dto.Data
-import ru.netology.estore.dto.Product
+import ru.netology.estore.model.FullProduct
 import ru.netology.estore.viewmodel.MainViewModel
-import java.util.Locale.filter
-import kotlin.math.roundToInt
 
-//var idProduct = 0
 
-//val allProduct = Data.fillAllProducts()
 
 class MainActivity : AppCompatActivity() {
 
     private val model: MainViewModel by viewModels()
-
-//    val adapterFruit = ProductAdapter()
-//    val adapterVegetable = ProductAdapter()
-//    val adapterBakery = ProductAdapter()
-//    val adapterAllProducts = ProductAdapter()
 
     lateinit var binding: ActivityMainBinding
 
@@ -34,51 +25,35 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val allProducts = model.data.value.orEmpty() as ArrayList
-//        val fruitProduct = model.data.value
-//            ?.filter { it.group == Data.fruitGroup }.orEmpty() as ArrayList<Product>
-//        val vegetableProduct = model.data.value
-//            ?.filter { it.group == Data.vegetableGroup }.orEmpty() as ArrayList
-//        val bakeryProduct = model.data.value
-//            ?.filter { it.group == Data.bakeryGroup }.orEmpty() as ArrayList
-//        val hitProduct = model.data.value
-//            ?.filter { it.isHit }.orEmpty() as ArrayList
-//        val discountProduct = model.data.value
-//            ?.filter { it.isAction }.orEmpty() as ArrayList
-//        val favoriteProduct = model.data.value
-//            ?.filter { it.isFavorite }.orEmpty() as ArrayList
-
         binding.apply {
             nvMenu.setNavigationItemSelectedListener { it ->
                 when (it.itemId) {
                     R.id.allProducts -> {
-                        goToFragment(R.color.black, Data.allGroup)
-
+                        goToFragment(Data.allGroup)
                     }
 
                     R.id.fruit -> {
-                        goToFragment(R.color.colorFruit, Data.fruitGroup)
-
+                        goToFragment(Data.fruitGroup)
                     }
 
                     R.id.vegetable -> {
-                        goToFragment(R.color.colorVegetable, Data.vegetableGroup)
+                        goToFragment(Data.vegetableGroup)
                     }
 
                     R.id.bakery -> {
-                        goToFragment(R.color.colorBakery, Data.bakeryGroup)
+                        goToFragment(Data.bakeryGroup)
                     }
 
                     R.id.hit -> {
-                        goToFragment(R.color.blue, Data.hitGroup)
+                        goToFragment(Data.hitGroup, R.color.blue)
                     }
 
                     R.id.discount -> {
-                        goToFragment(R.color.red, Data.discountGroup)
+                        goToFragment(Data.discountGroup, R.color.red)
                     }
 
                     R.id.favorite -> {
-                        goToFragment(R.color.black, Data.favoriteGroup)
+                        goToFragment(Data.favoriteGroup)
                     }
                 }
 
@@ -89,11 +64,19 @@ class MainActivity : AppCompatActivity() {
             bottomMenu.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.catalog -> {
+
+                        model.dataFull.value?.statusBasket = false
+                        model.dataFull.value?.statusCatalog = true
                         drawer.openDrawer(GravityCompat.START)
                     }
 
                     R.id.basket -> {
-
+                        printTxCategory(Data.basketGroup)
+                        model.dataFull.value?.statusBasket = true
+                        model.dataFull.value?.statusCatalog = false
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.placeHolder, FragmentForBasket())
+                            .commit()
                     }
                 }
                 true
@@ -101,17 +84,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun printTxCategory(color: Int, text: String) {
+    fun printTxCategory(text:String, color: Int = R.color.white) {
         binding.txCategory.setTextColor(getColor(color))
         binding.txCategory.text = text
     }
 
-    fun goToFragment(color: Int, status: String) {
-        printTxCategory(color, status)
+    fun goToFragment(status:String, color: Int = R.color.white) {
+        printTxCategory(status, color)
 
-        model.dataFull.value?.status = status
+        model.dataFull.value = FullProduct(products = Data.deleteFromBasketWeightZero(), status = status, statusCatalog = true)
 
-        //model.data.value = arrayList
         supportFragmentManager.beginTransaction()
             .replace(R.id.placeHolder, FragmentForCatalog())
             .commit()

@@ -77,7 +77,6 @@
             app:layout_constraintEnd_toEndOf="@id/avatar"
             app:layout_constraintTop_toTopOf="@id/avatar"
             tools:src="@drawable/like_24"
-
             />
 
         <TextView

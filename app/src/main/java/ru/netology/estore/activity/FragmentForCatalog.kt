@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlinx.coroutines.currentCoroutineContext
 import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductAdapter
 import ru.netology.estore.databinding.FragmentForCatalogBinding
@@ -32,6 +31,24 @@ class FragmentForCatalog : Fragment() {
                 model.like(product)
             }
 
+            override fun addToBasket(product: Product) {
+                model.addToBasket(product)
+            }
+
+            override fun addToBasketAgain(product: Product) {
+            }
+
+            override fun deleteFromBasket(product: Product) {
+            }
+
+            override fun weightPlus(product: Product) {
+            }
+
+            override fun weightMinus(product: Product) {
+            }
+
+            override fun deleteFromBasketWeightZero() {
+            }
         })
 
         binding = FragmentForCatalogBinding.inflate(inflater)
@@ -59,17 +76,10 @@ class FragmentForCatalog : Fragment() {
 
                 else -> emptyList()
             }
-            adapter.productList = list.orEmpty() //as ArrayList<Product>
-            //adapter.productList = model.data.value.orEmpty() as ArrayList<Product>
-            //adapter.submitList(it)
-            binding.rwProducts.adapter = adapter
-
-            //binding.rwProducts
+            adapter.productList = list.orEmpty()
+            adapter.submitList(list)
 
         }
-
-
-
         return binding.root
     }
 

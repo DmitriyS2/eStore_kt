@@ -1,31 +1,37 @@
 package ru.netology.estore.adapter
 
-import android.util.Log
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.estore.R
-import ru.netology.estore.databinding.ItemProductBinding
+import ru.netology.estore.databinding.ItemForCatalogProductBinding
 import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.getSumWithTwoDecimal
 import androidx.recyclerview.widget.ListAdapter
 
 interface Listener {
     fun like(product: Product)
+    fun addToBasket(product: Product)
+    fun addToBasketAgain(product: Product)
+    fun deleteFromBasket(product: Product)
+    fun weightPlus(product: Product)
+    fun weightMinus(product: Product)
+    fun deleteFromBasketWeightZero()
 }
 
-class ProductAdapter (private val listener: Listener) : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
+//class ProductAdapter (private val listener: Listener) : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
 
-    //class ProductAdapter  : ListAdapter<Product, ProductHolder>(PostDiffCallback())
+    class ProductAdapter (private val listener:Listener) : ListAdapter<Product, ProductAdapter.ProductHolder>(PostDiffCallback()){
 
     //var productList = ArrayList<Product>()
     var productList = emptyList<Product>()
 
     class ProductHolder(item: View, val listener: Listener) : RecyclerView.ViewHolder(item) {
-        val binding = ItemProductBinding.bind(item)
+        val binding = ItemForCatalogProductBinding.bind(item)
+
 
         fun bind(product: Product) = with(binding) {
             if(product.isHit) {
@@ -39,7 +45,7 @@ class ProductAdapter (private val listener: Listener) : RecyclerView.Adapter<Pro
                 groupDiscount.visibility = View.VISIBLE
                 textDiscount.text = "-${product.minusPercent}%"
                 Price.alpha = 0.3f
-                newPrice.text = "${getSumWithTwoDecimal(product.price*(100-product.minusPercent)/100).toString()} руб за 1 ${product.unitWeight}"
+                newPrice.text = "${getSumWithTwoDecimal(product.price*(100-product.minusPercent)/100, 100.0)} руб за 1 ${product.unitWeight}"
 
             } else {
                 Price.alpha = 1f
@@ -58,15 +64,27 @@ class ProductAdapter (private val listener: Listener) : RecyclerView.Adapter<Pro
 
             Price.text = "${product.price.toString()} руб за 1 ${product.unitWeight}"
 
+            if(product.inBasket) {
+                buttonAddToBin.setBackgroundColor(Color.parseColor("#104021"))
+                buttonAddToBin.text = "Убрать"
+            } else {
+                buttonAddToBin.setBackgroundColor(Color.BLUE)
+                buttonAddToBin.text = "Добавить"
+            }
+
             buttonLike.setOnClickListener {
                 listener.like(product)
+            }
+
+            buttonAddToBin.setOnClickListener {
+                listener.addToBasket(product)
             }
 
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_product, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_for_catalog_product, parent, false)
         return ProductHolder(view, listener)
     }
 
