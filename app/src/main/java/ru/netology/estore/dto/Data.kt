@@ -202,6 +202,14 @@ object Data {
         //Log.d("MyLog", "${allProducts.filter { it.id ==product.id }}")
         return allProducts
     }
+
+    fun countOrder(list:List<Product>):Double {
+        var sum = 0.0
+        for(item in list) {
+            sum+=item.sum
+        }
+        return getSumWithTwoDecimal(sum, 100.0)
+    }
 }
 
 fun getSumWithTwoDecimal(number:Double, del:Double):Double = (number*del.toInt()).roundToInt()/del

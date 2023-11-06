@@ -26,17 +26,26 @@ class MainViewModel:ViewModel() {
     }
 
     fun addToBasket(product: Product) {
-        dataFull.value = dataFull.value?.copy(products = Data.addToBasket(product))
+        val list = Data.addToBasket(product)
+        val statusBasket = list.none { it.inBasket }
+        dataFull.value = dataFull.value?.copy(products = list, isEmptyBasket = statusBasket)
+
+      //  dataFull.value = dataFull.value?.copy(products = Data.addToBasket(product))
     }
     fun addToBasketAgain(product: Product) {
-        dataFull.value = dataFull.value?.copy(products = Data.addToBasketAgain(product))
+        val list = Data.addToBasketAgain(product)
+        val statusBasket = list.none { it.inBasket }
+        dataFull.value = dataFull.value?.copy(products = list, isEmptyBasket = statusBasket)
+
+   //     dataFull.value = dataFull.value?.copy(products = Data.addToBasketAgain(product))
     }
 
     fun deleteFromBasket(product: Product) {
-//        val list = Data.deleteFromBasket(product)
-//        dataFull.value = dataFull.value?.copy(products = Data.deleteFromBasket(product), isEmptyBasket = list.isEmpty())
+        val list = Data.deleteFromBasket(product)
+        val statusBasket = list.none { it.inBasket }
+        dataFull.value = dataFull.value?.copy(products = list, isEmptyBasket = statusBasket)
 
-        dataFull.value = dataFull.value?.copy(products = Data.deleteFromBasket(product))
+ //       dataFull.value = dataFull.value?.copy(products = Data.deleteFromBasket(product))
     }
 
     fun weightPLus(product: Product) {
@@ -48,7 +57,11 @@ class MainViewModel:ViewModel() {
     }
 
     fun deleteFromBasketWeightZero() {
-        dataFull.value = dataFull.value?.copy(products = Data.deleteFromBasketWeightZero())
+        val list = Data.deleteFromBasketWeightZero()
+        val statusBasket = list.none { it.inBasket }
+        dataFull.value = dataFull.value?.copy(products = list, isEmptyBasket = statusBasket)
+
+     //   dataFull.value = dataFull.value?.copy(products = Data.deleteFromBasketWeightZero())
     }
 
 }

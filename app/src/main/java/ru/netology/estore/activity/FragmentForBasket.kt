@@ -14,6 +14,7 @@ import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductAdapter
 import ru.netology.estore.adapter.ProductInBasketAdapter
 import ru.netology.estore.databinding.FragmentForBasketBinding
+import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.Product
 import ru.netology.estore.viewmodel.MainViewModel
 
@@ -28,7 +29,11 @@ class FragmentForBasket : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        binding = FragmentForBasketBinding.inflate(inflater)
+
         val adapter = ProductInBasketAdapter(object : Listener {
+
             override fun like(product: Product) {
                 model.like(product)
             }
@@ -38,7 +43,7 @@ class FragmentForBasket : Fragment() {
             }
 
             override fun addToBasketAgain(product: Product) {
-                 model.addToBasketAgain(product)
+                model.addToBasketAgain(product)
             }
 
             override fun deleteFromBasket(product: Product) {
@@ -58,43 +63,43 @@ class FragmentForBasket : Fragment() {
             }
         })
 
-        binding = FragmentForBasketBinding.inflate(inflater)
+
         binding.rwProducts.layoutManager = LinearLayoutManager(activity)
 
-        var list = getListBasket()
-        model.dataFull.value = model.dataFull.value?.copy(isEmptyBasket = list.isEmpty())
-        //adapter.productList = list
-        //binding.rwProducts.layoutManager = GridLayoutManager(activity, 1)
+//        var list = getListBasket()
+        model.dataFull.value = model.dataFull.value?.copy(isEmptyBasket = getListBasket())
+
         binding.rwProducts.adapter = adapter
 
-        model.dataFull.observe(viewLifecycleOwner) {state ->
-            list = getListBasket()
-            if(list.isEmpty() && state.isEmptyBasket) {
-                binding.txEmptyBasket.isVisible = state.isEmptyBasket
-                adapter.productList = list
-                adapter.submitList(list)
-            } else if (list.isEmpty() && !state.isEmptyBasket) {
-                model.dataFull.value = model.dataFull.value?.copy(isEmptyBasket = list.isEmpty())
-            } else if(list.isNotEmpty()) {
-                adapter.productList = list
-                adapter.submitList(list)
-            }
+        model.dataFull.observe(viewLifecycleOwner) { state ->
+            binding.txEmptyBasket.isVisible = state.isEmptyBasket
+            binding.amountOrder.isVisible = !state.isEmptyBasket
+            val list = state.products.filter { it.inBasket }
+            adapter.submitList(list)
+            binding.amountOrder.text = "${Data.countOrder(list)} руб"
+
+//            list = getListBasket()
+//            if(list.isEmpty() && state.isEmptyBasket) {
+//                binding.txEmptyBasket.isVisible = state.isEmptyBasket
+//                adapter.productList = list
+//                adapter.submitList(list)
+//            } else if (list.isEmpty() && !state.isEmptyBasket) {
+//                model.dataFull.value = model.dataFull.value?.copy(isEmptyBasket = list.isEmpty())
+//            } else if(list.isNotEmpty()) {
+//                binding.txEmptyBasket.isVisible = state.isEmptyBasket
+//                adapter.productList = list
+//                adapter.submitList(list)
+//            }
         }
         return binding.root
     }
 
-    fun getListBasket():List<Product>
-    {
-        val list = model.dataFull.value?.products
-            ?.filter { it.inBasket }
-            .orEmpty()
-
-        //if (list.isEmpty()) model.dataFull.value = model.dataFull.value?.copy(isEmptyBasket = list.isEmpty())
-
-        return list
+    fun getListBasket(): Boolean {
+        val list = model.dataFull.value?.products?.filter { it.inBasket }.orEmpty()
+        return list.isEmpty()
     }
 
     companion object {
-        fun newInstance(param1: String, param2: String) = FragmentForBasket()
-            }
+        fun newInstance() = FragmentForBasket()
     }
+}

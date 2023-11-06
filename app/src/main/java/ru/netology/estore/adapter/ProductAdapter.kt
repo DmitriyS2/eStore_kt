@@ -95,29 +95,6 @@ interface Listener {
     override fun getItemCount(): Int {
         return productList.size
     }
-
-
-//    fun addProduct(product: Product) {
-//        productList.add(product)
-//        notifyDataSetChanged()
-//    }
-
-    fun changeProduct(colorBack:String = "", colorText:String = "", text:String = "", position: Int) {
-//        if(!colorBack.isNullOrEmpty()) cellList[position].backColor = colorBack
-//        if(!text.isNullOrEmpty()) cellList[position].text = text
-//        if(!colorText.isNullOrEmpty()) cellList[position].textColor = colorText
-        notifyDataSetChanged()
-    }
-
-//    fun addAllProduct(list: List<Product>) {
-//        productList.clear()
-//        productList.addAll(list)
-//        for (index in 0..120) {
-//            Log.d("MyLog", "indexH=$index textCELLIST=${cellList[index].text}")
-//            Log.d("MyLog", "indexH=$index textLIST=${list[index].text}")
-//        }
-        //notifyDataSetChanged()
-//    }
 }
 
 class PostDiffCallback : DiffUtil.ItemCallback<Product>() {

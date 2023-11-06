@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.apply {
-            nvMenu.setNavigationItemSelectedListener { it ->
+            nvMenu.setNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.allProducts -> {
                         goToFragment(Data.allGroup)
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     fun goToFragment(status:String, color: Int = R.color.white) {
         printTxCategory(status, color)
 
-        model.dataFull.value = FullProduct(products = Data.deleteFromBasketWeightZero(), status = status, statusCatalog = true)
+        model.dataFull.value = FullProduct(products = Data.deleteFromBasketWeightZero(), status = status, statusCatalog = true, statusBasket = false)
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.placeHolder, FragmentForCatalog())
