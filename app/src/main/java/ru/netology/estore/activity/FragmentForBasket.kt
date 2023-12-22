@@ -7,11 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import ru.netology.estore.R
 import ru.netology.estore.adapter.Listener
-import ru.netology.estore.adapter.ProductAdapter
 import ru.netology.estore.adapter.ProductInBasketAdapter
 import ru.netology.estore.databinding.FragmentForBasketBinding
 import ru.netology.estore.dto.Data
@@ -21,7 +18,7 @@ import ru.netology.estore.viewmodel.MainViewModel
 
 class FragmentForBasket : Fragment() {
 
-    private val model: MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     lateinit var binding: FragmentForBasketBinding
 
@@ -35,31 +32,31 @@ class FragmentForBasket : Fragment() {
         val adapter = ProductInBasketAdapter(object : Listener {
 
             override fun like(product: Product) {
-                model.like(product)
+                viewModel.like(product)
             }
 
             override fun addToBasket(product: Product) {
-                model.addToBasket(product)
+                viewModel.addToBasket(product)
             }
 
             override fun addToBasketAgain(product: Product) {
-                model.addToBasketAgain(product)
+                viewModel.addToBasketAgain(product)
             }
 
             override fun deleteFromBasket(product: Product) {
-                model.deleteFromBasket(product)
+                viewModel.deleteFromBasket(product)
             }
 
             override fun weightPlus(product: Product) {
-                model.weightPLus(product)
+                viewModel.weightPLus(product)
             }
 
             override fun weightMinus(product: Product) {
-                model.weightMinus(product)
+                viewModel.weightMinus(product)
             }
 
             override fun deleteFromBasketWeightZero() {
-                model.deleteFromBasketWeightZero()
+                viewModel.deleteFromBasketWeightZero()
             }
         })
 
@@ -67,16 +64,16 @@ class FragmentForBasket : Fragment() {
         binding.rwProducts.layoutManager = LinearLayoutManager(activity)
 
 //        var list = getListBasket()
-        model.dataFull.value = model.dataFull.value?.copy(isEmptyBasket = getListBasket())
+        viewModel.dataFull.value = viewModel.dataFull.value?.copy(isEmptyBasket = getListBasket())
 
         binding.rwProducts.adapter = adapter
 
-        model.dataFull.observe(viewLifecycleOwner) { state ->
+        viewModel.dataFull.observe(viewLifecycleOwner) { state ->
             binding.txEmptyBasket.isVisible = state.isEmptyBasket
             binding.amountOrder.isVisible = !state.isEmptyBasket
             val list = state.products.filter { it.inBasket }
             adapter.submitList(list)
-            binding.amountOrder.text = "${Data.countOrder(list)} руб"
+            binding.amountOrder.text = "${viewModel.countOrder(list)} руб"
 
 //            list = getListBasket()
 //            if(list.isEmpty() && state.isEmptyBasket) {
@@ -95,7 +92,7 @@ class FragmentForBasket : Fragment() {
     }
 
     fun getListBasket(): Boolean {
-        val list = model.dataFull.value?.products?.filter { it.inBasket }.orEmpty()
+        val list = viewModel.dataFull.value?.products?.filter { it.inBasket }.orEmpty()
         return list.isEmpty()
     }
 

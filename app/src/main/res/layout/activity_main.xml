@@ -13,21 +13,30 @@
     android:background="@color/green"
     >
 
+
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="Ассортимент"
         app:layout_constraintBottom_toTopOf="@id/placeHolder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/side_nav_bar"
+        android:background="@color/green"
         android:id="@+id/txCategory"
         android:textSize="24sp"
         android:gravity="center"
         android:textStyle="bold"
         android:text="eStore"
         />
+
+    <ImageButton
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/baseline_more_vert_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:layout_width="0dp"

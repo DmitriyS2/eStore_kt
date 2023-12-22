@@ -14,15 +14,11 @@ import ru.netology.estore.dto.getSumWithTwoDecimal
 
 
 class ProductInBasketAdapter(private val listener: Listener) :
-    ListAdapter<Product, ProductInBasketAdapter.ProductInBasketHolder>(PostDiffCallback2()) {
-
-    //var productList = ArrayList<Product>()
-  //  var productList = emptyList<Product>()
+    ListAdapter<Product, ProductInBasketAdapter.ProductInBasketHolder>(PostDiffCallback()) {
 
     class ProductInBasketHolder(item: View, private val listener: Listener) :
         RecyclerView.ViewHolder(item) {
         val binding = ItemForBasketProductBinding.bind(item)
-
 
         @SuppressLint("ResourceAsColor")
         fun bind(product: Product) = with(binding) {
@@ -102,19 +98,14 @@ class ProductInBasketAdapter(private val listener: Listener) :
         holder.bind(product)
     }
 
-//    override fun getItemCount(): Int {
-//        return productList.size
+}
+
+//class PostDiffCallback2 : DiffUtil.ItemCallback<Product>() {
+//    override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+//        return oldItem.id == newItem.id
 //    }
-
-}
-
-
-class PostDiffCallback2 : DiffUtil.ItemCallback<Product>() {
-    override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
-        return oldItem == newItem
-    }
-}
+//
+//    override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+//        return oldItem == newItem
+//    }
+//}

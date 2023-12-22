@@ -1,0 +1,74 @@
+package ru.netology.estore.viewmodel
+
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import ru.netology.estore.auth.AppAuth
+import ru.netology.estore.dao.UserDao
+import ru.netology.estore.dto.User
+import ru.netology.estore.repository.ProductRepository
+import ru.netology.estore.repository.ProductRepositoryImpl
+import java.io.IOException
+import javax.inject.Inject
+
+@HiltViewModel
+class SignInViewModel @Inject constructor(
+   // private val apiService:ApiService
+    private val repository: ProductRepository,
+    private val userDao: UserDao,
+    private val auth: AppAuth
+): ViewModel() {
+
+    fun signIn(login: String, password: String) {
+        try{
+            viewModelScope.launch {
+                val user = repository.checkSignIn(login, password)
+               user?.let {
+                   auth.setAuth(user.id, user.token)
+
+               }
+//                val body = userDao.getPassword(login)
+//                if(body.isNotEmpty()) {
+//                    val passwordFromDao = body.first()
+//                    if (passwordFromDao==password) {
+//
+//                    }
+//                }
+             //   Log.d("MyLog", "first = $body")
+
+//            if(body.isEmpty() || !body.contains(login)) {//
+//                Log.d("MyLog", "isEmpty=${body.isEmpty()}, contains=${!body.contains(login)}")
+//            }
+           //     Log.d("MyLog", "$body")
+            }
+        } catch (e:Exception) {
+            throw Exception("error SignIn")
+        }
+
+
+//        viewModelScope.launch {
+//            try {
+//                val response = apiService.updateUser(login, password)
+//                if (!response.isSuccessful) {
+//                    throw ApiError(response.code(), response.message())
+//                }
+//                val body =
+//                    response.body() ?: throw ApiError(response.code(), response.message())
+//                Log.d("MyLog", "id body=${body.id} token body=${body.token}")
+//
+//                auth.setAuth(body.id, body.token)
+//
+//            } catch (e: IOException) {
+//                throw NetworkError
+//            } catch (e: Exception) {
+//                Log.d("MyLog", "ошибка signIn")
+//                //  throw MyUnknownError
+//            }
+//
+//        }
+
+    }
+
+}

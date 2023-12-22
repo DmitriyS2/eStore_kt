@@ -17,7 +17,7 @@ import ru.netology.estore.viewmodel.MainViewModel
 
 class FragmentForCatalog : Fragment() {
 
-    private val model: MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     lateinit var binding: FragmentForCatalogBinding
 
@@ -28,11 +28,11 @@ class FragmentForCatalog : Fragment() {
 
         val adapter = ProductAdapter(object : Listener {
             override fun like(product: Product) {
-                model.like(product)
+                viewModel.like(product)
             }
 
             override fun addToBasket(product: Product) {
-                model.addToBasket(product)
+                viewModel.addToBasket(product)
             }
 
             override fun addToBasketAgain(product: Product) {
@@ -55,23 +55,23 @@ class FragmentForCatalog : Fragment() {
         binding.rwProducts.layoutManager = GridLayoutManager(activity, 2)
         binding.rwProducts.adapter = adapter
 
-        model.dataFull.observe(viewLifecycleOwner) { full ->
+        viewModel.dataFull.observe(viewLifecycleOwner) { full ->
             val list = when (full.status) {
-                Data.allGroup -> model.dataFull.value?.products
-                Data.fruitGroup -> model.dataFull.value?.products?.filter { it.group == Data.fruitGroup }
+                Data.allGroup -> viewModel.dataFull.value?.products
+                Data.fruitGroup -> viewModel.dataFull.value?.products?.filter { it.group == Data.fruitGroup }
                     .orEmpty()
 
-                Data.vegetableGroup -> model.dataFull.value?.products?.filter { it.group == Data.vegetableGroup }
+                Data.vegetableGroup -> viewModel.dataFull.value?.products?.filter { it.group == Data.vegetableGroup }
                     .orEmpty()
 
-                Data.bakeryGroup -> model.dataFull.value?.products?.filter { it.group == Data.bakeryGroup }
+                Data.bakeryGroup -> viewModel.dataFull.value?.products?.filter { it.group == Data.bakeryGroup }
                     .orEmpty()
 
-                Data.hitGroup -> model.dataFull.value?.products?.filter { it.isHit }.orEmpty()
-                Data.discountGroup -> model.dataFull.value?.products?.filter { it.isDiscount }
+                Data.hitGroup -> viewModel.dataFull.value?.products?.filter { it.isHit }.orEmpty()
+                Data.discountGroup -> viewModel.dataFull.value?.products?.filter { it.isDiscount }
                     .orEmpty()
 
-                Data.favoriteGroup -> model.dataFull.value?.products?.filter { it.isFavorite }
+                Data.favoriteGroup -> viewModel.dataFull.value?.products?.filter { it.isFavorite }
                     .orEmpty()
 
                 else -> emptyList()
