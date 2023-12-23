@@ -17,7 +17,7 @@
         android:text="eStore"
         android:textSize="100sp"
         android:textColor="@color/orange"
-        android:textStyle="italic||bold"
+        android:textStyle="italic|bold"
         android:layout_marginBottom="50dp"
         />
 

@@ -13,9 +13,16 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentSignInBinding
 import ru.netology.estore.viewmodel.AuthViewModel
@@ -43,20 +50,34 @@ class SignInFragment : Fragment() {
                // Log.d()
                 viewModel.signIn(binding.login.text.toString(), binding.password.text.toString())
 
-                if(authViewModel.authenticated) {
-                    topTextViewModel.text.value = ru.netology.estore.dto.Data.basketGroup
-                    childFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.nav_host_fragment, FragmentForCatalog())
-                        .commit()
-                } else {
-                    val toast = Toast.makeText(requireActivity(), "Неверный login/password", Toast.LENGTH_SHORT)
-                    toast.setGravity(Gravity.TOP, 0, 0)
-                    toast.show()
-                //    Snackbar.make(it, "Неверный login/password", Snackbar.LENGTH_SHORT).show()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        authViewModel.data.collectLatest {
+                            if(it.id!=0L) {
+                                topTextViewModel.text.value = ru.netology.estore.dto.Data.basketGroup
+                                findNavController().navigateUp()
+                            } else {
+                                val toast = Toast.makeText(requireActivity(), "Неверный login/password", Toast.LENGTH_SHORT)
+                                toast.setGravity(Gravity.TOP, 0, 0)
+                                toast.show()
+                            }
+                        }
+                    }
                 }
-
-           //     findNavController().navigateUp()
+//                if(authViewModel.authenticated) {
+//                    topTextViewModel.text.value = ru.netology.estore.dto.Data.basketGroup
+//                    childFragmentManager
+//                        .beginTransaction()
+//                        .replace(R.id.nav_host_fragment, FragmentForCatalog())
+//                        .commit()
+//                } else {
+//                    val toast = Toast.makeText(requireActivity(), "Неверный login/password", Toast.LENGTH_SHORT)
+//                    toast.setGravity(Gravity.TOP, 0, 0)
+//                    toast.show()
+//                //    Snackbar.make(it, "Неверный login/password", Snackbar.LENGTH_SHORT).show()
+//                }
+//
+//                findNavController().navigateUp()
 
             }
         }
