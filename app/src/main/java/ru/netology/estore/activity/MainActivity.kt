@@ -33,6 +33,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        findNavController(R.id.nav_host_fragment)
+            .navigate(R.id.blankFragment)
+
         binding.apply {
             nvMenu.setNavigationItemSelectedListener {
                 when (it.itemId) {
@@ -77,9 +80,11 @@ class MainActivity : AppCompatActivity() {
                         topTextViewModel.text.value = Data.basketGroup
                         viewModel.dataFull.value?.statusBasket = true
                         viewModel.dataFull.value?.statusCatalog = false
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.placeHolder, FragmentForBasket())
-                            .commit()
+                        findNavController(R.id.nav_host_fragment)
+                            .navigate(R.id.fragmentForBasket)
+//                        supportFragmentManager.beginTransaction()
+//                            .replace(R.id.nav_host_fragment, FragmentForBasket())
+//                            .commit()
                     }
                 }
                 true
@@ -89,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         topTextViewModel.text.observe(this){
             binding.txCategory.text = it
         }
+
         binding.menu.setOnClickListener {
             PopupMenu(it.context, it).apply {
                 inflate(R.menu.main_menu)
@@ -98,19 +104,21 @@ class MainActivity : AppCompatActivity() {
                     when (item.itemId) {
                         R.id.signin -> {
                             topTextViewModel.text.value = "SignIn"
-                            supportFragmentManager.beginTransaction()
-                                .replace(R.id.placeHolder, SignInFragment())
-                                .commit()
+                            findNavController(R.id.nav_host_fragment)
+                                .navigate(R.id.signInFragment)
+//                            supportFragmentManager.beginTransaction()
+//                                .replace(R.id.nav_host_fragment, SignInFragment())
+//                                .commit()
                             true
                         }
                             R.id.signup -> {
                                 topTextViewModel.text.value = "SignUp"
-                                supportFragmentManager.beginTransaction()
-                                    .replace(R.id.placeHolder, SignUpFragment())
-                                    .commit()
-//                        findNavController(R.id.nav_host_fragment)
-//                            //       .navigate(R.id.signUpFragment)
-//                            .navigate(R.id.signUpWithPhotoFragment)
+//                                supportFragmentManager.beginTransaction()
+//                                    .replace(R.id.nav_host_fragment, SignUpFragment())
+//                                    .commit()
+                        findNavController(R.id.nav_host_fragment)
+                                   .navigate(R.id.signUpFragment)
+
 
                                 //  AppAuth.getInstance().setAuth(5, "x-token")
                                 true
@@ -126,46 +134,46 @@ class MainActivity : AppCompatActivity() {
             }.show()
         }
 
-        addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.main_menu, menu)
-
-                menu.let {
-                    it.setGroupVisible(R.id.unauthenticated, !authViewModel.authenticated)
-                    it.setGroupVisible(R.id.authenticated, authViewModel.authenticated)
-                }
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
-                when (menuItem.itemId) {
-                    R.id.signin -> {
-                        supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.placeHolder, SignInFragment())
-                            .commit()
-//                        findNavController(R.id.nav_host_fragment)
-//                            .navigate(R.id.authenticationFragment)
-                        //   AppAuth.getInstance().setAuth(5, "x-token")
-                        true
-                    }
-
-                    R.id.signup -> {
-//                        findNavController(R.id.nav_host_fragment)
-//                            //       .navigate(R.id.signUpFragment)
-//                            .navigate(R.id.signUpWithPhotoFragment)
-
-                        //  AppAuth.getInstance().setAuth(5, "x-token")
-                        true
-                    }
-
-                    R.id.signout -> {
-                        areYouSureSignOut()
-                        true
-                    }
-
-                    else -> false
-                }
-        })
+//        addMenuProvider(object : MenuProvider {
+//            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+//                menuInflater.inflate(R.menu.main_menu, menu)
+//
+//                menu.let {
+//                    it.setGroupVisible(R.id.unauthenticated, !authViewModel.authenticated)
+//                    it.setGroupVisible(R.id.authenticated, authViewModel.authenticated)
+//                }
+//            }
+//
+//            override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
+//                when (menuItem.itemId) {
+//                    R.id.signin -> {
+//                        supportFragmentManager
+//                            .beginTransaction()
+//                            .replace(R.id.nav_host_fragment, SignInFragment())
+//                            .commit()
+////                        findNavController(R.id.nav_host_fragment)
+////                            .navigate(R.id.authenticationFragment)
+//                        //   AppAuth.getInstance().setAuth(5, "x-token")
+//                        true
+//                    }
+//
+//                    R.id.signup -> {
+////                        findNavController(R.id.nav_host_fragment)
+////                            //       .navigate(R.id.signUpFragment)
+////                            .navigate(R.id.signUpWithPhotoFragment)
+//
+//                        //  AppAuth.getInstance().setAuth(5, "x-token")
+//                        true
+//                    }
+//
+//                    R.id.signout -> {
+//                        areYouSureSignOut()
+//                        true
+//                    }
+//
+//                    else -> false
+//                }
+//        })
     }
 
 //    fun printTxCategory(text:String, color: Int = R.color.white) {
@@ -185,9 +193,11 @@ class MainActivity : AppCompatActivity() {
       //  dataUser["k"] = viewModel.dataFull.value ?: FullProduct()
       //  dataUser["k"] = FullProduct(status=status)
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.placeHolder, FragmentForCatalog())
-            .commit()
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.nav_host_fragment, FragmentForCatalog())
+//            .commit()
+        findNavController(R.id.nav_host_fragment)
+            .navigate(R.id.fragmentForCatalog)
     }
     fun areYouSureSignOut() {
         val menuDialog = SignInOutDialogFragment("Выход из аккаунта","Вы уверены, что хотите выйти из системы?", R.drawable.warning_24, "Выйти", "Остаться", false)

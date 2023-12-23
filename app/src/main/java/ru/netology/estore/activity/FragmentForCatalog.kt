@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductAdapter
@@ -84,7 +85,6 @@ class FragmentForCatalog : Fragment() {
     }
 
     companion object {
-
         @JvmStatic
         fun newInstance() = FragmentForCatalog()
     }

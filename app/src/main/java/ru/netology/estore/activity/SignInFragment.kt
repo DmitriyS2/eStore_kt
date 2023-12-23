@@ -1,16 +1,20 @@
 package ru.netology.estore.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.provider.ContactsContract.Data
 import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentSignInBinding
@@ -26,6 +30,7 @@ class SignInFragment : Fragment() {
     private val authViewModel:AuthViewModel by activityViewModels()
     private val topTextViewModel:TopTextViewModel by activityViewModels()
 
+    @SuppressLint("ShowToast")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,20 +47,17 @@ class SignInFragment : Fragment() {
                     topTextViewModel.text.value = ru.netology.estore.dto.Data.basketGroup
                     childFragmentManager
                         .beginTransaction()
-                        .replace(R.id.placeHolder, FragmentForBasket())
+                        .replace(R.id.nav_host_fragment, FragmentForCatalog())
                         .commit()
+                } else {
+                    val toast = Toast.makeText(requireActivity(), "Неверный login/password", Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.TOP, 0, 0)
+                    toast.show()
+                //    Snackbar.make(it, "Неверный login/password", Snackbar.LENGTH_SHORT).show()
                 }
 
+           //     findNavController().navigateUp()
 
-//                runBlocking {
-//                    delay(1000)
-//                    val response:String = if(authViewModel.authenticated) "Вы вошли как:${binding.login.text.toString()}" else "Ошибка входа"
-//                    Toast.makeText(activity, response, Toast.LENGTH_SHORT).show()
-//                 //   Toast.makeText(activity, "Вы вошли как:${binding.login.text.toString()}", Toast.LENGTH_SHORT).show()
-//                    delay(2000)
-//                }
-
-         //       findNavController().navigateUp()
             }
         }
         return binding.root

@@ -7,6 +7,7 @@ import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.User
 import ru.netology.estore.dto.getSumWithTwoDecimal
+import ru.netology.estore.entity.UserEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -186,7 +187,19 @@ class ProductRepositoryImpl @Inject constructor(
         return getSumWithTwoDecimal(sum, 100.0)
     }
 
-    override suspend fun checkSignIn(login: String, password: String) =  userDao.getUser(login)?.toDto()
+    override suspend fun checkSignIn(login: String) =  userDao.getUser(login)?.toDto()
 
+    override suspend fun signUp(login: String, password: String, name: String):User? {
+        val user = User(name = name, login = login, password = password, token = getToken())
+        userDao.insert(UserEntity.fromDto(user))
+        return checkSignIn(login)
+    }
 
+    private fun getToken():String{
+        var token =""
+        for(i in 0..20) {
+            token+=Data.aZ[(0 until Data.aZ.length).random()]
+        }
+        return token
+    }
 }

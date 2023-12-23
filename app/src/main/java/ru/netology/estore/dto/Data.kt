@@ -6,6 +6,7 @@ import kotlin.math.roundToInt
 
 object Data {
 
+    val aZ:String = "qwertyuiopASDFGHJKLzxcvbnmQWERTYUIOPasdfghjklZXCVBNM"
     var idProduct = 0
     val discounts = listOf(5, 10, 15, 20, 25, 30)
 

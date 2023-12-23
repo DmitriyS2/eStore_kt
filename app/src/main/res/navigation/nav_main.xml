@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/blankFragment">
+
+    <fragment
+        android:id="@+id/fragmentForBasket"
+        android:name="ru.netology.estore.activity.FragmentForBasket"
+        android:label="fragment_for_basket"
+        tools:layout="@layout/fragment_for_basket" />
+    <fragment
+        android:id="@+id/fragmentForCatalog"
+        android:name="ru.netology.estore.activity.FragmentForCatalog"
+        android:label="fragment_for_catalog"
+        tools:layout="@layout/fragment_for_catalog" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="ru.netology.estore.activity.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="ru.netology.estore.activity.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+
+    <fragment android:id="@+id/placeholder" />
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="ru.netology.estore.activity.BlankFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_blank" />
+    <activity
+        android:id="@+id/hilt_MainActivity"
+        android:name="ru.netology.estore.activity.Hilt_MainActivity"
+        android:label="Hilt_MainActivity" />
+    <dialog
+        android:id="@+id/signInOutDialogFragment"
+        android:name="ru.netology.estore.activity.SignInOutDialogFragment"
+        android:label="fragment_sign_in_out_dialog"
+        tools:layout="@layout/fragment_sign_in_out_dialog" />
+
+</navigation>

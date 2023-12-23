@@ -1,6 +1,7 @@
 package ru.netology.estore.viewmodel
 
 import android.util.Log
+import android.util.Log.e
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,10 +25,11 @@ class SignInViewModel @Inject constructor(
     fun signIn(login: String, password: String) {
         try{
             viewModelScope.launch {
-                val user = repository.checkSignIn(login, password)
+                val user = repository.checkSignIn(login)
                user?.let {
-                   auth.setAuth(user.id, user.token)
-
+                   if (it.password==password) {
+                       auth.setAuth(it.id, it.token)
+                   }
                }
 //                val body = userDao.getPassword(login)
 //                if(body.isNotEmpty()) {

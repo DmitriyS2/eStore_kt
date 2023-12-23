@@ -15,5 +15,7 @@ interface ProductRepository {
     fun deleteFromBasketWeightZero():ArrayList<Product>
     fun countOrder(list:List<Product>):Double
 
-    suspend fun checkSignIn(login:String, password:String): User?
+    suspend fun checkSignIn(login:String): User?
+
+    suspend fun signUp(login: String, password: String, name: String):User?
 }

@@ -16,7 +16,14 @@ import ru.netology.estore.databinding.FragmentSignInOutDialogBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SignInOutDialogFragment(val title: String, val text: String, val icon: Int, val textPosButton:String, val textNegButton:String, val flagSignIn:Boolean = true) : DialogFragment() {
+class SignInOutDialogFragment(
+    val title: String,
+    val text: String,
+    val icon: Int,
+    val textPosButton: String,
+    val textNegButton: String,
+    val flagSignIn: Boolean = true
+) : DialogFragment() {
     lateinit var binding: FragmentSignInOutDialogBinding
 
     @Inject
@@ -32,28 +39,30 @@ class SignInOutDialogFragment(val title: String, val text: String, val icon: Int
             .setIcon(icon)
             .setTitle(title)
             .setCancelable(true)
-            .setPositiveButton(textPosButton) { _,_ ->
+            .setPositiveButton(textPosButton) { _, _ ->
                 dialog?.cancel()
-                if(flagSignIn) {
-                    childFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.placeHolder, SignInFragment())
-                        .commit()
-               //     findNavController().navigate(R.id.authenticationFragment)
+                if (flagSignIn) {
+                    findNavController()
+                        .navigate(R.id.signInFragment)
+//                    childFragmentManager
+//                        .beginTransaction()
+//                        .replace(R.id.nav_host_fragment, SignInFragment())
+//                        .commit()
+                    //     findNavController().navigate(R.id.authenticationFragment)
                 } else {
                     auth.removeAuth()
                     //   AppAuth.getInstance().removeAuth()
-                        //       findNavController().navigate(R.id.feedFragment)
+                    //       findNavController().navigate(R.id.feedFragment)
                 }
             }
-            .setNegativeButton(textNegButton) { _, _, ->
+            .setNegativeButton(textNegButton) { _, _ ->
                 dialog?.cancel()
-                if(flagSignIn) {
+                if (flagSignIn) {
                     childFragmentManager
-                    .beginTransaction()
-                        .replace(R.id.placeHolder, FragmentForBasket())
+                        .beginTransaction()
+                        .replace(R.id.nav_host_fragment, FragmentForBasket())
                         .commit()
-       //             findNavController().navigate(R.id.feedFragment)
+                    //             findNavController().navigate(R.id.feedFragment)
                 }
             }
             .create()
