@@ -20,6 +20,8 @@ class MainViewModel @Inject constructor(
 
     val dataFull = MutableLiveData(FullProduct())
 
+    val amountOrder = MutableLiveData<Double>()
+
     init {
         getAll()
     }

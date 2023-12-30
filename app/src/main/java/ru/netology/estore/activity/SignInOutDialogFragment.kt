@@ -8,11 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.estore.R
 import ru.netology.estore.auth.AppAuth
 import ru.netology.estore.databinding.FragmentSignInOutDialogBinding
+import ru.netology.estore.dto.Data
+import ru.netology.estore.viewmodel.TopTextViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -25,6 +28,7 @@ class SignInOutDialogFragment(
     val flagSignIn: Boolean = true
 ) : DialogFragment() {
     lateinit var binding: FragmentSignInOutDialogBinding
+    private val topTextViewModel: TopTextViewModel by activityViewModels()
 
     @Inject
     lateinit var auth: AppAuth
@@ -42,6 +46,7 @@ class SignInOutDialogFragment(
             .setPositiveButton(textPosButton) { _, _ ->
                 dialog?.cancel()
                 if (flagSignIn) {
+                    topTextViewModel.text.value = "SignIn"
                     findNavController()
                         .navigate(R.id.signInFragment)
 //                    childFragmentManager
@@ -51,6 +56,9 @@ class SignInOutDialogFragment(
                     //     findNavController().navigate(R.id.authenticationFragment)
                 } else {
                     auth.removeAuth()
+                    topTextViewModel.text.value = Data.allGroup
+                    findNavController()
+                        .navigate(R.id.fragmentForCatalog)
                     //   AppAuth.getInstance().removeAuth()
                     //       findNavController().navigate(R.id.feedFragment)
                 }
@@ -58,10 +66,13 @@ class SignInOutDialogFragment(
             .setNegativeButton(textNegButton) { _, _ ->
                 dialog?.cancel()
                 if (flagSignIn) {
-                    childFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.nav_host_fragment, FragmentForBasket())
-                        .commit()
+                    topTextViewModel.text.value = Data.basketGroup
+                    findNavController()
+                        .navigate(R.id.fragmentForBasket)
+//                    childFragmentManager
+//                        .beginTransaction()
+//                        .replace(R.id.nav_host_fragment, FragmentForBasket())
+//                        .commit()
                     //             findNavController().navigate(R.id.feedFragment)
                 }
             }

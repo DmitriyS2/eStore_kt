@@ -20,8 +20,10 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentSignInBinding
@@ -53,9 +55,11 @@ class SignInFragment : Fragment() {
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         authViewModel.data.collectLatest {
+                            delay(50)
+         //       if(authViewModel.data.value.id!=0L) {
                             if(it.id!=0L) {
                                 topTextViewModel.text.value = ru.netology.estore.dto.Data.basketGroup
-                                findNavController().navigateUp()
+                                findNavController().navigate(R.id.fragmentForBasket)
                             } else {
                                 val toast = Toast.makeText(requireActivity(), "Неверный login/password", Toast.LENGTH_SHORT)
                                 toast.setGravity(Gravity.TOP, 0, 0)
@@ -79,7 +83,7 @@ class SignInFragment : Fragment() {
 //
 //                findNavController().navigateUp()
 
-            }
+           }
         }
         return binding.root
     }

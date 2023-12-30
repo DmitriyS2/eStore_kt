@@ -7,19 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import ru.netology.estore.R
 import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductInBasketAdapter
 import ru.netology.estore.databinding.FragmentForBasketBinding
 import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.Product
+import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
+import ru.netology.estore.viewmodel.TopTextViewModel
 
 
 class FragmentForBasket : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
-
+    private val authViewModel:AuthViewModel by activityViewModels()
+    private val topTextViewModel:TopTextViewModel by activityViewModels()
     lateinit var binding: FragmentForBasketBinding
 
     override fun onCreateView(
@@ -71,9 +76,11 @@ class FragmentForBasket : Fragment() {
         viewModel.dataFull.observe(viewLifecycleOwner) { state ->
             binding.txEmptyBasket.isVisible = state.isEmptyBasket
             binding.amountOrder.isVisible = !state.isEmptyBasket
+            binding.buttonOrder.isEnabled = !state.isEmptyBasket
             val list = state.products.filter { it.inBasket }
             adapter.submitList(list)
-            binding.amountOrder.text = "${viewModel.countOrder(list)} руб"
+            viewModel.amountOrder.value = viewModel.countOrder(list)
+            // binding.amountOrder.text = "${viewModel.countOrder(list)} руб"
 
 //            list = getListBasket()
 //            if(list.isEmpty() && state.isEmptyBasket) {
@@ -88,12 +95,33 @@ class FragmentForBasket : Fragment() {
 //                adapter.submitList(list)
 //            }
         }
+
+        viewModel.amountOrder.observe(viewLifecycleOwner) {
+            binding.amountOrder.text = "$it руб"
+        }
+
+        binding.buttonOrder.setOnClickListener {
+            if(authViewModel.authenticated) {
+                topTextViewModel.text.value = Data.orderGroup
+                viewModel.deleteFromBasketWeightZero()
+                findNavController().navigate(R.id.orderFragment)
+            } else {
+                mustSignIn()
+            }
+        }
+
         return binding.root
     }
 
     fun getListBasket(): Boolean {
         val list = viewModel.dataFull.value?.products?.filter { it.inBasket }.orEmpty()
         return list.isEmpty()
+    }
+
+    fun mustSignIn() {
+        val menuDialog = SignInOutDialogFragment("Нужна регистрация","Для этого действия необходимо войти в систему", R.drawable.info_24, "Sign In", "Позже")
+        val manager = childFragmentManager
+        menuDialog.show(manager, "Sign in")
     }
 
     companion object {

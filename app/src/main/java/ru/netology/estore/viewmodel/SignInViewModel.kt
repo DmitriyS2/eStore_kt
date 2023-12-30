@@ -28,7 +28,8 @@ class SignInViewModel @Inject constructor(
                 val user = repository.checkSignIn(login)
                user?.let {
                    if (it.password==password) {
-                       auth.setAuth(it.id, it.token)
+                       auth.setAuth(it.id, it.token, it.name)
+
                    }
                }
 //                val body = userDao.getPassword(login)

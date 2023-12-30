@@ -2,13 +2,9 @@ package ru.netology.estore.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.widget.PopupMenu
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
-import androidx.core.view.MenuProvider
 import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.estore.R
@@ -18,7 +14,6 @@ import ru.netology.estore.model.FullProduct
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
 import ru.netology.estore.viewmodel.TopTextViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -103,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                 setOnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.signin -> {
-                            topTextViewModel.text.value = "SignIn"
+                            topTextViewModel.text.value = Data.signInGroup
                             findNavController(R.id.nav_host_fragment)
                                 .navigate(R.id.signInFragment)
 //                            supportFragmentManager.beginTransaction()
@@ -112,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                             true
                         }
                             R.id.signup -> {
-                                topTextViewModel.text.value = "SignUp"
+                                topTextViewModel.text.value = Data.signUpGroup
 //                                supportFragmentManager.beginTransaction()
 //                                    .replace(R.id.nav_host_fragment, SignUpFragment())
 //                                    .commit()
@@ -186,12 +181,6 @@ class MainActivity : AppCompatActivity() {
         topTextViewModel.text.value = status
         viewModel.dataFull.value = FullProduct(products = viewModel.deleteFromBasketWeightZeroFromRepo(),
             status = status, statusCatalog = true, statusBasket = false)
-//        viewModel.dataFull.value = FullProduct(products = Data.deleteFromBasketWeightZero(),
-//            status = status, statusCatalog = true, statusBasket = false)
-
-        // для примера заполнения
-      //  dataUser["k"] = viewModel.dataFull.value ?: FullProduct()
-      //  dataUser["k"] = FullProduct(status=status)
 
 //        supportFragmentManager.beginTransaction()
 //            .replace(R.id.nav_host_fragment, FragmentForCatalog())

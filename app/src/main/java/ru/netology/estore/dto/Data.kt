@@ -1,6 +1,5 @@
 package ru.netology.estore.dto
 
-import android.util.Log
 import ru.netology.estore.R
 import kotlin.math.roundToInt
 
@@ -40,6 +39,9 @@ object Data {
     val discountGroup = "АКЦИЯ!!!"
     val favoriteGroup = "Избранное"
     val basketGroup = "Корзина"
+    val signInGroup = "SignIn"
+    val signUpGroup = "SignUp"
+    val orderGroup = "Заказ"
 
 
     val fruitsPrice = listOf(109.5, 89.9, 179.0, 211.5, 25.0, 189.9)

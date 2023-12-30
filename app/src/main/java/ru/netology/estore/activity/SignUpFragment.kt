@@ -8,8 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentSignUpBinding
 import ru.netology.estore.viewmodel.AuthViewModel
@@ -34,21 +40,40 @@ class SignUpFragment : Fragment() {
         binding.buttonSignUp.setOnClickListener {
             if (isFieldNotNull()) {
 
-                signUpViewModel.signUp(binding.login.text.toString(), binding.password.text.toString(), binding.name.text.toString())
+                signUpViewModel.signUp(
+                    binding.login.text.toString(),
+                    binding.password.text.toString(),
+                    binding.name.text.toString()
+                )
 
-                if(authViewModel.authenticated) {
-                    topTextViewModel.text.value = ru.netology.estore.dto.Data.basketGroup
-                    childFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.nav_host_fragment, FragmentForCatalog())
-                        .commit()
-                } else {
-                    val toast = Toast.makeText(requireActivity(), "Такой login уже существует", Toast.LENGTH_SHORT)
-                    toast.setGravity(Gravity.TOP, 0, 0)
-                    toast.show()
-                    //    Snackbar.make(it, "Неверный login/password", Snackbar.LENGTH_SHORT).show()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        authViewModel.data.collectLatest {
+                            delay(50)
+                            //       if(authViewModel.data.value.id!=0L) {
+                            if (it.id != 0L) {
+
+                                //      if(authViewModel.authenticated) {
+                                topTextViewModel.text.value =
+                                    ru.netology.estore.dto.Data.basketGroup
+                                findNavController().navigate(R.id.fragmentForCatalog)
+//                    childFragmentManager
+//                        .beginTransaction()
+//                        .replace(R.id.nav_host_fragment, FragmentForCatalog())
+//                        .commit()
+                            } else {
+                                val toast = Toast.makeText(
+                                    requireActivity(),
+                                    "Такой login уже существует",
+                                    Toast.LENGTH_SHORT
+                                )
+                                toast.setGravity(Gravity.TOP, 0, 0)
+                                toast.show()
+                            }
+
+                        }
+                    }
                 }
-            //    findNavController().navigateUp()
             }
         }
 

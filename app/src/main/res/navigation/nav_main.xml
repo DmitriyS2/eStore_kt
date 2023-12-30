@@ -41,5 +41,10 @@
         android:name="ru.netology.estore.activity.SignInOutDialogFragment"
         android:label="fragment_sign_in_out_dialog"
         tools:layout="@layout/fragment_sign_in_out_dialog" />
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="ru.netology.estore.activity.OrderFragment"
+        android:label="fragment_order"
+        tools:layout="@layout/fragment_order" />
 
 </navigation>
