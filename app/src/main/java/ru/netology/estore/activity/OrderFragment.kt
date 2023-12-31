@@ -1,10 +1,13 @@
 package ru.netology.estore.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -50,6 +53,7 @@ class OrderFragment : Fragment() {
 
         binding.point1.text = "1. Ваш заказ на ${vieModel.amountOrder.value} руб"
         binding.point2delivery.text = "2. ${orderViewModel.typeOfDelivery}"
+        binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
 
         val listOrder = vieModel.dataFull.value?.products
             ?.filter {
@@ -82,17 +86,37 @@ class OrderFragment : Fragment() {
                 0 -> {
                     binding.point2delivery.visibility = View.GONE
                     binding.groupDelivery.visibility = View.GONE
-                    binding.buttonCorrectDelivery.visibility = View.GONE
+                    binding.buttonCorrectTypeDelivery.visibility = View.GONE
                 }
                 1 -> {
                     binding.point2delivery.visibility = View.VISIBLE
                     binding.groupDelivery.visibility = View.VISIBLE
-                    binding.buttonCorrectDelivery.visibility = View.GONE
+                    binding.buttonCorrectTypeDelivery.visibility = View.GONE
                 }
                 2 -> {
                     binding.point2delivery.visibility = View.VISIBLE
                     binding.groupDelivery.visibility = View.GONE
-                    binding.buttonCorrectDelivery.visibility = View.VISIBLE
+                    binding.buttonCorrectTypeDelivery.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        orderViewModel.showPoint3.observe(viewLifecycleOwner) {
+            when(it) {
+                0 -> {
+                    binding.point3Address.visibility = View.GONE
+                    binding.radio.visibility = View.GONE
+                    binding.buttonCorrectPickUp.visibility = View.GONE
+                }
+                1 -> {
+                    binding.point3Address.visibility = View.VISIBLE
+                    binding.radio.visibility = View.VISIBLE
+                    binding.buttonCorrectPickUp.visibility = View.GONE
+                }
+                2 -> {
+                    binding.point3Address.visibility = View.VISIBLE
+                    binding.radio.visibility = View.GONE
+                    binding.buttonCorrectPickUp.visibility = View.VISIBLE
                 }
             }
         }
@@ -109,11 +133,42 @@ class OrderFragment : Fragment() {
             goToBasket()
         }
 
+
         binding.buttonDelivery.setOnClickListener {
-            showDelivery("Доставка")
+            showDelivery(2,"Доставка")
         }
         binding.buttonPickup.setOnClickListener {
-            showDelivery("Самовывоз")
+            showDelivery(2,"Самовывоз")
+            orderViewModel.showPoint3.value = 1
+        }
+        binding.buttonCorrectTypeDelivery.setOnClickListener {
+            showDelivery(1, "Сами заберете или Вам привезти?")
+                 binding.radio.clearCheck()
+            orderViewModel.showPoint3.value = 0
+            orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
+        }
+
+
+        binding.radio.setOnCheckedChangeListener { group, checkedId ->
+            if(checkedId==-1){
+                orderViewModel.showPoint3.value = 0
+                orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
+            }
+
+         val radioButton = group.findViewById<RadioButton>(checkedId)
+            Log.d("MyLog", "checkId=$checkedId")
+            radioButton?.let {
+                orderViewModel.addressPickUp = radioButton.text as String
+                orderViewModel.showPoint3.value = 2
+            }
+            binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
+        }
+
+        binding.buttonCorrectPickUp.setOnClickListener {
+            binding.radio.clearCheck()
+            orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
+            binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
+            orderViewModel.showPoint3.value = 1
         }
 
         return binding.root
@@ -124,13 +179,10 @@ class OrderFragment : Fragment() {
         fun newInstance() = OrderFragment()
     }
 
-    private fun showDelivery(text:String) {
-        orderViewModel.showPoint2.value = 2
+    private fun showDelivery(point:Int, text:String) {
+        orderViewModel.showPoint2.value = point
         orderViewModel.typeOfDelivery = text
-//        binding.groupDelivery.visibility = View.GONE
-//        binding.point2delivery.visibility = View.VISIBLE
         binding.point2delivery.text = "2. ${orderViewModel.typeOfDelivery}"
- //       binding.buttonCorrectDelivery.visibility = View.VISIBLE
     }
 
     private fun goToBasket() {

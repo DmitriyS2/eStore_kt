@@ -123,7 +123,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonCorrectDelivery"
+        android:id="@+id/buttonCorrectTypeDelivery"
         android:src="@drawable/mode_24"
         android:background="@android:color/transparent"
         app:layout_constraintStart_toEndOf="@id/point2delivery"
@@ -132,6 +132,79 @@
         android:layout_marginStart="8dp"
         android:visibility="gone"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/point3Address"
+        tools:text="3. Выберите магазин, откуда заберете"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/buttonDelivery"
+        app:layout_constraintStart_toStartOf="@id/point1"
+        android:layout_marginTop="4dp"
+        />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonCorrectPickUp"
+        android:src="@drawable/mode_24"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@id/point3Address"
+        app:layout_constraintTop_toTopOf="@id/point3Address"
+        app:layout_constraintBottom_toBottomOf="@id/point3Address"
+        android:layout_marginStart="8dp"
+
+        />
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/radio"
+        app:layout_constraintTop_toBottomOf="@id/point3Address"
+        app:layout_constraintStart_toStartOf="@id/point3Address"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+            android:id="@+id/store1"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:text="Магазин №1: К.Маркса, 1"
+            android:textColor="@color/white"
+
+            />
+        <RadioButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/store2"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:text="Магазин №2: Ленина, 67"
+            android:textColor="@color/white"
+            />
+        <RadioButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/store3"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:text="Магазин №3: Космонавтов, 31"
+            android:textColor="@color/white"
+            />
+        <RadioButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/store4"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:text="Магазин №4: Строителей, 103"
+            android:textColor="@color/white"
+            />
+    </RadioGroup>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
