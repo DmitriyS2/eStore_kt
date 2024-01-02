@@ -54,6 +54,7 @@ class OrderFragment : Fragment() {
         binding.point1.text = "1. Ваш заказ на ${vieModel.amountOrder.value} руб"
         binding.point2delivery.text = "2. ${orderViewModel.typeOfDelivery}"
         binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
+        binding.addressDelivery.text = "3. ${orderViewModel.addressDelivery}"
 
         val listOrder = vieModel.dataFull.value?.products
             ?.filter {
@@ -121,6 +122,29 @@ class OrderFragment : Fragment() {
             }
         }
 
+        orderViewModel.showPoint4.observe(viewLifecycleOwner) {
+            when(it) {
+                0 -> {
+                    binding.addressDelivery.visibility = View.GONE
+                    binding.textInputLayoutA.visibility = View.GONE
+                    binding.buttonCorrectDelivery.visibility = View.GONE
+                    binding.buttonEnterAddressOk.visibility = View.GONE
+                }
+                1 -> {
+                    binding.addressDelivery.visibility = View.VISIBLE
+                    binding.textInputLayoutA.visibility = View.VISIBLE
+                    binding.buttonCorrectDelivery.visibility = View.GONE
+                    binding.buttonEnterAddressOk.visibility = View.VISIBLE
+                }
+                2 -> {
+                    binding.addressDelivery.visibility = View.VISIBLE
+                    binding.textInputLayoutA.visibility = View.GONE
+                    binding.buttonCorrectDelivery.visibility = View.VISIBLE
+                    binding.buttonEnterAddressOk.visibility = View.GONE
+                }
+            }
+        }
+
         binding.buttonPoint1Yes.setOnClickListener {
             orderViewModel.showPoint1.value = 1
             orderViewModel.showPoint2.value = 1
@@ -136,32 +160,46 @@ class OrderFragment : Fragment() {
 
         binding.buttonDelivery.setOnClickListener {
             showDelivery(2,"Доставка")
+            orderViewModel.showPoint3.value = 0
+            orderViewModel.showPoint4.value = 1
+            orderViewModel.addressDelivery = "Куда Вам привезти?"
+            binding.addressDelivery.text = orderViewModel.addressDelivery
+         //   binding.point3Address.visibility = View.GONE
         }
         binding.buttonPickup.setOnClickListener {
             showDelivery(2,"Самовывоз")
             orderViewModel.showPoint3.value = 1
+            orderViewModel.showPoint4.value = 0
+            orderViewModel.addressPickUp = "Выберите магазин, откуда заберете"
+            binding.point3Address.text = orderViewModel.addressPickUp
+         //   binding.radio.clearCheck()
         }
         binding.buttonCorrectTypeDelivery.setOnClickListener {
             showDelivery(1, "Сами заберете или Вам привезти?")
                  binding.radio.clearCheck()
             orderViewModel.showPoint3.value = 0
-            orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
+            orderViewModel.showPoint4.value = 0
+          //  orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
         }
 
 
         binding.radio.setOnCheckedChangeListener { group, checkedId ->
-            if(checkedId==-1){
-                orderViewModel.showPoint3.value = 0
-                orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
-            }
+          //  if(orderViewModel.showPoint3.value!=0) {
+                if(checkedId==-1){
+                    orderViewModel.showPoint3.value = 0
+                    orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
+                    binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
+                }
 
-         val radioButton = group.findViewById<RadioButton>(checkedId)
-            Log.d("MyLog", "checkId=$checkedId")
-            radioButton?.let {
-                orderViewModel.addressPickUp = radioButton.text as String
-                orderViewModel.showPoint3.value = 2
-            }
-            binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
+                val radioButton = group.findViewById<RadioButton>(checkedId)
+                Log.d("MyLog", "checkId=$checkedId")
+                radioButton?.let {
+                    orderViewModel.addressPickUp = radioButton.text as String
+                    orderViewModel.showPoint3.value = 2
+                    binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
+                }
+            //    binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
+        //    }
         }
 
         binding.buttonCorrectPickUp.setOnClickListener {
@@ -169,6 +207,21 @@ class OrderFragment : Fragment() {
             orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
             binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
             orderViewModel.showPoint3.value = 1
+        }
+
+
+        binding.buttonEnterAddressOk.setOnClickListener {
+            if(fillField()) {
+                orderViewModel.addressDelivery = binding.editAddressDelivery.text.toString()
+                binding.addressDelivery.text = "3. ${orderViewModel.addressDelivery}"
+                orderViewModel.showPoint4.value = 2
+                orderViewModel.showPoint3.value = 0
+            }
+        }
+
+        binding.buttonCorrectDelivery.setOnClickListener {
+            orderViewModel.addressDelivery = "Куда Вам привезти?"
+            orderViewModel.showPoint4.value = 1
         }
 
         return binding.root
@@ -188,5 +241,16 @@ class OrderFragment : Fragment() {
     private fun goToBasket() {
         topTextViewModel.text.value = Data.basketGroup
         findNavController().navigate(R.id.fragmentForBasket)
+    }
+
+    private fun fillField():Boolean {
+        var flag = true
+        binding.apply {
+            if (editAddressDelivery.text.isNullOrEmpty()) {
+                editAddressDelivery.error = "Поле должно быть заполнено"
+                flag = false
+            }
+        }
+        return flag
     }
 }

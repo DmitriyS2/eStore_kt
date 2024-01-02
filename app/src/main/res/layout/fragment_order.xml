@@ -39,9 +39,12 @@
         app:layout_constraintTop_toBottomOf="@id/point1"
         app:layout_constraintStart_toStartOf="@id/point1"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="#BBBBBB"
+        android:layout_marginEnd="4dp"
         android:layout_width="0dp"
         android:layout_height="120dp"
         android:orientation="vertical">
+
 
         <TextView
             android:id="@+id/textOrder"
@@ -75,7 +78,7 @@
     <androidx.constraintlayout.widget.Group
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="buttonPoint1No, buttonPoint1Yes, scrollView"
+        app:constraint_referenced_ids="buttonPoint1No, buttonPoint1Yes, scrollView, textOrder"
         android:id="@+id/groupOrder"
         />
 
@@ -115,7 +118,7 @@
         android:layout_marginTop="8dp"
         android:id="@+id/point2delivery"
         android:textColor="@color/white"
-        android:text="2. Сами заберете или Вам привезти?"
+        tools:text="2. Сами заберете или Вам привезти?"
         android:textSize="20sp"
         android:visibility="gone"
         />
@@ -142,7 +145,8 @@
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/buttonDelivery"
         app:layout_constraintStart_toStartOf="@id/point1"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
         />
 
     <ImageButton
@@ -155,8 +159,9 @@
         app:layout_constraintTop_toTopOf="@id/point3Address"
         app:layout_constraintBottom_toBottomOf="@id/point3Address"
         android:layout_marginStart="8dp"
-
+        android:visibility="gone"
         />
+
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -204,7 +209,64 @@
             />
     </RadioGroup>
 
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        tools:text="Москва, Ленина, 1"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/point1"
+        app:layout_constraintTop_toBottomOf="@id/buttonDelivery"
+        android:id="@+id/addressDelivery"
+    android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="20sp"
+        />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonCorrectDelivery"
+        android:src="@drawable/mode_24"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@id/addressDelivery"
+        app:layout_constraintTop_toTopOf="@id/addressDelivery"
+        app:layout_constraintBottom_toBottomOf="@id/addressDelivery"
+        android:layout_marginStart="8dp"
+        android:visibility="gone"
+        />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonEnterAddressOk"
+        app:layout_constraintTop_toTopOf="@id/textInputLayoutA"
+        app:layout_constraintBottom_toBottomOf="@id/textInputLayoutA"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="OK"
+        android:layout_marginEnd="8dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutA"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+
+        app:layout_constraintStart_toStartOf="@id/point1"
+        app:layout_constraintEnd_toStartOf="@id/buttonEnterAddressOk"
+        app:layout_constraintTop_toBottomOf="@id/addressDelivery"
+        >
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editAddressDelivery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите адрес"
+        android:textColor="@color/white"
+        android:inputType="text"
+        />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
