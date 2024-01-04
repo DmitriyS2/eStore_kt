@@ -17,6 +17,7 @@ import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.Product
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
+import ru.netology.estore.viewmodel.OrderViewModel
 import ru.netology.estore.viewmodel.TopTextViewModel
 
 
@@ -25,6 +26,7 @@ class FragmentForBasket : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
     private val authViewModel:AuthViewModel by activityViewModels()
     private val topTextViewModel:TopTextViewModel by activityViewModels()
+    private val orderViewModel:OrderViewModel by activityViewModels()
     lateinit var binding: FragmentForBasketBinding
 
     override fun onCreateView(
@@ -104,6 +106,12 @@ class FragmentForBasket : Fragment() {
             if(authViewModel.authenticated) {
                 topTextViewModel.text.value = Data.orderGroup
                 viewModel.deleteFromBasketWeightZero()
+                if(orderViewModel.showPoint2.value!=0) {
+                    orderViewModel.showPoint1.value = 2
+                } else {
+                    orderViewModel.showPoint1.value = 1
+                }
+
                 findNavController().navigate(R.id.orderFragment)
             } else {
                 mustSignIn()
@@ -113,12 +121,12 @@ class FragmentForBasket : Fragment() {
         return binding.root
     }
 
-    fun getListBasket(): Boolean {
+    private fun getListBasket(): Boolean {
         val list = viewModel.dataFull.value?.products?.filter { it.inBasket }.orEmpty()
         return list.isEmpty()
     }
 
-    fun mustSignIn() {
+    private fun mustSignIn() {
         val menuDialog = SignInOutDialogFragment("Нужна регистрация","Для этого действия необходимо войти в систему", R.drawable.info_24, "Sign In", "Позже")
         val manager = childFragmentManager
         menuDialog.show(manager, "Sign in")

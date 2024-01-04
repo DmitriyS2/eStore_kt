@@ -269,4 +269,70 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/barrier"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="buttonPickup, buttonDelivery, buttonEnterAddressOk, radio, addressDelivery, point3Address, textInputLayoutA"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
+        android:id="@+id/textPayment"
+        tools:text = "4. Оплата картой"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/point1"
+        android:layout_marginTop="8dp"
+
+        />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonCorrectPayment"
+        android:src="@drawable/mode_24"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@id/textPayment"
+        app:layout_constraintTop_toTopOf="@id/textPayment"
+        app:layout_constraintBottom_toBottomOf="@id/textPayment"
+        android:layout_marginStart="8dp"
+
+        />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerTypeOfPayment"
+        android:entries="@array/payment"
+        app:layout_constraintTop_toBottomOf="@id/textPayment"
+        app:layout_constraintStart_toStartOf="@id/point1"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/barrier"
+    android:layout_marginTop="50dp"
+    android:id="@+id/time"
+    />
+
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:format24Hour="yyyy-MM-dd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text = "TIME"
+        android:id="@+id/textClockTimeNow"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 package ru.netology.estore.adapter
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
@@ -65,20 +67,45 @@ class ProductInBasketAdapter(private val listener: Listener) :
             txWeight.text = "${getSumWithTwoDecimal(product.weight, 10.0)} ${product.unitWeight}"
 
             buttonLike.setOnClickListener {
+                ObjectAnimator.ofPropertyValuesHolder(
+                    buttonLike,
+                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
+                ).start()
                 listener.like(product)
             }
 
             buttonDelete.setOnClickListener {
+                ObjectAnimator.ofPropertyValuesHolder(
+                    buttonDelete,
+                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
+                ).start()
                 listener.deleteFromBasket(product)
             }
 
             buttonPlus.setOnClickListener {
+                ObjectAnimator.ofPropertyValuesHolder(
+                    buttonPlus,
+                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
+                ).start()
                 listener.weightPlus(product)
             }
             buttonMinus.setOnClickListener {
+                ObjectAnimator.ofPropertyValuesHolder(
+                    buttonMinus,
+                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
+                ).start()
                 listener.weightMinus(product)
             }
             buttonAdd.setOnClickListener {
+                ObjectAnimator.ofPropertyValuesHolder(
+                    buttonAdd,
+                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
+                ).start()
                 listener.addToBasketAgain(product)
             }
 

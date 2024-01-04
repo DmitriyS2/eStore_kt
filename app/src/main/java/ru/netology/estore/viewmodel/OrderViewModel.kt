@@ -2,6 +2,9 @@ package ru.netology.estore.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
 class OrderViewModel:ViewModel() {
 
@@ -9,9 +12,14 @@ class OrderViewModel:ViewModel() {
     var showPoint2 = MutableLiveData(0)
     var showPoint3 = MutableLiveData(0)
     var showPoint4 = MutableLiveData(0)
+    var showPoint5 = MutableLiveData(0)
     var typeOfDelivery:String = "Сами заберете или Вам привезти?"
     var addressPickUp:String = "Выберите магазин, откуда заберете"
     var addressDelivery:String = "Куда Вам привезти?"
-    var timeDelivery = ""
-    var typeOfPayment = ""
+    var typeOfPayment:String = "Выберите способ оплаты"
+    var flagPickUp = false
+
+
+    val timeNow: OffsetDateTime
+        get()= OffsetDateTime.now()
 }
