@@ -33,7 +33,7 @@ class ProductAdapter(private val listener: Listener) :
     //var productList = ArrayList<Product>()
     var productList = emptyList<Product>()
 
-    class ProductHolder(item: View, val listener: Listener) : RecyclerView.ViewHolder(item) {
+    class ProductHolder(item: View, private val listener: Listener) : RecyclerView.ViewHolder(item) {
         val binding = ItemForCatalogProductBinding.bind(item)
 
         fun bind(payload: Payload) {
