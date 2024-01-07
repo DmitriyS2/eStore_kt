@@ -20,7 +20,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:background="@color/white"
+            >
 
             <TextView
                 android:id="@+id/point1"
@@ -38,12 +39,11 @@
                 android:id="@+id/buttonCorrectAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/mode_24"
-                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/point1"
-                app:layout_constraintStart_toEndOf="@id/point1"
                 app:layout_constraintTop_toTopOf="@id/point1" />
 
             <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -72,8 +72,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
                 android:text="Продолжить"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/scrollView" />
 
             <Button
@@ -104,6 +106,7 @@
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintTop_toBottomOf="@id/cardView1">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -119,7 +122,7 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:visibility="gone"
+
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="2. Сами заберете или Вам привезти?" />
@@ -128,12 +131,12 @@
                 android:id="@+id/buttonCorrectTypeDelivery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/mode_24"
-                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/point2delivery"
-                app:layout_constraintStart_toEndOf="@id/point2delivery"
+
                 app:layout_constraintTop_toTopOf="@id/point2delivery" />
 
             <Button
@@ -142,8 +145,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp"
                 android:text="Доставка"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/point2delivery" />
 
             <Button
@@ -159,7 +164,7 @@
                 android:id="@+id/groupDelivery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+
                 app:constraint_referenced_ids="buttonDelivery, buttonPickup" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -189,7 +194,7 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:visibility="gone"
+
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="3. Выберите магазин, откуда заберете" />
@@ -198,12 +203,11 @@
                 android:id="@+id/buttonCorrectPickUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/mode_24"
-                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/point3Address"
-                app:layout_constraintStart_toEndOf="@id/point3Address"
                 app:layout_constraintTop_toTopOf="@id/point3Address" />
 
             <RadioGroup
@@ -212,7 +216,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="@id/point3Address"
-                app:layout_constraintTop_toBottomOf="@id/point3Address">
+                app:layout_constraintTop_toBottomOf="@id/point3Address"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="8dp"
+                >
 
                 <RadioButton
                     android:id="@+id/store1"
@@ -271,7 +278,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:layout_marginBottom="8dp">
+            >
 
             <TextView
                 android:id="@+id/addressDelivery"
@@ -291,12 +298,12 @@
                 android:id="@+id/buttonCorrectDelivery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/mode_24"
-                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/addressDelivery"
-                app:layout_constraintStart_toEndOf="@id/addressDelivery"
+
                 app:layout_constraintTop_toTopOf="@id/addressDelivery" />
 
             <Button
@@ -314,9 +321,9 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-
+                android:layout_marginBottom="8dp"
                 app:layout_constraintStart_toStartOf="@id/addressDelivery"
-
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addressDelivery">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -356,7 +363,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:layout_marginBottom="8dp">
+            >
 
             <TextView
                 android:id="@+id/textPayment"
@@ -376,11 +383,12 @@
                 android:id="@+id/buttonCorrectPayment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/mode_24"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/textPayment"
-                app:layout_constraintStart_toEndOf="@id/textPayment"
+
                 app:layout_constraintTop_toTopOf="@id/textPayment"
 
                 />
@@ -391,7 +399,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:entries="@array/payment"
+
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/textPayment"
                 app:layout_constraintTop_toBottomOf="@id/textPayment" />
 
@@ -399,25 +410,34 @@
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/time"
+  <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintTop_toBottomOf="@id/cardView5"
+      app:layout_constraintStart_toStartOf="parent"
+      android:layout_marginTop="12dp"
+      android:layout_marginStart="20dp"
+      android:id="@+id/buttonToWaitingOrder"
+      android:text="Заказать"
+      />
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         app:layout_constraintTop_toBottomOf="@id/cardView5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:id="@+id/buttonCancelOrder"
+        android:text="Отменить"
         />
 
-    <TextClock
-        android:id="@+id/textClockTimeNow"
+    <androidx.constraintlayout.widget.Group
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:format24Hour="yyyy-MM-dd"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="TIME" />
+        android:id="@+id/groupEndOfOrder"
+        app:constraint_referenced_ids="buttonCancelOrder, buttonToWaitingOrder"
+        android:visibility="gone"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

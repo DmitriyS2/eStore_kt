@@ -11,4 +11,10 @@
         android:icon="@drawable/basket_24"
         android:orderInCategory="2"
         />
+    <item
+        android:id="@+id/order"
+        android:title="Заказ"
+        android:icon="@drawable/order_24"
+        android:orderInCategory="3"
+        />
 </menu>

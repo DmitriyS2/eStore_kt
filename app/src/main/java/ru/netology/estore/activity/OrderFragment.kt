@@ -2,12 +2,14 @@ package ru.netology.estore.activity
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Chronometer
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -42,6 +44,8 @@ class OrderFragment : Fragment() {
 
     lateinit var binding: FragmentOrderBinding
 
+  //  lateinit var chronometer: Chronometer
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,9 +57,9 @@ class OrderFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.data.collectLatest {
                     if(it.id==0L) {
-                        cancelOrder()
-//                        topTextViewModel.text.value = Data.basketGroup
-//                        findNavController().navigate(ru.netology.estore.R.id.fragmentForBasket)
+                        orderViewModel.cancelOrder()
+                        topTextViewModel.text.value = Data.basketGroup
+                        findNavController().navigate(ru.netology.estore.R.id.fragmentForBasket)
                     }
                 }
             }
@@ -70,7 +74,12 @@ class OrderFragment : Fragment() {
      //   val t = orderViewModel.timeNow.plusHours(2)
      //   binding.time.text = orderViewModel.timeNow.format((ofPattern("d MMM uuuu HH:mm")))
 
-
+//        binding.chronometer.base = (SystemClock.elapsedRealtime() + 1000 * 5)
+//
+//        binding.chronometer.setOnChronometerTickListener {
+//            if (binding.chronometer.base==SystemClock.elapsedRealtime()) binding.chronometer.stop()
+//           // val elapsedMillis: Long = (SystemClock.elapsedRealtime() - chronometer.base)
+//        }
 
         val listOrder = vieModel.dataFull.value?.products
             ?.filter {
@@ -80,6 +89,13 @@ class OrderFragment : Fragment() {
         for(i in listOrder.indices) {
             binding.textOrder.append("${i+1}. ${listOrder[i].name} ${listOrder[i].weight} ${listOrder[i].unitWeight}\n")
         }
+
+        orderViewModel.goToFinalOrder.observe(viewLifecycleOwner) {
+            when(it) {
+                1 -> findNavController().navigate(R.id.fragmentWaitingOrder)
+            }
+        }
+
         //заказ на сумму
         orderViewModel.showPoint1.observe(viewLifecycleOwner) {
             when(it) {
@@ -130,16 +146,21 @@ class OrderFragment : Fragment() {
                     binding.point3Address.visibility = View.GONE
                     binding.radio.visibility = View.GONE
                     binding.buttonCorrectPickUp.visibility = View.GONE
+                    binding.cardView3.visibility = View.GONE
                 }
                 1 -> {
+                    binding.cardView3.visibility = View.VISIBLE
                     binding.point3Address.visibility = View.VISIBLE
                     binding.radio.visibility = View.VISIBLE
                     binding.buttonCorrectPickUp.visibility = View.GONE
+                    binding.cardView4.visibility = View.GONE
                 }
                 2 -> {
+                    binding.cardView3.visibility = View.VISIBLE
                     binding.point3Address.visibility = View.VISIBLE
                     binding.radio.visibility = View.GONE
                     binding.buttonCorrectPickUp.visibility = View.VISIBLE
+                    binding.cardView4.visibility = View.GONE
                 }
             }
         }
@@ -151,14 +172,19 @@ class OrderFragment : Fragment() {
                     binding.textInputLayoutA.visibility = View.GONE
                     binding.buttonCorrectDelivery.visibility = View.GONE
                     binding.buttonEnterAddressOk.visibility = View.GONE
+                    binding.cardView4.visibility = View.GONE
                 }
                 1 -> {
+                    binding.cardView3.visibility = View.GONE
+                    binding.cardView4.visibility = View.VISIBLE
                     binding.addressDelivery.visibility = View.VISIBLE
                     binding.textInputLayoutA.visibility = View.VISIBLE
                     binding.buttonCorrectDelivery.visibility = View.GONE
                     binding.buttonEnterAddressOk.visibility = View.VISIBLE
                 }
                 2 -> {
+                    binding.cardView3.visibility = View.GONE
+                    binding.cardView4.visibility = View.VISIBLE
                     binding.addressDelivery.visibility = View.VISIBLE
                     binding.textInputLayoutA.visibility = View.GONE
                     binding.buttonCorrectDelivery.visibility = View.VISIBLE
@@ -184,9 +210,12 @@ class OrderFragment : Fragment() {
                     binding.textPayment.visibility = View.VISIBLE
                     binding.spinnerTypeOfPayment.visibility = View.GONE
                     binding.buttonCorrectPayment.visibility = View.VISIBLE
+                    binding.groupEndOfOrder.visibility = View.VISIBLE
                 }
             }
         }
+
+
 
         binding.buttonPoint1Yes.setOnClickListener {
             orderViewModel.showPoint1.value = 2
@@ -253,7 +282,10 @@ class OrderFragment : Fragment() {
                     orderViewModel.addressPickUp = radioButton.text as String
                     orderViewModel.showPoint3.value = 2
                     binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
-                    orderViewModel.showPoint5.value = 1
+                    if(orderViewModel.showPoint5.value!=2) {
+                        orderViewModel.showPoint5.value = 1
+                    }
+
                 }
             //    binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
         //    }
@@ -273,7 +305,10 @@ class OrderFragment : Fragment() {
                 binding.addressDelivery.text = "3. ${orderViewModel.addressDelivery}"
                 orderViewModel.showPoint4.value = 2
                 orderViewModel.showPoint3.value = 0
-                orderViewModel.showPoint5.value = 1
+                if(orderViewModel.showPoint5.value!=2) {
+                    orderViewModel.showPoint5.value = 1
+                }
+
             }
         }
 
@@ -301,7 +336,7 @@ class OrderFragment : Fragment() {
                 parent: AdapterView<*>?,
                 itemSelected: View, selectedItemPosition: Int, selectedId: Long
             ) {
-                (parent!!.getChildAt(0) as TextView).setTextColor(Color.WHITE)
+                (parent!!.getChildAt(0) as TextView).setTextColor(Color.BLACK)
                 (parent!!.getChildAt(0) as TextView).textSize = 15f
                 val choose = resources.getStringArray(ru.netology.estore.R.array.payment)
                 orderViewModel.typeOfPayment = "Способ оплаты: ${choose[selectedItemPosition].toString()}"
@@ -320,6 +355,17 @@ class OrderFragment : Fragment() {
             orderViewModel.typeOfPayment = "Выберите способ оплаты"
             binding.textPayment.text = "4. ${orderViewModel.typeOfPayment}"
             orderViewModel.showPoint5.value = 1
+        }
+
+
+        binding.buttonCancelOrder.setOnClickListener {
+            orderViewModel.cancelOrder()
+            topTextViewModel.text.value = Data.basketGroup
+            findNavController().navigate(R.id.fragmentForBasket)
+        }
+
+        binding.buttonToWaitingOrder.setOnClickListener {
+            orderViewModel.goToFinalOrder.value = 1
         }
 
         return binding.root
@@ -352,18 +398,5 @@ class OrderFragment : Fragment() {
         return flag
     }
 
-    private fun cancelOrder() {
-        orderViewModel.showPoint1.value = 0
-        orderViewModel.showPoint2.value = 0
-        orderViewModel.showPoint3.value = 0
-        orderViewModel.showPoint4.value = 0
-        orderViewModel.showPoint5.value = 0
-        orderViewModel.typeOfDelivery = "Сами заберете или Вам привезти?"
-        orderViewModel.addressPickUp = "Выберите магазин, откуда заберете"
-        orderViewModel.addressDelivery = "Куда Вам привезти?"
-        orderViewModel.typeOfPayment = "Выберите способ оплаты"
-        orderViewModel.flagPickUp = false
-        topTextViewModel.text.value = Data.basketGroup
-        findNavController().navigate(R.id.fragmentForBasket)
-    }
+
 }

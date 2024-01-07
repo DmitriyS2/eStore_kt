@@ -61,10 +61,11 @@ class MainActivity : AppCompatActivity() {
                 true
             }
 
+            
+
             bottomMenu.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.catalog -> {
-
                         viewModel.dataFull.value?.statusBasket = false
                         viewModel.dataFull.value?.statusCatalog = true
                         drawer.openDrawer(GravityCompat.START)
