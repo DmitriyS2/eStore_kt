@@ -29,7 +29,7 @@ class SignUpViewModel @Inject constructor(
                 if (user==null) {
                     val newUser = repository.signUp(login, password, name)
                     newUser?.let {
-                        auth.setAuth(it.id, it.token, it.name)
+                        auth.setAuth(it.id, it.token, it.name, it.login)
                     }
                 }
             } catch (e:Exception) {

@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentSignInBinding
 import ru.netology.estore.viewmodel.AuthViewModel
+import ru.netology.estore.viewmodel.MainViewModel
 import ru.netology.estore.viewmodel.SignInViewModel
 import ru.netology.estore.viewmodel.TopTextViewModel
 
@@ -35,9 +36,10 @@ import ru.netology.estore.viewmodel.TopTextViewModel
 class SignInFragment : Fragment() {
     lateinit var binding:FragmentSignInBinding
 
-    private val viewModel: SignInViewModel by activityViewModels()
+    private val signInViewModel: SignInViewModel by activityViewModels()
     private val authViewModel:AuthViewModel by activityViewModels()
     private val topTextViewModel:TopTextViewModel by activityViewModels()
+    private val viewModel:MainViewModel by activityViewModels()
 
     @SuppressLint("ShowToast")
     override fun onCreateView(
@@ -50,7 +52,7 @@ class SignInFragment : Fragment() {
             if (isFieldNotNull()) {
 
                // Log.d()
-                viewModel.signIn(binding.login.text.toString(), binding.password.text.toString())
+                signInViewModel.signIn(binding.login.text.toString(), binding.password.text.toString())
 
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -58,6 +60,8 @@ class SignInFragment : Fragment() {
                             delay(50)
          //       if(authViewModel.data.value.id!=0L) {
                             if(it.id!=0L) {
+                                viewModel.getHistoryOfOrders(authViewModel.data.value.login)
+                                Log.d("MyLog", "SignIn OK, login=${it.login}")
                                 topTextViewModel.text.value = ru.netology.estore.dto.Data.basketGroup
                                 findNavController().navigate(R.id.fragmentForBasket)
                             } else {

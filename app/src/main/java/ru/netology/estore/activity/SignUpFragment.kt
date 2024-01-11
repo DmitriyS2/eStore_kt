@@ -1,6 +1,7 @@
 package ru.netology.estore.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentSignUpBinding
 import ru.netology.estore.viewmodel.AuthViewModel
+import ru.netology.estore.viewmodel.MainViewModel
 import ru.netology.estore.viewmodel.SignInViewModel
 import ru.netology.estore.viewmodel.SignUpViewModel
 import ru.netology.estore.viewmodel.TopTextViewModel
@@ -30,6 +32,7 @@ class SignUpFragment : Fragment() {
     private val signUpViewModel: SignUpViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private val topTextViewModel: TopTextViewModel by activityViewModels()
+    private val viewModel:MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +55,8 @@ class SignUpFragment : Fragment() {
                             delay(50)
                             //       if(authViewModel.data.value.id!=0L) {
                             if (it.id != 0L) {
-
+                                viewModel.getHistoryOfOrders(authViewModel.data.value.login)
+                                Log.d("MyLog", "SignUp OK, login=${it.login}")
                                 //      if(authViewModel.authenticated) {
                                 topTextViewModel.text.value =
                                     ru.netology.estore.dto.Data.basketGroup

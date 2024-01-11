@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.netology.estore.viewmodel.MainViewModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,6 +24,7 @@ class AppAuth @Inject constructor(
     private val idKey = "id"
     private val tokenKey = "token"
     private val nameKey = "name"
+    private val loginKey = "login"
 
     private val _authStateFlow: MutableStateFlow<AuthState>
 
@@ -30,15 +32,16 @@ class AppAuth @Inject constructor(
         val id = prefs.getLong(idKey, 0)
         val token = prefs.getString(tokenKey, null)
         val name = prefs.getString(nameKey, null)
+        val login = prefs.getString(loginKey, null)
 
-        if (id == 0L || token == null) {
+        if (id == 0L || token == null || login == null) {
             _authStateFlow = MutableStateFlow(AuthState())
             with(prefs.edit()) {
                 clear()
                 apply()
             }
         } else {
-            _authStateFlow = MutableStateFlow(AuthState(id, token, name))
+            _authStateFlow = MutableStateFlow(AuthState(id, token, name, login))
         }
 
      //   sendPushToken()
@@ -53,14 +56,16 @@ class AppAuth @Inject constructor(
 //    }
 
     @Synchronized
-    fun setAuth(id: Long, token: String, name:String) {
-        _authStateFlow.value = AuthState(id, token, name)
+    fun setAuth(id: Long, token: String, name:String, login:String) {
+        _authStateFlow.value = AuthState(id, token, name, login)
         with(prefs.edit()) {
             putLong(idKey, id)
             putString(tokenKey, token)
             putString(nameKey, name)
+            putString(loginKey, login)
             apply()
         }
+
      //   sendPushToken()
     }
 
@@ -111,4 +116,4 @@ class AppAuth @Inject constructor(
 //        private fun buildAuth(context: Context): AppAuth = AppAuth(context)
 //    }
 }
-data class AuthState(val id: Long = 0, val token: String? = null, val name: String? = null)
+data class AuthState(val id: Long = 0, val token: String? = null, val name: String? = null, val login: String?=null)

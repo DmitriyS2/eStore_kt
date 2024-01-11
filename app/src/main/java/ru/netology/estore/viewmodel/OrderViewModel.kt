@@ -41,7 +41,5 @@ class OrderViewModel : ViewModel() {
         addressDelivery = "Куда Вам привезти?"
         typeOfPayment = "Выберите способ оплаты"
         flagPickUp = false
-        // topTextViewModel.text.value = Data.basketGroup
-        // findNavController().navigate(R.id.fragmentForBasket)
     }
 }

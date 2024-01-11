@@ -8,24 +8,56 @@
     tools:context=".FragmentWaitingOrder">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="24dp"
         android:id="@+id/cardViewTimePicker"
+
         >
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textInfoWaitingOrder"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="24sp"
+            tools:text="Мы привезем Ваш товар через"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/timer"
+                app:layout_constraintTop_toBottomOf="@id/textInfoWaitingOrder"
+                app:layout_constraintStart_toStartOf="@id/textInfoWaitingOrder"
+                app:layout_constraintEnd_toEndOf="@id/textInfoWaitingOrder"
+                android:text = "60 сек"
+                android:textSize="48sp"
+                />
 
     <TimePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/timePicker"
         android:timePickerMode="spinner"
-
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
 
@@ -34,10 +66,35 @@
         android:layout_height="wrap_content"
         android:id="@+id/buttonStartTime"
         app:layout_constraintTop_toBottomOf="@id/cardViewTimePicker"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="Старт"
-        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@id/cardViewTimePicker"
+        android:text="Заказать"
+        android:textSize="20sp"
+        android:layout_marginTop="24dp"
         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonCancelTime"
+        app:layout_constraintTop_toTopOf="@id/buttonStartTime"
+        app:layout_constraintEnd_toEndOf="@id/cardViewTimePicker"
+        android:text="Отмена"
+        android:textSize="20sp"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonReady"
+        app:layout_constraintTop_toBottomOf="@id/cardViewTimePicker"
+        app:layout_constraintEnd_toEndOf="@id/cardViewTimePicker"
+        app:layout_constraintStart_toStartOf="@id/cardViewTimePicker"
+        android:text="Спасибо!"
+        android:textSize="20sp"
+        android:layout_marginTop="80dp"
+        android:visibility="gone"
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

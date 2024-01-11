@@ -1,8 +1,10 @@
 package ru.netology.estore.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.netology.estore.auth.AppAuth
+import ru.netology.estore.dto.DataOrderForHistory
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,10 +16,12 @@ class AuthViewModel @Inject constructor(
     val authenticated:Boolean
         get() = data.value.id !=0L
 
-//    val data: LiveData<AuthState> = AppAuth.getInstance()
-//        .authStateFlow
-//        .asLiveData(Dispatchers.Default)
 
-//    val authenticated: Boolean
-//        get() = AppAuth.getInstance().authStateFlow.value.id != 0L
+//    val dataHistoryOrders = MutableLiveData<List<DataOrderForHistory>>()
+//
+//    val emptyHistoryOfOrders:Boolean
+//        get()= dataHistoryOrders.value?.isEmpty() ?: true
+//
+//    val log = data.value.login
+
 }

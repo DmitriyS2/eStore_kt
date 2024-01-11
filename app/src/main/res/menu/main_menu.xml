@@ -13,6 +13,11 @@
     </group>
     <group android:id="@+id/authenticated">
         <item
+            android:id="@+id/historyOfOrders"
+            android:title="History of orders"
+            app:showAsAction="never" />
+
+        <item
             android:id="@+id/signout"
             android:title="Sign Out"
             app:showAsAction="never" />

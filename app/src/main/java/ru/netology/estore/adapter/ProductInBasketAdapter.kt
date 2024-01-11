@@ -6,7 +6,6 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.estore.R
@@ -16,7 +15,7 @@ import ru.netology.estore.dto.getSumWithTwoDecimal
 
 
 class ProductInBasketAdapter(private val listener: Listener) :
-    ListAdapter<Product, ProductInBasketAdapter.ProductInBasketHolder>(PostDiffCallback()) {
+    ListAdapter<Product, ProductInBasketAdapter.ProductInBasketHolder>(ProductDiffCallback()) {
 
     class ProductInBasketHolder(item: View, private val listener: Listener) :
         RecyclerView.ViewHolder(item) {
@@ -124,7 +123,6 @@ class ProductInBasketAdapter(private val listener: Listener) :
         val product = getItem(position)
         holder.bind(product)
     }
-
 }
 
 //class PostDiffCallback2 : DiffUtil.ItemCallback<Product>() {

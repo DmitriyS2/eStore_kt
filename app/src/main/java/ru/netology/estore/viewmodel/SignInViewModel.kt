@@ -28,23 +28,10 @@ class SignInViewModel @Inject constructor(
                 val user = repository.checkSignIn(login)
                user?.let {
                    if (it.password==password) {
-                       auth.setAuth(it.id, it.token, it.name)
+                       auth.setAuth(it.id, it.token, it.name, it.login)
 
                    }
                }
-//                val body = userDao.getPassword(login)
-//                if(body.isNotEmpty()) {
-//                    val passwordFromDao = body.first()
-//                    if (passwordFromDao==password) {
-//
-//                    }
-//                }
-             //   Log.d("MyLog", "first = $body")
-
-//            if(body.isEmpty() || !body.contains(login)) {//
-//                Log.d("MyLog", "isEmpty=${body.isEmpty()}, contains=${!body.contains(login)}")
-//            }
-           //     Log.d("MyLog", "$body")
             }
         } catch (e:Exception) {
             throw Exception("error SignIn")

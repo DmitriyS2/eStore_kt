@@ -71,14 +71,14 @@ class FragmentForBasket : Fragment() {
         binding.rwProducts.layoutManager = LinearLayoutManager(activity)
 
 //        var list = getListBasket()
-        viewModel.dataFull.value = viewModel.dataFull.value?.copy(isEmptyBasket = getListBasket())
+    //    viewModel.dataFull.value = viewModel.dataFull.value?.copy(isEmptyBasket = getListBasket())
 
         binding.rwProducts.adapter = adapter
 
         viewModel.dataFull.observe(viewLifecycleOwner) { state ->
-            binding.txEmptyBasket.isVisible = state.isEmptyBasket
-            binding.amountOrder.isVisible = !state.isEmptyBasket
-            binding.buttonOrder.isEnabled = !state.isEmptyBasket
+            binding.txEmptyBasket.isVisible = state.emptyBasket
+            binding.amountOrder.isVisible = !state.emptyBasket
+            binding.buttonOrder.isEnabled = !state.emptyBasket
             val list = state.products.filter { it.inBasket }
             adapter.submitList(list)
             viewModel.amountOrder.value = viewModel.countOrder(list)
@@ -103,15 +103,17 @@ class FragmentForBasket : Fragment() {
         }
 
         binding.buttonOrder.setOnClickListener {
+            viewModel.deleteFromBasketWeightZero()
+            if(viewModel.dataFull.value?.emptyBasket == true) {
+                return@setOnClickListener
+            }
             if(authViewModel.authenticated) {
                 topTextViewModel.text.value = Data.orderGroup
-                viewModel.deleteFromBasketWeightZero()
                 if(orderViewModel.showPoint2.value!=0) {
                     orderViewModel.showPoint1.value = 2
                 } else {
                     orderViewModel.showPoint1.value = 1
                 }
-
                 findNavController().navigate(R.id.orderFragment)
             } else {
                 mustSignIn()
@@ -121,13 +123,21 @@ class FragmentForBasket : Fragment() {
         return binding.root
     }
 
-    private fun getListBasket(): Boolean {
-        val list = viewModel.dataFull.value?.products?.filter { it.inBasket }.orEmpty()
-        return list.isEmpty()
-    }
+//    private fun getListBasket(): Boolean {
+//        val list = viewModel.dataFull.value?.products?.filter { it.inBasket }.orEmpty()
+//        return list.isEmpty()
+//    }
 
     private fun mustSignIn() {
-        val menuDialog = SignInOutDialogFragment("Нужна регистрация","Для этого действия необходимо войти в систему", R.drawable.info_24, "Sign In", "Позже")
+        val menuDialog = SignInOutDialogFragment(
+            title = "Нужна регистрация",
+            text = "Для этого действия необходимо войти в систему",
+            icon = R.drawable.info_24,
+            textPosButton = "Sign In",
+            textNegButton = "Позже",
+            flagSignIn = true,
+            flagSignUp = false,
+            )
         val manager = childFragmentManager
         menuDialog.show(manager, "Sign in")
     }

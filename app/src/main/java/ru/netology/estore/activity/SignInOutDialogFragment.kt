@@ -15,6 +15,10 @@ import ru.netology.estore.R
 import ru.netology.estore.auth.AppAuth
 import ru.netology.estore.databinding.FragmentSignInOutDialogBinding
 import ru.netology.estore.dto.Data
+import ru.netology.estore.viewmodel.AuthViewModel
+import ru.netology.estore.viewmodel.MainViewModel
+import ru.netology.estore.viewmodel.OrderViewModel
+import ru.netology.estore.viewmodel.SignInViewModel
 import ru.netology.estore.viewmodel.TopTextViewModel
 import javax.inject.Inject
 
@@ -25,10 +29,17 @@ class SignInOutDialogFragment(
     val icon: Int,
     val textPosButton: String,
     val textNegButton: String,
-    val flagSignIn: Boolean = true
+    val flagSignIn: Boolean = true,
+    val flagSignUp:Boolean = true
 ) : DialogFragment() {
     lateinit var binding: FragmentSignInOutDialogBinding
+
     private val topTextViewModel: TopTextViewModel by activityViewModels()
+    private val orderViewModel:OrderViewModel by activityViewModels()
+
+    private val authViewModel: AuthViewModel by activityViewModels()
+
+    private val viewModel: MainViewModel by activityViewModels()
 
     @Inject
     lateinit var auth: AppAuth
@@ -49,18 +60,18 @@ class SignInOutDialogFragment(
                     topTextViewModel.text.value = "SignIn"
                     findNavController()
                         .navigate(R.id.signInFragment)
-//                    childFragmentManager
-//                        .beginTransaction()
-//                        .replace(R.id.nav_host_fragment, SignInFragment())
-//                        .commit()
-                    //     findNavController().navigate(R.id.authenticationFragment)
-                } else {
-                    auth.removeAuth()
+                } else if(flagSignUp) {
+
                     topTextViewModel.text.value = Data.allGroup
                     findNavController()
                         .navigate(R.id.fragmentForCatalog)
-                    //   AppAuth.getInstance().removeAuth()
-                    //       findNavController().navigate(R.id.feedFragment)
+                } else {
+                    auth.removeAuth()
+                    topTextViewModel.text.value = Data.allGroup
+                    orderViewModel.cancelOrder()
+                    viewModel.getHistoryOfOrders(authViewModel.data.value.login)
+                    findNavController()
+                        .navigate(R.id.fragmentForCatalog)
                 }
             }
             .setNegativeButton(textNegButton) { _, _ ->
@@ -69,11 +80,6 @@ class SignInOutDialogFragment(
                     topTextViewModel.text.value = Data.basketGroup
                     findNavController()
                         .navigate(R.id.fragmentForBasket)
-//                    childFragmentManager
-//                        .beginTransaction()
-//                        .replace(R.id.nav_host_fragment, FragmentForBasket())
-//                        .commit()
-                    //             findNavController().navigate(R.id.feedFragment)
                 }
             }
             .create()

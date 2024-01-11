@@ -2,20 +2,16 @@ package ru.netology.estore.activity
 
 import android.graphics.Color
 import android.os.Bundle
-import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Chronometer
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -24,14 +20,12 @@ import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentOrderBinding
 import ru.netology.estore.dto.Data
+import ru.netology.estore.dto.Group
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
 import ru.netology.estore.viewmodel.OrderViewModel
 import ru.netology.estore.viewmodel.TopTextViewModel
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter.ofLocalizedDate
 import java.time.format.DateTimeFormatter.ofPattern
 
 
@@ -65,11 +59,15 @@ class OrderFragment : Fragment() {
             }
         }
 
+
         binding.point1.text = "1. Ваш заказ на ${vieModel.amountOrder.value} руб"
         binding.point2delivery.text = "2. ${orderViewModel.typeOfDelivery}"
         binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
         binding.addressDelivery.text = "3. ${orderViewModel.addressDelivery}"
         binding.textPayment.text = "4. ${orderViewModel.typeOfPayment}"
+
+
+     //
 
      //   val t = orderViewModel.timeNow.plusHours(2)
      //   binding.time.text = orderViewModel.timeNow.format((ofPattern("d MMM uuuu HH:mm")))
@@ -88,12 +86,6 @@ class OrderFragment : Fragment() {
 
         for(i in listOrder.indices) {
             binding.textOrder.append("${i+1}. ${listOrder[i].name} ${listOrder[i].weight} ${listOrder[i].unitWeight}\n")
-        }
-
-        orderViewModel.goToFinalOrder.observe(viewLifecycleOwner) {
-            when(it) {
-                1 -> findNavController().navigate(R.id.fragmentWaitingOrder)
-            }
         }
 
         //заказ на сумму
@@ -215,22 +207,32 @@ class OrderFragment : Fragment() {
             }
         }
 
+        // завершение заказа
+        orderViewModel.goToFinalOrder.observe(viewLifecycleOwner) {
+            when(it) {
+                0 -> binding.cardViewFinalOrder.visibility = View.GONE
+                1 -> {
+                    val timeOrder = OffsetDateTime.now().plusHours(1L).format((ofPattern("HH:mm")))
+                    binding.cardView1.visibility = View.GONE
+                    binding.cardView2.visibility = View.GONE
+                    binding.cardView3.visibility = View.GONE
+                    binding.cardView4.visibility = View.GONE
+                    binding.cardView5.visibility = View.GONE
+                    binding.buttonCancelOrder.visibility = View.GONE
+                    binding.buttonToWaitingOrder.visibility = View.GONE
+                   binding.cardViewFinalOrder.visibility = View.VISIBLE
+                    binding.textInfoWaitingOrder.text = if(orderViewModel.flagPickUp) "Вы сможете забрать Ваш заказ через 1 час в $timeOrder" else "Мы привезем Ваш заказ через 1 час в $timeOrder"
+                }
+            }
+        }
 
 
         binding.buttonPoint1Yes.setOnClickListener {
             orderViewModel.showPoint1.value = 2
             orderViewModel.showPoint2.value = 1
 
-//            val r = binding.textClockTimeNow.text.toString()
-//          //  binding.time.text = r
-//            val tr = LocalDate.parse(r)
-//
-//            binding.time.text = tr.toString()
-//
-//            val time1 = java.time.LocalTime.of(9, 25)
-//            val time2 = java.time.LocalTime.of(13, 11)
-//            val duration = java.time.Duration.between(time1, time2)
-//            Log.d("MyLog", "${duration}")
+                val r = Group.allGroup
+            Log.d("MyLog", "r=$r")
         }
 
         binding.buttonPoint1No.setOnClickListener {
@@ -248,8 +250,8 @@ class OrderFragment : Fragment() {
             orderViewModel.showPoint4.value = 1
             orderViewModel.addressDelivery = "Куда Вам привезти?"
             binding.addressDelivery.text = orderViewModel.addressDelivery
-         //   binding.point3Address.visibility = View.GONE
         }
+
         binding.buttonPickup.setOnClickListener {
             showDelivery(2,"Самовывоз")
             orderViewModel.flagPickUp = true
@@ -257,19 +259,17 @@ class OrderFragment : Fragment() {
             orderViewModel.showPoint4.value = 0
             orderViewModel.addressPickUp = "Выберите магазин, откуда заберете"
             binding.point3Address.text = orderViewModel.addressPickUp
-         //   binding.radio.clearCheck()
         }
+
         binding.buttonCorrectTypeDelivery.setOnClickListener {
             showDelivery(1, "Сами заберете или Вам привезти?")
                  binding.radio.clearCheck()
             orderViewModel.showPoint3.value = 0
             orderViewModel.showPoint4.value = 0
-          //  orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
         }
 
 
         binding.radio.setOnCheckedChangeListener { group, checkedId ->
-          //  if(orderViewModel.showPoint3.value!=0) {
                 if(checkedId==-1){
                     orderViewModel.showPoint3.value = 0
                     orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
@@ -285,10 +285,7 @@ class OrderFragment : Fragment() {
                     if(orderViewModel.showPoint5.value!=2) {
                         orderViewModel.showPoint5.value = 1
                     }
-
                 }
-            //    binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
-        //    }
         }
 
         binding.buttonCorrectPickUp.setOnClickListener {
@@ -308,7 +305,6 @@ class OrderFragment : Fragment() {
                 if(orderViewModel.showPoint5.value!=2) {
                     orderViewModel.showPoint5.value = 1
                 }
-
             }
         }
 
@@ -317,19 +313,6 @@ class OrderFragment : Fragment() {
             orderViewModel.showPoint4.value = 1
         }
 
-
-//        context?.let {
-//            ArrayAdapter.createFromResource(
-//                it,
-//                ru.netology.estore.R.array.payment,
-//                android.R.layout.simple_spinner_item
-//            ).also { adapter ->
-//                // Specify the layout to use when the list of choices appears.
-//                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//                // Apply the adapter to the spinner.
-//                binding.spinnerTypeOfPayment.adapter = adapter
-//            }
-//        }
 
         binding.spinnerTypeOfPayment.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -342,11 +325,6 @@ class OrderFragment : Fragment() {
                 orderViewModel.typeOfPayment = "Способ оплаты: ${choose[selectedItemPosition].toString()}"
                 binding.textPayment.text = "4. ${orderViewModel.typeOfPayment}"
                 orderViewModel.showPoint5.value = 2
-    //                val toast = Toast.makeText(
-    //                    context,
-    //                    "Ваш выбор: " + choose[selectedItemPosition], Toast.LENGTH_SHORT
-    //                )
-    //                toast.show()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -359,13 +337,19 @@ class OrderFragment : Fragment() {
 
 
         binding.buttonCancelOrder.setOnClickListener {
-            orderViewModel.cancelOrder()
-            topTextViewModel.text.value = Data.basketGroup
-            findNavController().navigate(R.id.fragmentForBasket)
+            areYouSureCancelOrder()
         }
 
         binding.buttonToWaitingOrder.setOnClickListener {
             orderViewModel.goToFinalOrder.value = 1
+        }
+
+
+        binding.buttonThankYou.setOnClickListener {
+            orderViewModel.cancelOrder()
+            topTextViewModel.text.value = Data.eStoreGroup
+            vieModel.cleanBasket()
+            findNavController().navigate(R.id.blankFragment)
         }
 
         return binding.root
@@ -398,5 +382,18 @@ class OrderFragment : Fragment() {
         return flag
     }
 
+    fun areYouSureCancelOrder() {
+        val menuDialog = SignInOutDialogFragment(
+            title = "Отмена заказа",
+            text = "Вы уверены, что хотите отменить?",
+            icon = R.drawable.warning_24,
+            textPosButton = "Выйти",
+            textNegButton = "Остаться",
+            flagSignIn = false,
+            flagSignUp = false
+        )
+        val manager = childFragmentManager
+        menuDialog.show(manager, "Cancel order")
+    }
 
 }

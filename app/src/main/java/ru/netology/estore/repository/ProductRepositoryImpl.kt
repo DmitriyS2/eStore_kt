@@ -1,25 +1,31 @@
 package ru.netology.estore.repository
 
 import android.util.Log
+import android.util.LogPrinter
 import dagger.hilt.android.AndroidEntryPoint
+import ru.netology.estore.dao.DataOrderForHistoryDao
 import ru.netology.estore.dao.UserDao
 import ru.netology.estore.dto.Data
+import ru.netology.estore.dto.DataOrderForHistory
 import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.User
 import ru.netology.estore.dto.getSumWithTwoDecimal
 import ru.netology.estore.entity.UserEntity
+import ru.netology.estore.entity.toDto
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ProductRepositoryImpl @Inject constructor(
-    private val userDao: UserDao
+    private val userDao: UserDao,
+    private val dataOrderForHistoryDao: DataOrderForHistoryDao
 
 ):ProductRepository {
 
     var allProducts = arrayListOf<Product>()
+    override var allProductsOriginal = arrayListOf<Product>()
 //        init {
-//            allProducts = fillAllProducts()
+//            allProductsOriginal = fillAllProducts()
 //        }
 
 
@@ -96,6 +102,8 @@ class ProductRepositoryImpl @Inject constructor(
 
         }
     }
+
+
 
     override fun like(product: Product): ArrayList<Product> {
         allProducts = allProducts.map {
@@ -202,4 +210,7 @@ class ProductRepositoryImpl @Inject constructor(
         }
         return token
     }
+
+    override suspend fun getHistoryOfOrders(login: String): List<DataOrderForHistory> = dataOrderForHistoryDao.getDataOrderForHistory(login).toDto()
+
 }

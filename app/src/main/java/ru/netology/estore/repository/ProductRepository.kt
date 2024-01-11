@@ -1,9 +1,12 @@
 package ru.netology.estore.repository
 
+import ru.netology.estore.dto.DataOrderForHistory
 import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.User
 
 interface ProductRepository {
+
+    var allProductsOriginal:ArrayList<Product>
 
     fun fillAllProducts():ArrayList<Product>
     fun like(product: Product):ArrayList<Product>
@@ -18,4 +21,6 @@ interface ProductRepository {
     suspend fun checkSignIn(login:String): User?
 
     suspend fun signUp(login: String, password: String, name: String):User?
+    suspend fun getHistoryOfOrders(login: String): List<DataOrderForHistory>?
+
 }

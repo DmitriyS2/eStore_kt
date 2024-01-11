@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ru.netology.estore.dao.DataOrderForHistoryDao
 import ru.netology.estore.dao.UserDao
 import javax.inject.Singleton
 
@@ -26,5 +27,11 @@ object DbModule {
     fun provideUserDao(
         appDb: AppDb
     ):UserDao = appDb.userDao()
+
+    @Provides
+    @Singleton
+    fun provideDataOrderForHistoryDao(
+        appDb: AppDb
+    ):DataOrderForHistoryDao = appDb.dataOrderForHistoryDao()
 
 }

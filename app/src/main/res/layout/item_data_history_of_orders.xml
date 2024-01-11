@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="4dp"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/textHistory1"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="12dp"
+                tools:text = "1. Заказ на сумму 100.00 руб "
+                android:textSize="22sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/textHistory1"
+                app:layout_constraintStart_toStartOf="@id/textHistory1"
+                android:id="@+id/textHistory2"
+                android:layout_marginTop="8dp"
+                tools:text = "Самовывоз "
+                android:textSize="22sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/textHistory2"
+                app:layout_constraintStart_toStartOf="@id/textHistory1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="8dp"
+                android:id="@+id/textHistory3"
+                tools:text = "17 янв. 2024 10:34"
+                android:textSize="22sp"
+                android:layout_marginBottom="8dp"
+                />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonDeleteOrderOfHistory"
+                app:layout_constraintTop_toTopOf="@id/textHistory1"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/delete_red_24"
+                android:background="@android:color/transparent"
+                android:layout_marginEnd="12dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

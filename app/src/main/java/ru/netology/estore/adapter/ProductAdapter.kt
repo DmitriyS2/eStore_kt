@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.BounceInterpolator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.estore.R
@@ -28,7 +27,7 @@ interface Listener {
 //class ProductAdapter (private val listener: Listener) : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
 
 class ProductAdapter(private val listener: Listener) :
-    ListAdapter<Product, ProductAdapter.ProductHolder>(PostDiffCallback()) {
+    ListAdapter<Product, ProductAdapter.ProductHolder>(ProductDiffCallback()) {
 
     //var productList = ArrayList<Product>()
     var productList = emptyList<Product>()
@@ -66,6 +65,7 @@ class ProductAdapter(private val listener: Listener) :
 //                }
 //            }
         }
+
 
         fun bind(product: Product) = with(binding) {
             if (product.isHit) {
@@ -128,7 +128,8 @@ class ProductAdapter(private val listener: Listener) :
                 buttonAddToBin.setBackgroundColor(Color.parseColor("#104021"))
                 buttonAddToBin.text = "Убрать"
             } else {
-                buttonAddToBin.setBackgroundColor(Color.BLUE)
+             //   buttonAddToBin.setBackgroundColor(Color.BLUE)
+                buttonAddToBin.setBackgroundColor(Color.parseColor("#f2570f"))
                 buttonAddToBin.text = "Добавить"
             }
 
@@ -186,7 +187,7 @@ class ProductAdapter(private val listener: Listener) :
     }
 }
 
-class PostDiffCallback : DiffUtil.ItemCallback<Product>() {
+class ProductDiffCallback : DiffUtil.ItemCallback<Product>() {
     override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
         return oldItem.id == newItem.id
     }

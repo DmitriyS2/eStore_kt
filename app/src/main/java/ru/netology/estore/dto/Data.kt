@@ -42,6 +42,7 @@ object Data {
     val signInGroup = "SignIn"
     val signUpGroup = "SignUp"
     val orderGroup = "Заказ"
+    val eStoreGroup = "eStore"
 
 
     val fruitsPrice = listOf(109.5, 89.9, 179.0, 211.5, 25.0, 189.9)
@@ -55,6 +56,7 @@ object Data {
     val fruitUnitWeight = listOf("кг", "кг", "кг", "кг", "кг", "кг")
     val vegetableUnitWeight = listOf("кг", "кг", "кг", "кг", "кг", "кг")
     val bakeryUnitWeight = listOf("шт", "шт", "шт", "кг", "кг", "кг")
+
 
 //    fun fillAllProducts():ArrayList<Product> {
 //
@@ -213,6 +215,23 @@ object Data {
 //        }
 //        return getSumWithTwoDecimal(sum, 100.0)
 //    }
+}
+
+enum class Group
+{
+     allGroup,
+     fruitGroup;
+    val vegetableGroup = "Овощи";
+    val bakeryGroup = "Бакалея";
+    val hitGroup = "Хиты продаж"
+    val discountGroup = "АКЦИЯ!!!"
+    val favoriteGroup = "Избранное"
+    val basketGroup = "Корзина"
+    val signInGroup = "SignIn"
+    val signUpGroup = "SignUp"
+    val orderGroup = "Заказ"
+    val eStoreGroup = "eStore";
+    ;
 }
 
 fun getSumWithTwoDecimal(number:Double, del:Double):Double = (number*del.toInt()).roundToInt()/del
