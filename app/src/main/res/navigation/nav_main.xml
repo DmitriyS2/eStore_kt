@@ -51,5 +51,10 @@
         android:name="ru.netology.estore.FragmentWaitingOrder"
         android:label="fragment_waiting_order"
         tools:layout="@layout/fragment_waiting_order" />
+    <fragment
+        android:id="@+id/fragmentHistoryOfOrders"
+        android:name="ru.netology.estore.activity.FragmentHistory"
+        android:label="fragment_history_of_orders"
+        tools:layout="@layout/fragment_history_of_orders" />
 
 </navigation>

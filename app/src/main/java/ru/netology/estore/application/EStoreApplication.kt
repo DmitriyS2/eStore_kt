@@ -15,7 +15,7 @@ class EStoreApplication:Application() {
 //        AppAuth.initApp(this)
 //    }
 
-    private val appScope = CoroutineScope(Dispatchers.Default)
+//    private val appScope = CoroutineScope(Dispatchers.Default)
 
     @Inject
     lateinit var auth: AppAuth
@@ -26,8 +26,8 @@ class EStoreApplication:Application() {
     }
 
     private fun setupAuth() {
-        appScope.launch {
+  //      appScope.launch {
  //           auth.sendPushToken()
-        }
+   //     }
     }
 }

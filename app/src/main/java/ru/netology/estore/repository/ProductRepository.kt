@@ -1,6 +1,6 @@
 package ru.netology.estore.repository
 
-import ru.netology.estore.dto.DataOrderForHistory
+import ru.netology.estore.dto.DataHistory
 import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.User
 
@@ -21,6 +21,6 @@ interface ProductRepository {
     suspend fun checkSignIn(login:String): User?
 
     suspend fun signUp(login: String, password: String, name: String):User?
-    suspend fun getHistoryOfOrders(login: String): List<DataOrderForHistory>?
+    suspend fun getHistory(login: String): List<DataHistory>?
 
 }

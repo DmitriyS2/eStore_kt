@@ -8,17 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import ru.netology.estore.R
 import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductAdapter
 import ru.netology.estore.databinding.FragmentForCatalogBinding
 import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.Product
+import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
 
 
 class FragmentForCatalog : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
+    private val authViewModel:AuthViewModel by activityViewModels()
 
     lateinit var binding: FragmentForCatalogBinding
 
@@ -29,7 +32,11 @@ class FragmentForCatalog : Fragment() {
 
         val adapter = ProductAdapter(object : Listener {
             override fun like(product: Product) {
-                viewModel.like(product)
+                if(authViewModel.authenticated) {
+                    viewModel.like(product)
+                } else {
+                    mustSignIn()
+                }
             }
 
             override fun addToBasket(product: Product) {
@@ -89,4 +96,18 @@ class FragmentForCatalog : Fragment() {
         fun newInstance() = FragmentForCatalog()
     }
 
+    private fun mustSignIn() {
+        val menuDialog = SignInOutDialogFragment(
+            title = "Нужна регистрация",
+            text = "Для этого действия необходимо войти в систему",
+            icon = R.drawable.info_24,
+            textPosButton = "Sign In",
+            textNegButton = "Позже",
+            flagSignIn = true,
+            flagOrder = false,
+            navigateTo = R.id.fragmentForCatalog
+        )
+        val manager = childFragmentManager
+        menuDialog.show(manager, "Sign in")
+    }
 }

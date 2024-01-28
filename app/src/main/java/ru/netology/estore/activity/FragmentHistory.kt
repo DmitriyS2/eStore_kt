@@ -11,7 +11,7 @@ import ru.netology.estore.adapter.DataHistoryOfOrdersAdapter
 import ru.netology.estore.databinding.FragmentHistoryOfOrdersBinding
 import ru.netology.estore.viewmodel.MainViewModel
 
-class FragmentHistoryOfOrders : Fragment() {
+class FragmentHistory : Fragment() {
     lateinit var binding: FragmentHistoryOfOrdersBinding
 
     private val viewModel:MainViewModel by activityViewModels()
@@ -38,6 +38,6 @@ class FragmentHistoryOfOrders : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance() = FragmentHistoryOfOrders()
+        fun newInstance() = FragmentHistory()
     }
 }

@@ -4,11 +4,8 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.Context.ALARM_SERVICE
-import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +13,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import ru.netology.estore.activity.SignInOutDialogFragment
 import ru.netology.estore.databinding.FragmentWaitingOrderBinding
-import ru.netology.estore.receiver.AlarmReceiver
 import ru.netology.estore.viewmodel.OrderViewModel
-import java.util.Calendar
 
 class FragmentWaitingOrder : Fragment() {
 
@@ -135,7 +130,8 @@ class FragmentWaitingOrder : Fragment() {
             textPosButton = "Выйти",
             textNegButton = "Остаться",
             flagSignIn = false,
-            flagSignUp = false
+            flagOrder = false,
+            navigateTo = 0
         )
         val manager = childFragmentManager
         menuDialog.show(manager, "Cancel order")

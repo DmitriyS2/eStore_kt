@@ -1,12 +1,10 @@
 package ru.netology.estore.repository
 
 import android.util.Log
-import android.util.LogPrinter
-import dagger.hilt.android.AndroidEntryPoint
-import ru.netology.estore.dao.DataOrderForHistoryDao
+import ru.netology.estore.dao.DataHistoryDao
 import ru.netology.estore.dao.UserDao
 import ru.netology.estore.dto.Data
-import ru.netology.estore.dto.DataOrderForHistory
+import ru.netology.estore.dto.DataHistory
 import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.User
 import ru.netology.estore.dto.getSumWithTwoDecimal
@@ -18,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 class ProductRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
-    private val dataOrderForHistoryDao: DataOrderForHistoryDao
+    private val dataHistoryDao: DataHistoryDao
 
 ):ProductRepository {
 
@@ -211,6 +209,6 @@ class ProductRepositoryImpl @Inject constructor(
         return token
     }
 
-    override suspend fun getHistoryOfOrders(login: String): List<DataOrderForHistory> = dataOrderForHistoryDao.getDataOrderForHistory(login).toDto()
+    override suspend fun getHistory(login: String): List<DataHistory> = dataHistoryDao.getDataHistory(login).toDto()
 
 }

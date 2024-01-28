@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/green"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activity.FragmentHistoryOfOrders">
+    tools:context=".activity.FragmentHistory">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

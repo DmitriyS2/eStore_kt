@@ -1,21 +1,20 @@
 package ru.netology.estore.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.widget.PopupMenu
-import android.widget.Toast
+import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.MenuItemCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.estore.R
@@ -34,9 +33,13 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
     private val topTextViewModel: TopTextViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
-    private val orderViewModel:OrderViewModel by viewModels()
+    private val orderViewModel: OrderViewModel by viewModels()
 
     lateinit var binding: ActivityMainBinding
+
+    private var counterHit: TextView? = null
+    private var counterDiscount: TextView? = null
+    private var counterFavorite: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +49,20 @@ class MainActivity : AppCompatActivity() {
         findNavController(R.id.nav_host_fragment)
             .navigate(R.id.blankFragment)
 
+        counterHit = MenuItemCompat.getActionView(
+            binding.nvMenu.menu.findItem(R.id.hit)
+        ) as TextView
+        counterDiscount = MenuItemCompat.getActionView(
+            binding.nvMenu.menu.findItem(R.id.discount)
+        ) as TextView
+        counterFavorite = MenuItemCompat.getActionView(
+            binding.nvMenu.menu.findItem(R.id.favorite)
+        ) as TextView
+        initializeCountDrawerHitDiscount()
+
         binding.apply {
             nvMenu.setNavigationItemSelectedListener {
+                viewModel.pointBottomMenu.value = 0
                 when (it.itemId) {
                     R.id.allProducts -> {
                         goToFragment(Data.allGroup)
@@ -87,11 +102,13 @@ class MainActivity : AppCompatActivity() {
                     R.id.catalog -> {
 //                        viewModel.dataFull.value?.statusBasket = false
 //                        viewModel.dataFull.value?.statusCatalog = true
+                        viewModel.pointBottomMenu.value = 0
                         drawer.openDrawer(GravityCompat.START)
                     }
 
                     R.id.basket -> {
                         topTextViewModel.text.value = Data.basketGroup
+                        viewModel.pointBottomMenu.value = 1
 //                        viewModel.dataFull.value?.statusBasket = true
 //                        viewModel.dataFull.value?.statusCatalog = false
                         findNavController(R.id.nav_host_fragment)
@@ -101,11 +118,12 @@ class MainActivity : AppCompatActivity() {
                     R.id.order -> {
                         viewModel.deleteFromBasketWeightZero()
 
-                        if(viewModel.dataFull.value?.emptyBasket == false) {
-                            if (authViewModel.authenticated) {
+                        if (authViewModel.authenticated) {
+                            if (viewModel.dataFull.value?.emptyBasket == false) {
                                 topTextViewModel.text.value = Data.orderGroup
-
-                                val list = viewModel.dataFull.value?.products?.filter { it.inBasket }.orEmpty()
+                                val list =
+                                    viewModel.dataFull.value?.products?.filter { it.inBasket }
+                                        .orEmpty()
                                 viewModel.amountOrder.value = viewModel.countOrder(list)
 
                                 if (orderViewModel.showPoint2.value != 0) {
@@ -113,16 +131,17 @@ class MainActivity : AppCompatActivity() {
                                 } else {
                                     orderViewModel.showPoint1.value = 1
                                 }
-
+                                viewModel.pointBottomMenu.value = 1
                                 findNavController(R.id.nav_host_fragment)
                                     .navigate(R.id.orderFragment)
                             } else {
-                                mustSignIn()
+                                topTextViewModel.text.value = Data.orderGroup
+                                viewModel.pointBottomMenu.value = 1
+                                findNavController(R.id.nav_host_fragment)
+                                    .navigate(R.id.orderFragment)
                             }
                         } else {
-                       //     binding.bottomMenu.selectedItemId = R.id.basket
-                            findNavController(R.id.nav_host_fragment)
-                                .navigate(R.id.fragmentForBasket)
+                            mustSignIn(if(viewModel.pointBottomMenu.value==0) R.id.fragmentForCatalog else R.id.fragmentForBasket)
                         }
 
                         Log.d("MyLog", "emptyBasket = ${viewModel.dataFull.value?.emptyBasket}")
@@ -136,12 +155,17 @@ class MainActivity : AppCompatActivity() {
             binding.txCategory.text = it
         }
 
+        viewModel.counterFavorite.observe(this) {
+            initializeCountDrawerFavorite(if (it == "0") "" else it)
+        }
+
         binding.menu.setOnClickListener {
             PopupMenu(it.context, it).apply {
                 inflate(R.menu.main_menu)
                 menu.setGroupVisible(R.id.unauthenticated, !authViewModel.authenticated)
                 menu.setGroupVisible(R.id.authenticated, authViewModel.authenticated)
                 setOnMenuItemClickListener { item ->
+                    viewModel.pointBottomMenu.value = -1
                     when (item.itemId) {
                         R.id.signin -> {
                             topTextViewModel.text.value = Data.signInGroup
@@ -163,7 +187,7 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         R.id.historyOfOrders -> {
-                            viewModel.getHistoryOfOrders(authViewModel.data.value.login)
+                            viewModel.getHistory(authViewModel.data.value.login)
                             true
                         }
 
@@ -173,21 +197,51 @@ class MainActivity : AppCompatActivity() {
             }.show()
         }
 
+        //выделение пункта меню
+        //  binding.bottomMenu.menu.getItem(2).isChecked = true
+        //  binding.bottomMenu.menu.findItem(R.id.basket).isChecked = true
+        //не отображается нажатие (нет изменения цвета)
+        //   binding.bottomMenu.menu.findItem(R.id.catalog).isCheckable = false
+        //не работает кнопка в меню
+        //binding.bottomMenu.menu.findItem(R.id.catalog).isEnabled = false
+
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.data.collectLatest {
-                        viewModel.getHistoryOfOrders(authViewModel.data.value.login)
-                        Log.d("MyLog", "MainActivity data.collectLatest, login=${it.login}")
-               //     invalidateMenu()
+                    viewModel.getHistory(authViewModel.data.value.login)
+                    Log.d("MyLog", "MainActivity data.collectLatest, login=${it.login}")
+                    //     invalidateMenu()
+                }
+            }
+        }
+
+        viewModel.pointBottomMenu.observe(this) {
+            when (it) {
+                -2 -> enabledPointBottomMenu(false) //заблокировать bottom menu
+                -1 -> {
+                    enabledPointBottomMenu(true)
+                    turnOnOffPointBottomMenuCheckable(false) //сбросить все нажатые кнопки bottom menu
+                }
+
+                in 0..2 -> {
+                    enabledPointBottomMenu(true)
+                    turnOnOffPointBottomMenuCheckable(true)
+                    binding.bottomMenu.menu.getItem(it).isChecked = true
                 }
             }
         }
     }
 
-//    fun printTxCategory(text:String, color: Int = R.color.white) {
-//        binding.txCategory.setTextColor(getColor(color))
-//        topTextViewModel.text.value = text
-//    }
+    private fun turnOnOffPointBottomMenuCheckable(flag: Boolean) {
+        binding.bottomMenu.menu.getItem(0).isCheckable = flag
+        binding.bottomMenu.menu.getItem(1).isCheckable = flag
+        binding.bottomMenu.menu.getItem(2).isCheckable = flag
+    }
+    fun enabledPointBottomMenu(flag: Boolean) {
+        binding.bottomMenu.menu.getItem(0).isEnabled = flag
+        binding.bottomMenu.menu.getItem(1).isEnabled = flag
+        binding.bottomMenu.menu.getItem(2).isEnabled = flag
+    }
 
     fun goToFragment(status: String) {
         topTextViewModel.text.value = status
@@ -207,13 +261,14 @@ class MainActivity : AppCompatActivity() {
             textPosButton = "Выйти",
             textNegButton = "Остаться",
             flagSignIn = false,
-            flagSignUp = false
+            flagOrder = false,
+            navigateTo = 0
         )
         val manager = supportFragmentManager
         menuDialog.show(manager, "Sign out")
     }
 
-    private fun mustSignIn() {
+    private fun mustSignIn(number:Int) {
         val menuDialog = SignInOutDialogFragment(
             title = "Нужна регистрация",
             text = "Для этого действия необходимо войти в систему",
@@ -221,9 +276,28 @@ class MainActivity : AppCompatActivity() {
             textPosButton = "Sign In",
             textNegButton = "Позже",
             flagSignIn = true,
-            flagSignUp = false
+            flagOrder = false,
+            navigateTo = number
         )
         val manager = supportFragmentManager
         menuDialog.show(manager, "Sign in")
+    }
+
+    private fun initializeCountDrawerHitDiscount() {
+        counterHit?.gravity = Gravity.CENTER_VERTICAL
+        counterHit?.setTypeface(null, Typeface.BOLD)
+        counterHit?.setTextColor(resources.getColor(R.color.red))
+        counterHit?.text = viewModel.counterHit
+        counterDiscount?.setGravity(Gravity.CENTER_VERTICAL)
+        counterDiscount?.setTypeface(null, Typeface.BOLD)
+        counterDiscount?.setTextColor(resources.getColor(R.color.red))
+        counterDiscount?.setText(viewModel.counterDiscount)
+    }
+
+    private fun initializeCountDrawerFavorite(favorite: String) {
+        counterFavorite?.setGravity(Gravity.CENTER_VERTICAL)
+        counterFavorite?.setTypeface(null, Typeface.BOLD)
+        counterFavorite?.setTextColor(resources.getColor(R.color.red, null))
+        counterFavorite?.setText(favorite)
     }
 }

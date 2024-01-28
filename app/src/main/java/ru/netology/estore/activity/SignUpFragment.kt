@@ -21,7 +21,6 @@ import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentSignUpBinding
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
-import ru.netology.estore.viewmodel.SignInViewModel
 import ru.netology.estore.viewmodel.SignUpViewModel
 import ru.netology.estore.viewmodel.TopTextViewModel
 
@@ -55,11 +54,12 @@ class SignUpFragment : Fragment() {
                             delay(50)
                             //       if(authViewModel.data.value.id!=0L) {
                             if (it.id != 0L) {
-                                viewModel.getHistoryOfOrders(authViewModel.data.value.login)
+                                viewModel.getHistory(authViewModel.data.value.login)
                                 Log.d("MyLog", "SignUp OK, login=${it.login}")
                                 //      if(authViewModel.authenticated) {
                                 topTextViewModel.text.value =
                                     ru.netology.estore.dto.Data.basketGroup
+                                viewModel.pointBottomMenu.value = 0
                                 findNavController().navigate(R.id.fragmentForCatalog)
 //                    childFragmentManager
 //                        .beginTransaction()

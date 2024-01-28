@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<style name="BottomMenu" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+    <item name="background">@color/green</item>
+    <item name="itemBackground">@color/green</item>
+    <item name="itemRippleColor">@null</item>
+    <item name="itemIconTint">@color/selector_bottom_menu</item>
+    <item name="itemTextColor">@color/selector_bottom_menu</item>
+</style>
+
+</resources>

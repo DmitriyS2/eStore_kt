@@ -10,7 +10,6 @@ import ru.netology.estore.auth.AppAuth
 import ru.netology.estore.dao.UserDao
 import ru.netology.estore.dto.User
 import ru.netology.estore.repository.ProductRepository
-import ru.netology.estore.repository.ProductRepositoryImpl
 import java.io.IOException
 import javax.inject.Inject
 
@@ -29,7 +28,6 @@ class SignInViewModel @Inject constructor(
                user?.let {
                    if (it.password==password) {
                        auth.setAuth(it.id, it.token, it.name, it.login)
-
                    }
                }
             }

@@ -2,7 +2,6 @@ package ru.netology.estore.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.provider.ContactsContract.Data
 import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -10,20 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentSignInBinding
@@ -60,8 +53,9 @@ class SignInFragment : Fragment() {
                             delay(50)
          //       if(authViewModel.data.value.id!=0L) {
                             if(it.id!=0L) {
-                                viewModel.getHistoryOfOrders(authViewModel.data.value.login)
+                                viewModel.getHistory(authViewModel.data.value.login)
                                 Log.d("MyLog", "SignIn OK, login=${it.login}")
+                                viewModel.pointBottomMenu.value = 1
                                 topTextViewModel.text.value = ru.netology.estore.dto.Data.basketGroup
                                 findNavController().navigate(R.id.fragmentForBasket)
                             } else {

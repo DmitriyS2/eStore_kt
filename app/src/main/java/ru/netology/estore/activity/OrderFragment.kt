@@ -53,7 +53,8 @@ class OrderFragment : Fragment() {
                     if(it.id==0L) {
                         orderViewModel.cancelOrder()
                         topTextViewModel.text.value = Data.basketGroup
-                        findNavController().navigate(ru.netology.estore.R.id.fragmentForBasket)
+                        vieModel.pointBottomMenu.value = 1
+                        findNavController().navigate(R.id.fragmentForBasket)
                     }
                 }
             }
@@ -212,6 +213,7 @@ class OrderFragment : Fragment() {
             when(it) {
                 0 -> binding.cardViewFinalOrder.visibility = View.GONE
                 1 -> {
+                    vieModel.pointBottomMenu.value = -2
                     val timeOrder = OffsetDateTime.now().plusHours(1L).format((ofPattern("HH:mm")))
                     binding.cardView1.visibility = View.GONE
                     binding.cardView2.visibility = View.GONE
@@ -220,7 +222,7 @@ class OrderFragment : Fragment() {
                     binding.cardView5.visibility = View.GONE
                     binding.buttonCancelOrder.visibility = View.GONE
                     binding.buttonToWaitingOrder.visibility = View.GONE
-                   binding.cardViewFinalOrder.visibility = View.VISIBLE
+                    binding.cardViewFinalOrder.visibility = View.VISIBLE
                     binding.textInfoWaitingOrder.text = if(orderViewModel.flagPickUp) "Вы сможете забрать Ваш заказ через 1 час в $timeOrder" else "Мы привезем Ваш заказ через 1 час в $timeOrder"
                 }
             }
@@ -228,6 +230,7 @@ class OrderFragment : Fragment() {
 
 
         binding.buttonPoint1Yes.setOnClickListener {
+
             orderViewModel.showPoint1.value = 2
             orderViewModel.showPoint2.value = 1
 
@@ -344,11 +347,11 @@ class OrderFragment : Fragment() {
             orderViewModel.goToFinalOrder.value = 1
         }
 
-
         binding.buttonThankYou.setOnClickListener {
             orderViewModel.cancelOrder()
             topTextViewModel.text.value = Data.eStoreGroup
             vieModel.cleanBasket()
+            vieModel.pointBottomMenu.value = -1
             findNavController().navigate(R.id.blankFragment)
         }
 
@@ -368,6 +371,7 @@ class OrderFragment : Fragment() {
 
     private fun goToBasket() {
         topTextViewModel.text.value = Data.basketGroup
+        vieModel.pointBottomMenu.value = 1
         findNavController().navigate(R.id.fragmentForBasket)
     }
 
@@ -385,12 +389,13 @@ class OrderFragment : Fragment() {
     fun areYouSureCancelOrder() {
         val menuDialog = SignInOutDialogFragment(
             title = "Отмена заказа",
-            text = "Вы уверены, что хотите отменить?",
+            text = "Вы уверены, что хотите отменить заказ?",
             icon = R.drawable.warning_24,
-            textPosButton = "Выйти",
-            textNegButton = "Остаться",
+            textPosButton = "Отменить",
+            textNegButton = "Заказать",
             flagSignIn = false,
-            flagSignUp = false
+            flagOrder = true,
+            navigateTo = 0
         )
         val manager = childFragmentManager
         menuDialog.show(manager, "Cancel order")

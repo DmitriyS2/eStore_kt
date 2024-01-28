@@ -39,7 +39,11 @@ class FragmentForBasket : Fragment() {
         val adapter = ProductInBasketAdapter(object : Listener {
 
             override fun like(product: Product) {
-                viewModel.like(product)
+                if(authViewModel.authenticated) {
+                    viewModel.like(product)
+                } else {
+                    mustSignIn()
+                }
             }
 
             override fun addToBasket(product: Product) {
@@ -67,7 +71,6 @@ class FragmentForBasket : Fragment() {
             }
         })
 
-
         binding.rwProducts.layoutManager = LinearLayoutManager(activity)
 
 //        var list = getListBasket()
@@ -82,20 +85,6 @@ class FragmentForBasket : Fragment() {
             val list = state.products.filter { it.inBasket }
             adapter.submitList(list)
             viewModel.amountOrder.value = viewModel.countOrder(list)
-            // binding.amountOrder.text = "${viewModel.countOrder(list)} руб"
-
-//            list = getListBasket()
-//            if(list.isEmpty() && state.isEmptyBasket) {
-//                binding.txEmptyBasket.isVisible = state.isEmptyBasket
-//                adapter.productList = list
-//                adapter.submitList(list)
-//            } else if (list.isEmpty() && !state.isEmptyBasket) {
-//                model.dataFull.value = model.dataFull.value?.copy(isEmptyBasket = list.isEmpty())
-//            } else if(list.isNotEmpty()) {
-//                binding.txEmptyBasket.isVisible = state.isEmptyBasket
-//                adapter.productList = list
-//                adapter.submitList(list)
-//            }
         }
 
         viewModel.amountOrder.observe(viewLifecycleOwner) {
@@ -114,6 +103,7 @@ class FragmentForBasket : Fragment() {
                 } else {
                     orderViewModel.showPoint1.value = 1
                 }
+                viewModel.pointBottomMenu.value = 2
                 findNavController().navigate(R.id.orderFragment)
             } else {
                 mustSignIn()
@@ -136,7 +126,8 @@ class FragmentForBasket : Fragment() {
             textPosButton = "Sign In",
             textNegButton = "Позже",
             flagSignIn = true,
-            flagSignUp = false,
+            flagOrder = false,
+            navigateTo = R.id.fragmentForBasket
             )
         val manager = childFragmentManager
         menuDialog.show(manager, "Sign in")
