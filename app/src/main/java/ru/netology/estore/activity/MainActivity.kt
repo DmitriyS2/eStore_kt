@@ -100,8 +100,6 @@ class MainActivity : AppCompatActivity() {
             bottomMenu.setOnItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.catalog -> {
-//                        viewModel.dataFull.value?.statusBasket = false
-//                        viewModel.dataFull.value?.statusCatalog = true
                         viewModel.pointBottomMenu.value = 0
                         drawer.openDrawer(GravityCompat.START)
                     }
@@ -109,8 +107,6 @@ class MainActivity : AppCompatActivity() {
                     R.id.basket -> {
                         topTextViewModel.text.value = Data.basketGroup
                         viewModel.pointBottomMenu.value = 1
-//                        viewModel.dataFull.value?.statusBasket = true
-//                        viewModel.dataFull.value?.statusCatalog = false
                         findNavController(R.id.nav_host_fragment)
                             .navigate(R.id.fragmentForBasket)
                     }
@@ -188,6 +184,9 @@ class MainActivity : AppCompatActivity() {
 
                         R.id.historyOfOrders -> {
                             viewModel.getHistory(authViewModel.data.value.login)
+                            viewModel.pointBottomMenu.value = -1
+                            findNavController(R.id.nav_host_fragment)
+                                .navigate(R.id.fragmentHistory)
                             true
                         }
 
@@ -196,14 +195,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }.show()
         }
-
-        //выделение пункта меню
-        //  binding.bottomMenu.menu.getItem(2).isChecked = true
-        //  binding.bottomMenu.menu.findItem(R.id.basket).isChecked = true
-        //не отображается нажатие (нет изменения цвета)
-        //   binding.bottomMenu.menu.findItem(R.id.catalog).isCheckable = false
-        //не работает кнопка в меню
-        //binding.bottomMenu.menu.findItem(R.id.catalog).isEnabled = false
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -222,7 +213,6 @@ class MainActivity : AppCompatActivity() {
                     enabledPointBottomMenu(true)
                     turnOnOffPointBottomMenuCheckable(false) //сбросить все нажатые кнопки bottom menu
                 }
-
                 in 0..2 -> {
                     enabledPointBottomMenu(true)
                     turnOnOffPointBottomMenuCheckable(true)
@@ -237,13 +227,13 @@ class MainActivity : AppCompatActivity() {
         binding.bottomMenu.menu.getItem(1).isCheckable = flag
         binding.bottomMenu.menu.getItem(2).isCheckable = flag
     }
-    fun enabledPointBottomMenu(flag: Boolean) {
+    private fun enabledPointBottomMenu(flag: Boolean) {
         binding.bottomMenu.menu.getItem(0).isEnabled = flag
         binding.bottomMenu.menu.getItem(1).isEnabled = flag
         binding.bottomMenu.menu.getItem(2).isEnabled = flag
     }
 
-    fun goToFragment(status: String) {
+    private fun goToFragment(status: String) {
         topTextViewModel.text.value = status
         viewModel.dataFull.value = FullProduct(
             products = viewModel.deleteFromBasketWeightZeroFromRepo(),
@@ -253,7 +243,7 @@ class MainActivity : AppCompatActivity() {
             .navigate(R.id.fragmentForCatalog)
     }
 
-    fun areYouSureSignOut() {
+    private fun areYouSureSignOut() {
         val menuDialog = SignInOutDialogFragment(
             title = "Выход из аккаунта",
             text = "Вы уверены, что хотите выйти из системы?",

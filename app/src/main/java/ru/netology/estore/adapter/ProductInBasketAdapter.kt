@@ -107,7 +107,6 @@ class ProductInBasketAdapter(private val listener: Listener) :
                 ).start()
                 listener.addToBasketAgain(product)
             }
-
         }
     }
 
@@ -118,19 +117,7 @@ class ProductInBasketAdapter(private val listener: Listener) :
     }
 
     override fun onBindViewHolder(holder: ProductInBasketHolder, position: Int) {
-      //  holder.bind(productList[position])
-
         val product = getItem(position)
         holder.bind(product)
     }
 }
-
-//class PostDiffCallback2 : DiffUtil.ItemCallback<Product>() {
-//    override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
-//        return oldItem.id == newItem.id
-//    }
-//
-//    override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
-//        return oldItem == newItem
-//    }
-//}

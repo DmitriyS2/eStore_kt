@@ -52,7 +52,6 @@ class SignUpFragment : Fragment() {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         authViewModel.data.collectLatest {
                             delay(50)
-                            //       if(authViewModel.data.value.id!=0L) {
                             if (it.id != 0L) {
                                 viewModel.getHistory(authViewModel.data.value.login)
                                 Log.d("MyLog", "SignUp OK, login=${it.login}")
@@ -61,10 +60,6 @@ class SignUpFragment : Fragment() {
                                     ru.netology.estore.dto.Data.basketGroup
                                 viewModel.pointBottomMenu.value = 0
                                 findNavController().navigate(R.id.fragmentForCatalog)
-//                    childFragmentManager
-//                        .beginTransaction()
-//                        .replace(R.id.nav_host_fragment, FragmentForCatalog())
-//                        .commit()
                             } else {
                                 val toast = Toast.makeText(
                                     requireActivity(),

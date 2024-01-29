@@ -7,9 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentBlankBinding
-import ru.netology.estore.databinding.FragmentOrderBinding
 
 class BlankFragment : Fragment() {
 

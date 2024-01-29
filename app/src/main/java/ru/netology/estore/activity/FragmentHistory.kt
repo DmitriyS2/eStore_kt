@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import ru.netology.estore.adapter.DataHistoryOfOrdersAdapter
+import ru.netology.estore.adapter.DataHistoryAdapter
 import ru.netology.estore.databinding.FragmentHistoryOfOrdersBinding
 import ru.netology.estore.viewmodel.MainViewModel
 
@@ -22,13 +22,13 @@ class FragmentHistory : Fragment() {
     ): View {
         binding = FragmentHistoryOfOrdersBinding.inflate(inflater, container, false)
 
-        val adapter = DataHistoryOfOrdersAdapter()
+        val adapter = DataHistoryAdapter()
 
         binding.rwOrderOfHistory.layoutManager = LinearLayoutManager(activity)
-
         binding.rwOrderOfHistory.adapter = adapter
 
         viewModel.dataHistoryOrders.observe(viewLifecycleOwner) {
+            adapter.historyList = it.orEmpty()
            adapter.submitList(it)
         }
 
@@ -36,7 +36,6 @@ class FragmentHistory : Fragment() {
     }
 
     companion object {
-
         @JvmStatic
         fun newInstance() = FragmentHistory()
     }

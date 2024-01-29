@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.netology.estore.auth.AppAuth
-//import ru.netology.estore.activity.allProduct
 import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.DataHistory
 import ru.netology.estore.model.FullProduct
@@ -58,29 +57,16 @@ class MainViewModel @Inject constructor(
     }
 
     fun getAll() {
-        dataFull.value =
-            FullProduct(products = repository.fillAllProducts(), status = Data.allGroup)
+        dataFull.value = FullProduct(products = repository.fillAllProducts(), status = Data.allGroup)
         repository.allProductsOriginal = dataFull.value?.products.orEmpty() as ArrayList<Product>
     }
 
     fun reNewDataFull() {
-        dataFull.value = FullProduct(products = repository.allProductsOriginal, status = Data.allGroup)
-    }
-
-    fun getHistory(login: String?) {
-        if (login == null) {
-            dataHistoryOrders.value = null
-            return
-        }
-        try {
-            viewModelScope.launch {
-                dataHistoryOrders.value = repository.getHistory(login)
-            }
-        } catch (e: Exception) {
-            throw Exception("error DataHistoryOfOrders")
-        }
-
-
+        dataFull.value = dataFull.value?.copy(products = repository.reNewDataFull(), status = Data.allGroup)
+        counterFavorite.value = dataFull.value?.products
+            ?.count {
+                it.isFavorite
+            }.toString()
     }
 
     fun like(product: Product) {
@@ -93,21 +79,16 @@ class MainViewModel @Inject constructor(
 
     fun addToBasket(product: Product) {
         val list = repository.addToBasket(product)
-        //     val statusBasket = list.none { it.inBasket }
         dataFull.value = dataFull.value?.copy(products = list)
-
-        //  dataFull.value = dataFull.value?.copy(products = Data.addToBasket(product))
     }
 
     fun addToBasketAgain(product: Product) {
         val list = repository.addToBasketAgain(product)
-        //     val statusBasket = list.none { it.inBasket }
         dataFull.value = dataFull.value?.copy(products = list)
     }
 
     fun deleteFromBasket(product: Product) {
         val list = repository.deleteFromBasket(product)
-        //     val statusBasket = list.none { it.inBasket }
         dataFull.value = dataFull.value?.copy(products = list)
     }
 
@@ -121,7 +102,6 @@ class MainViewModel @Inject constructor(
 
     fun deleteFromBasketWeightZero() {
         val list = repository.deleteFromBasketWeightZero()
-        //  val statusBasket = list.none { it.inBasket }
         dataFull.value = dataFull.value?.copy(products = list)
     }
 
@@ -134,16 +114,30 @@ class MainViewModel @Inject constructor(
     }
 
     fun cleanBasket() {
-        dataFull.value = dataFull.value?.copy(products = dataFull.value?.products?.onEach {
-            it.weight = 0.0
-            it.inBasket = false
-            it.sum = 0.0
-        }.orEmpty())
+        dataFull.value = dataFull.value?.copy(products = repository.cleanBasket())
+    }
 
-//       dataFull.value = dataFull.value?.products. copy(products = repository.allProductsOriginal.onEach {
-//           it.isFavorite = dataFull.value.products.filter { prod ->
-//               prod.id==it.id
-//           }
-//       })
+    fun getHistory(login: String?) {
+        if (login == null) {
+            dataHistoryOrders.value = null
+            return
+        }
+        try {
+            viewModelScope.launch {
+                dataHistoryOrders.value = repository.getHistory(login)
+            }
+        } catch (e: Exception) {
+            throw Exception("error GetDataHistoryOfOrders")
+        }
+    }
+
+    fun addHistory(dataHistory: DataHistory) {
+        try {
+            viewModelScope.launch {
+                repository.addHistory(dataHistory)
+            }
+        } catch (e: Exception) {
+            throw Exception("error AddDataHistoryOfOrders")
+        }
     }
 }

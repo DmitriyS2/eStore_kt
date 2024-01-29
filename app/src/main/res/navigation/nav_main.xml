@@ -43,16 +43,11 @@
         tools:layout="@layout/fragment_sign_in_out_dialog" />
     <fragment
         android:id="@+id/orderFragment"
-        android:name="ru.netology.estore.activity.OrderFragment"
+        android:name="ru.netology.estore.activity.FragmentOrder"
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" />
     <fragment
-        android:id="@+id/fragmentWaitingOrder"
-        android:name="ru.netology.estore.FragmentWaitingOrder"
-        android:label="fragment_waiting_order"
-        tools:layout="@layout/fragment_waiting_order" />
-    <fragment
-        android:id="@+id/fragmentHistoryOfOrders"
+        android:id="@+id/fragmentHistory"
         android:name="ru.netology.estore.activity.FragmentHistory"
         android:label="fragment_history_of_orders"
         tools:layout="@layout/fragment_history_of_orders" />

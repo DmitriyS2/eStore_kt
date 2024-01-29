@@ -2,14 +2,7 @@ package ru.netology.estore.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.Navigation.findNavController
-
-
-import ru.netology.estore.R
-import ru.netology.estore.dto.Data
-import java.time.Instant
 import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 
 class OrderViewModel : ViewModel() {
 
@@ -24,7 +17,6 @@ class OrderViewModel : ViewModel() {
     var addressDelivery: String = "Куда Вам привезти?"
     var typeOfPayment: String = "Выберите способ оплаты"
     var flagPickUp = false
-
 
     val timeNow: OffsetDateTime
         get() = OffsetDateTime.now()

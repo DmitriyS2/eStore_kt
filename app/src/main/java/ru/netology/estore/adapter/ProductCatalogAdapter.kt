@@ -24,12 +24,9 @@ interface Listener {
     fun deleteFromBasketWeightZero()
 }
 
-//class ProductAdapter (private val listener: Listener) : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
-
 class ProductAdapter(private val listener: Listener) :
     ListAdapter<Product, ProductAdapter.ProductHolder>(ProductDiffCallback()) {
 
-    //var productList = ArrayList<Product>()
     var productList = emptyList<Product>()
 
     class ProductHolder(item: View, private val listener: Listener) : RecyclerView.ViewHolder(item) {
@@ -74,12 +71,6 @@ class ProductAdapter(private val listener: Listener) :
                     duration = 1500
                     repeatCount = 100
                 }.start()
-
-//                hit.animate()
-//                    .rotation(360F)
-//                    .setDuration(3000L)
-//                    .setStartDelay(100L)
-//                    .start()
             } else {
                 hit.visibility = View.INVISIBLE
             }
@@ -128,7 +119,6 @@ class ProductAdapter(private val listener: Listener) :
                 buttonAddToBin.setBackgroundColor(Color.parseColor("#104021"))
                 buttonAddToBin.text = "Убрать"
             } else {
-             //   buttonAddToBin.setBackgroundColor(Color.BLUE)
                 buttonAddToBin.setBackgroundColor(Color.parseColor("#f2570f"))
                 buttonAddToBin.text = "Добавить"
             }
@@ -179,7 +169,6 @@ class ProductAdapter(private val listener: Listener) :
     override fun onBindViewHolder(holder: ProductHolder, position: Int) {
         val product = getItem(position)
         holder.bind(product)
-     //   holder.bind(productList[position])
     }
 
     override fun getItemCount(): Int {

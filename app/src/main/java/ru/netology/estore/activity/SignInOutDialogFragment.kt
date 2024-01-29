@@ -25,13 +25,13 @@ class SignInOutDialogFragment(
     val textPosButton: String,
     val textNegButton: String,
     val flagSignIn: Boolean = true,
-    val flagOrder:Boolean = true,
-    val navigateTo:Int
+    val flagOrder: Boolean = true,
+    val navigateTo: Int
 ) : DialogFragment() {
     lateinit var binding: FragmentSignInOutDialogBinding
 
     private val topTextViewModel: TopTextViewModel by activityViewModels()
-    private val orderViewModel:OrderViewModel by activityViewModels()
+    private val orderViewModel: OrderViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -55,7 +55,7 @@ class SignInOutDialogFragment(
                     viewModel.pointBottomMenu.value = -1
                     findNavController()
                         .navigate(R.id.signInFragment)
-                } else if(flagOrder) {
+                } else if (flagOrder) {
                     topTextViewModel.text.value = Data.allGroup
                     orderViewModel.cancelOrder()
                     viewModel.pointBottomMenu.value = 0
@@ -63,7 +63,7 @@ class SignInOutDialogFragment(
                         .navigate(R.id.fragmentForCatalog)
                 } else {
                     auth.removeAuth()
-                    viewModel.cleanBasket()
+                    viewModel.reNewDataFull()
                     topTextViewModel.text.value = Data.allGroup
                     orderViewModel.cancelOrder()
                     viewModel.getHistory(authViewModel.data.value.login)
@@ -75,11 +75,11 @@ class SignInOutDialogFragment(
             .setNegativeButton(textNegButton) { _, _ ->
                 dialog?.cancel()
                 if (flagSignIn) {
-                    if(navigateTo==R.id.fragmentForCatalog) {
+                    if (navigateTo == R.id.fragmentForCatalog) {
                         viewModel.pointBottomMenu.value = 0
                         topTextViewModel.text.value = Data.allGroup
 
-                    } else if (navigateTo==R.id.fragmentForBasket) {
+                    } else if (navigateTo == R.id.fragmentForBasket) {
                         viewModel.pointBottomMenu.value = 1
                         topTextViewModel.text.value = Data.basketGroup
 

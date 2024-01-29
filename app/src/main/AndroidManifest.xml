@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
-
     <application
         android:name=".application.EStoreApplication"
         android:allowBackup="true"
@@ -16,11 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EStore"
         tools:targetApi="31">
-        <receiver
-            android:name=".receiver.AlarmReceiver"
-            android:enabled="true"
-            android:exported="true"></receiver>
-
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">

@@ -43,15 +43,12 @@ class SignInFragment : Fragment() {
 
         binding.buttonSignIn.setOnClickListener {
             if (isFieldNotNull()) {
-
-               // Log.d()
                 signInViewModel.signIn(binding.login.text.toString(), binding.password.text.toString())
 
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         authViewModel.data.collectLatest {
                             delay(50)
-         //       if(authViewModel.data.value.id!=0L) {
                             if(it.id!=0L) {
                                 viewModel.getHistory(authViewModel.data.value.login)
                                 Log.d("MyLog", "SignIn OK, login=${it.login}")
@@ -66,21 +63,6 @@ class SignInFragment : Fragment() {
                         }
                     }
                 }
-//                if(authViewModel.authenticated) {
-//                    topTextViewModel.text.value = ru.netology.estore.dto.Data.basketGroup
-//                    childFragmentManager
-//                        .beginTransaction()
-//                        .replace(R.id.nav_host_fragment, FragmentForCatalog())
-//                        .commit()
-//                } else {
-//                    val toast = Toast.makeText(requireActivity(), "Неверный login/password", Toast.LENGTH_SHORT)
-//                    toast.setGravity(Gravity.TOP, 0, 0)
-//                    toast.show()
-//                //    Snackbar.make(it, "Неверный login/password", Snackbar.LENGTH_SHORT).show()
-//                }
-//
-//                findNavController().navigateUp()
-
            }
         }
         return binding.root

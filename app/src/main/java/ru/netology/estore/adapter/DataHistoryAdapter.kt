@@ -10,17 +10,16 @@ import ru.netology.estore.R
 import ru.netology.estore.databinding.ItemDataHistoryOfOrdersBinding
 import ru.netology.estore.dto.DataHistory
 
-class DataHistoryOfOrdersAdapter():
-    ListAdapter<DataHistory, DataHistoryOfOrdersAdapter.DataHistoryOfOrdersHolder>(HistoryDiffCallback()) {
+class DataHistoryAdapter():
+    ListAdapter<DataHistory, DataHistoryAdapter.DataHistoryOfOrdersHolder>(HistoryDiffCallback()) {
 
-    var productList = emptyList<DataHistory>()
+    var historyList = emptyList<DataHistory>()
 
     class DataHistoryOfOrdersHolder(item: View) : RecyclerView.ViewHolder(item) {
         val binding = ItemDataHistoryOfOrdersBinding.bind(item)
 
         fun bind(dataHistory: DataHistory) {
-
-            binding.textHistory1.text = "${dataHistory.id} Заказ на сумму ${dataHistory.sumOrder} руб"
+            binding.textHistory1.text = "Заказ на сумму ${dataHistory.sumOrder} руб"
             binding.textHistory2.text = if(dataHistory.pickUp) "Самовывоз" else "Доставка"
             binding.textHistory3.text = dataHistory.dateTime
         }

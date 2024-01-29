@@ -72,10 +72,6 @@ class FragmentForBasket : Fragment() {
         })
 
         binding.rwProducts.layoutManager = LinearLayoutManager(activity)
-
-//        var list = getListBasket()
-    //    viewModel.dataFull.value = viewModel.dataFull.value?.copy(isEmptyBasket = getListBasket())
-
         binding.rwProducts.adapter = adapter
 
         viewModel.dataFull.observe(viewLifecycleOwner) { state ->
@@ -112,11 +108,6 @@ class FragmentForBasket : Fragment() {
 
         return binding.root
     }
-
-//    private fun getListBasket(): Boolean {
-//        val list = viewModel.dataFull.value?.products?.filter { it.inBasket }.orEmpty()
-//        return list.isEmpty()
-//    }
 
     private fun mustSignIn() {
         val menuDialog = SignInOutDialogFragment(

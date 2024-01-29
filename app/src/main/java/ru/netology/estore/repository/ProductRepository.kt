@@ -17,10 +17,10 @@ interface ProductRepository {
     fun weightMinus(product: Product):ArrayList<Product>
     fun deleteFromBasketWeightZero():ArrayList<Product>
     fun countOrder(list:List<Product>):Double
-
+    fun cleanBasket():ArrayList<Product>
+    fun reNewDataFull(): ArrayList<Product>
     suspend fun checkSignIn(login:String): User?
-
     suspend fun signUp(login: String, password: String, name: String):User?
     suspend fun getHistory(login: String): List<DataHistory>?
-
+    suspend fun addHistory(dataHistory: DataHistory)
 }

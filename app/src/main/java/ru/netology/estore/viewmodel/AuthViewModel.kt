@@ -13,13 +13,4 @@ class AuthViewModel @Inject constructor(
 
     val authenticated:Boolean
         get() = data.value.id !=0L
-
-
-//    val dataHistoryOrders = MutableLiveData<List<DataOrderForHistory>>()
-//
-//    val emptyHistoryOfOrders:Boolean
-//        get()= dataHistoryOrders.value?.isEmpty() ?: true
-//
-//    val log = data.value.login
-
 }

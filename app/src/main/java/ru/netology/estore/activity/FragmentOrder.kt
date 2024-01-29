@@ -15,12 +15,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentOrderBinding
 import ru.netology.estore.dto.Data
-import ru.netology.estore.dto.Group
+import ru.netology.estore.dto.DataHistory
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
 import ru.netology.estore.viewmodel.OrderViewModel
@@ -29,7 +30,8 @@ import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter.ofPattern
 
 
-class OrderFragment : Fragment() {
+@AndroidEntryPoint
+class FragmentOrder : Fragment() {
 
     private val vieModel:MainViewModel by activityViewModels()
     private val authViewModel:AuthViewModel by activityViewModels()
@@ -37,9 +39,6 @@ class OrderFragment : Fragment() {
     private val orderViewModel:OrderViewModel by activityViewModels()
 
     lateinit var binding: FragmentOrderBinding
-
-  //  lateinit var chronometer: Chronometer
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,19 +65,6 @@ class OrderFragment : Fragment() {
         binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
         binding.addressDelivery.text = "3. ${orderViewModel.addressDelivery}"
         binding.textPayment.text = "4. ${orderViewModel.typeOfPayment}"
-
-
-     //
-
-     //   val t = orderViewModel.timeNow.plusHours(2)
-     //   binding.time.text = orderViewModel.timeNow.format((ofPattern("d MMM uuuu HH:mm")))
-
-//        binding.chronometer.base = (SystemClock.elapsedRealtime() + 1000 * 5)
-//
-//        binding.chronometer.setOnChronometerTickListener {
-//            if (binding.chronometer.base==SystemClock.elapsedRealtime()) binding.chronometer.stop()
-//           // val elapsedMillis: Long = (SystemClock.elapsedRealtime() - chronometer.base)
-//        }
 
         val listOrder = vieModel.dataFull.value?.products
             ?.filter {
@@ -214,7 +200,16 @@ class OrderFragment : Fragment() {
                 0 -> binding.cardViewFinalOrder.visibility = View.GONE
                 1 -> {
                     vieModel.pointBottomMenu.value = -2
-                    val timeOrder = OffsetDateTime.now().plusHours(1L).format((ofPattern("HH:mm")))
+                    val timeOrder = OffsetDateTime.now().plusHours(1L)
+                    val timeOrderTime = timeOrder.format((ofPattern("HH:mm")))
+                    val timeOrderDate = timeOrder.format(ofPattern("d MMMM uuuu HH:mm")).toString()
+                    val dataHistory = DataHistory(
+                        id=0L,
+                        login = authViewModel.data.value.login ?: "",
+                        sumOrder = vieModel.amountOrder.value ?: 0.0,
+                        pickUp = orderViewModel.flagPickUp,
+                        dateTime = timeOrderDate)
+                    vieModel.addHistory(dataHistory)
                     binding.cardView1.visibility = View.GONE
                     binding.cardView2.visibility = View.GONE
                     binding.cardView3.visibility = View.GONE
@@ -223,7 +218,7 @@ class OrderFragment : Fragment() {
                     binding.buttonCancelOrder.visibility = View.GONE
                     binding.buttonToWaitingOrder.visibility = View.GONE
                     binding.cardViewFinalOrder.visibility = View.VISIBLE
-                    binding.textInfoWaitingOrder.text = if(orderViewModel.flagPickUp) "Вы сможете забрать Ваш заказ через 1 час в $timeOrder" else "Мы привезем Ваш заказ через 1 час в $timeOrder"
+                    binding.textInfoWaitingOrder.text = if(orderViewModel.flagPickUp) "Вы сможете забрать Ваш заказ через 1 час в $timeOrderTime" else "Мы привезем Ваш заказ через 1 час в $timeOrderTime"
                 }
             }
         }
@@ -233,9 +228,6 @@ class OrderFragment : Fragment() {
 
             orderViewModel.showPoint1.value = 2
             orderViewModel.showPoint2.value = 1
-
-                val r = Group.allGroup
-            Log.d("MyLog", "r=$r")
         }
 
         binding.buttonPoint1No.setOnClickListener {
@@ -348,6 +340,7 @@ class OrderFragment : Fragment() {
         }
 
         binding.buttonThankYou.setOnClickListener {
+
             orderViewModel.cancelOrder()
             topTextViewModel.text.value = Data.eStoreGroup
             vieModel.cleanBasket()
@@ -360,7 +353,7 @@ class OrderFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = OrderFragment()
+        fun newInstance() = FragmentOrder()
     }
 
     private fun showDelivery(point:Int, text:String) {
@@ -400,5 +393,4 @@ class OrderFragment : Fragment() {
         val manager = childFragmentManager
         menuDialog.show(manager, "Cancel order")
     }
-
 }

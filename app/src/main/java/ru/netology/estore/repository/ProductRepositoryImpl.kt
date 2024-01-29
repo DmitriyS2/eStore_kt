@@ -8,6 +8,7 @@ import ru.netology.estore.dto.DataHistory
 import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.User
 import ru.netology.estore.dto.getSumWithTwoDecimal
+import ru.netology.estore.entity.DataHistoryEntity
 import ru.netology.estore.entity.UserEntity
 import ru.netology.estore.entity.toDto
 import javax.inject.Inject
@@ -22,10 +23,6 @@ class ProductRepositoryImpl @Inject constructor(
 
     var allProducts = arrayListOf<Product>()
     override var allProductsOriginal = arrayListOf<Product>()
-//        init {
-//            allProductsOriginal = fillAllProducts()
-//        }
-
 
     override fun fillAllProducts(): ArrayList<Product> {
 
@@ -100,8 +97,6 @@ class ProductRepositoryImpl @Inject constructor(
 
         }
     }
-
-
 
     override fun like(product: Product): ArrayList<Product> {
         allProducts = allProducts.map {
@@ -181,7 +176,6 @@ class ProductRepositoryImpl @Inject constructor(
                 inBasket = false
             ) else it
         } as ArrayList
-        //Log.d("MyLog", "${allProducts.filter { it.id ==product.id }}")
         return allProducts
     }
 
@@ -191,6 +185,19 @@ class ProductRepositoryImpl @Inject constructor(
             sum += item.sum
         }
         return getSumWithTwoDecimal(sum, 100.0)
+    }
+
+    override fun cleanBasket(): ArrayList<Product> {
+        allProducts = allProducts.onEach{
+            it.weight = 0.0
+            it.inBasket = false
+            it.sum = 0.0
+        }
+        return allProducts
+    }
+    override fun reNewDataFull(): ArrayList<Product> {
+        allProducts = allProductsOriginal
+        return allProducts
     }
 
     override suspend fun checkSignIn(login: String) =  userDao.getUser(login)?.toDto()
@@ -210,5 +217,9 @@ class ProductRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getHistory(login: String): List<DataHistory> = dataHistoryDao.getDataHistory(login).toDto()
+
+    override suspend fun addHistory(dataHistory: DataHistory) {
+        dataHistoryDao.insert(DataHistoryEntity.fromDto(dataHistory))
+    }
 
 }

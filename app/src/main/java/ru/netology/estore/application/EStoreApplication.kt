@@ -2,9 +2,6 @@ package ru.netology.estore.application
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import ru.netology.estore.auth.AppAuth
 import javax.inject.Inject
 
