@@ -53,8 +53,8 @@ class SignUpFragment : Fragment() {
                         authViewModel.data.collectLatest {
                             delay(50)
                             if (it.id != 0L) {
-                                viewModel.getHistory(authViewModel.data.value.login)
-                                Log.d("MyLog", "SignUp OK, login=${it.login}")
+                                viewModel.getHistory(authViewModel.data.value.username)
+                                Log.d("MyLog", "SignUp OK, login=${it.username}")
                                 //      if(authViewModel.authenticated) {
                                 topTextViewModel.text.value =
                                     ru.netology.estore.dto.Data.basketGroup

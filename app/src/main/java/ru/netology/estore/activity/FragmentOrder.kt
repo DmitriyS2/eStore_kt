@@ -205,7 +205,7 @@ class FragmentOrder : Fragment() {
                     val timeOrderDate = timeOrder.format(ofPattern("d MMMM uuuu HH:mm")).toString()
                     val dataHistory = DataHistory(
                         id=0L,
-                        login = authViewModel.data.value.login ?: "",
+                        login = authViewModel.data.value.username ?: "",
                         sumOrder = vieModel.amountOrder.value ?: 0.0,
                         pickUp = orderViewModel.flagPickUp,
                         dateTime = timeOrderDate)

@@ -9,7 +9,7 @@ import ru.netology.estore.entity.UserEntity
 @Dao
 interface UserDao {
     //проверка на уникальность логин
-    @Query("SELECT login FROM UserEntity")
+    @Query("SELECT username FROM UserEntity")
     suspend fun getLogins():List<String>
 
     //добавление нового user'а
@@ -17,6 +17,6 @@ interface UserDao {
     suspend fun insert(user: UserEntity)
 
     //дать user'а по логину
-    @Query("SELECT * FROM UserEntity WHERE login = :login")
+    @Query("SELECT * FROM UserEntity WHERE username = :login")
     suspend fun getUser(login:String): UserEntity?
 }

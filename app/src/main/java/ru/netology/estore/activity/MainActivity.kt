@@ -26,7 +26,6 @@ import ru.netology.estore.viewmodel.MainViewModel
 import ru.netology.estore.viewmodel.OrderViewModel
 import ru.netology.estore.viewmodel.TopTextViewModel
 
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -62,34 +61,36 @@ class MainActivity : AppCompatActivity() {
 
         binding.apply {
             nvMenu.setNavigationItemSelectedListener {
-                viewModel.pointBottomMenu.value = 0
-                when (it.itemId) {
-                    R.id.allProducts -> {
-                        goToFragment(Data.allGroup)
-                    }
+                if (viewModel.pointBottomMenu.value != -2) {
+                    viewModel.pointBottomMenu.value = 0
+                    when (it.itemId) {
+                        R.id.allProducts -> {
+                            goToFragment(Data.allGroup)
+                        }
 
-                    R.id.fruit -> {
-                        goToFragment(Data.fruitGroup)
-                    }
+                        R.id.fruit -> {
+                            goToFragment(Data.fruitGroup)
+                        }
 
-                    R.id.vegetable -> {
-                        goToFragment(Data.vegetableGroup)
-                    }
+                        R.id.vegetable -> {
+                            goToFragment(Data.vegetableGroup)
+                        }
 
-                    R.id.bakery -> {
-                        goToFragment(Data.bakeryGroup)
-                    }
+                        R.id.bakery -> {
+                            goToFragment(Data.bakeryGroup)
+                        }
 
-                    R.id.hit -> {
-                        goToFragment(Data.hitGroup)
-                    }
+                        R.id.hit -> {
+                            goToFragment(Data.hitGroup)
+                        }
 
-                    R.id.discount -> {
-                        goToFragment(Data.discountGroup)
-                    }
+                        R.id.discount -> {
+                            goToFragment(Data.discountGroup)
+                        }
 
-                    R.id.favorite -> {
-                        goToFragment(Data.favoriteGroup)
+                        R.id.favorite -> {
+                            goToFragment(Data.favoriteGroup)
+                        }
                     }
                 }
                 drawer.closeDrawer(GravityCompat.START)
@@ -97,21 +98,22 @@ class MainActivity : AppCompatActivity() {
             }
 
 
+
             bottomMenu.setOnItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.catalog -> {
+                    R.id.fragmentForCatalog -> {
                         viewModel.pointBottomMenu.value = 0
                         drawer.openDrawer(GravityCompat.START)
                     }
 
-                    R.id.basket -> {
+                    R.id.fragmentForBasket -> {
                         topTextViewModel.text.value = Data.basketGroup
                         viewModel.pointBottomMenu.value = 1
                         findNavController(R.id.nav_host_fragment)
                             .navigate(R.id.fragmentForBasket)
                     }
 
-                    R.id.order -> {
+                    R.id.orderFragment -> {
                         viewModel.deleteFromBasketWeightZero()
 
                         if (authViewModel.authenticated) {
@@ -137,7 +139,7 @@ class MainActivity : AppCompatActivity() {
                                     .navigate(R.id.orderFragment)
                             }
                         } else {
-                            mustSignIn(if(viewModel.pointBottomMenu.value==0) R.id.fragmentForCatalog else R.id.fragmentForBasket)
+                            mustSignIn(if (viewModel.pointBottomMenu.value == 0) R.id.fragmentForCatalog else R.id.fragmentForBasket)
                         }
 
                         Log.d("MyLog", "emptyBasket = ${viewModel.dataFull.value?.emptyBasket}")
@@ -156,6 +158,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.menu.setOnClickListener {
+            if (viewModel.pointBottomMenu.value == -2) return@setOnClickListener
             PopupMenu(it.context, it).apply {
                 inflate(R.menu.main_menu)
                 menu.setGroupVisible(R.id.unauthenticated, !authViewModel.authenticated)
@@ -183,7 +186,7 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         R.id.historyOfOrders -> {
-                            viewModel.getHistory(authViewModel.data.value.login)
+                            viewModel.getHistory(authViewModel.data.value.username)
                             viewModel.pointBottomMenu.value = -1
                             findNavController(R.id.nav_host_fragment)
                                 .navigate(R.id.fragmentHistory)
@@ -199,8 +202,8 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.data.collectLatest {
-                    viewModel.getHistory(authViewModel.data.value.login)
-                    Log.d("MyLog", "MainActivity data.collectLatest, login=${it.login}")
+                    viewModel.getHistory(authViewModel.data.value.username)
+                    Log.d("MyLog", "MainActivity data.collectLatest, login=${it.username}")
                     //     invalidateMenu()
                 }
             }
@@ -208,11 +211,12 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.pointBottomMenu.observe(this) {
             when (it) {
-                -2 -> enabledPointBottomMenu(false) //заблокировать bottom menu
+                -2 -> enabledPointBottomMenu(false) //заблокировать bottom_menu, main_menu и drawer_menu
                 -1 -> {
                     enabledPointBottomMenu(true)
                     turnOnOffPointBottomMenuCheckable(false) //сбросить все нажатые кнопки bottom menu
                 }
+
                 in 0..2 -> {
                     enabledPointBottomMenu(true)
                     turnOnOffPointBottomMenuCheckable(true)
@@ -227,6 +231,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomMenu.menu.getItem(1).isCheckable = flag
         binding.bottomMenu.menu.getItem(2).isCheckable = flag
     }
+
     private fun enabledPointBottomMenu(flag: Boolean) {
         binding.bottomMenu.menu.getItem(0).isEnabled = flag
         binding.bottomMenu.menu.getItem(1).isEnabled = flag
@@ -258,7 +263,7 @@ class MainActivity : AppCompatActivity() {
         menuDialog.show(manager, "Sign out")
     }
 
-    private fun mustSignIn(number:Int) {
+    private fun mustSignIn(number: Int) {
         val menuDialog = SignInOutDialogFragment(
             title = "Нужна регистрация",
             text = "Для этого действия необходимо войти в систему",

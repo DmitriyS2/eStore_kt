@@ -66,7 +66,7 @@ class SignInOutDialogFragment(
                     viewModel.reNewDataFull()
                     topTextViewModel.text.value = Data.allGroup
                     orderViewModel.cancelOrder()
-                    viewModel.getHistory(authViewModel.data.value.login)
+                    viewModel.getHistory(authViewModel.data.value.username)
                     viewModel.pointBottomMenu.value = 0
                     findNavController()
                         .navigate(R.id.fragmentForCatalog)

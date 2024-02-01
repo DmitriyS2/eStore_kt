@@ -203,7 +203,7 @@ class ProductRepositoryImpl @Inject constructor(
     override suspend fun checkSignIn(login: String) =  userDao.getUser(login)?.toDto()
 
     override suspend fun signUp(login: String, password: String, name: String):User? {
-        val user = User(name = name, login = login, password = password, token = getToken())
+        val user = User(firstName = name, username = login, password = password, token = getToken())
         userDao.insert(UserEntity.fromDto(user))
         return checkSignIn(login)
     }

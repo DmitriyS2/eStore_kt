@@ -15,25 +15,25 @@ class AppAuth @Inject constructor(
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
     private val idKey = "id"
     private val tokenKey = "token"
-    private val nameKey = "name"
-    private val loginKey = "login"
+    private val firstnameKey = "name"
+    private val usernameKey = "login"
 
     private val _authStateFlow: MutableStateFlow<AuthState>
 
     init {
         val id = prefs.getLong(idKey, 0)
         val token = prefs.getString(tokenKey, null)
-        val name = prefs.getString(nameKey, null)
-        val login = prefs.getString(loginKey, null)
+        val firstname = prefs.getString(firstnameKey, null)
+        val username = prefs.getString(usernameKey, null)
 
-        if (id == 0L || token == null || login == null) {
+        if (id == 0L || token == null || username == null) {
             _authStateFlow = MutableStateFlow(AuthState())
             with(prefs.edit()) {
                 clear()
                 apply()
             }
         } else {
-            _authStateFlow = MutableStateFlow(AuthState(id, token, name, login))
+            _authStateFlow = MutableStateFlow(AuthState(id, token, firstname, username))
         }
 
      //   sendPushToken()
@@ -48,13 +48,13 @@ class AppAuth @Inject constructor(
 //    }
 
     @Synchronized
-    fun setAuth(id: Long, token: String, name:String, login:String) {
-        _authStateFlow.value = AuthState(id, token, name, login)
+    fun setAuth(id: Long, token: String, firstname:String, username:String) {
+        _authStateFlow.value = AuthState(id, token, firstname, username)
         with(prefs.edit()) {
             putLong(idKey, id)
             putString(tokenKey, token)
-            putString(nameKey, name)
-            putString(loginKey, login)
+            putString(firstnameKey, firstname)
+            putString(usernameKey, username)
             apply()
         }
 
@@ -91,21 +91,5 @@ class AppAuth @Inject constructor(
 //        return hiltEntryPoint.apiService()
 //    }
 
-//    companion object {
-//        @Volatile
-//        private var instance: AppAuth? = null
-//
-//        fun getInstance(): AppAuth = synchronized(this) {
-//            instance ?: throw IllegalStateException(
-//                "AppAuth is not initialized, you must call AppAuth.initializeApp(Context context) first."
-//            )
-//        }
-//
-//        fun initApp(context: Context): AppAuth = instance ?: synchronized(this) {
-//            instance ?: buildAuth(context).also { instance = it }
-//        }
-//
-//        private fun buildAuth(context: Context): AppAuth = AppAuth(context)
-//    }
 }
-data class AuthState(val id: Long = 0, val token: String? = null, val name: String? = null, val login: String?=null)
+data class AuthState(val id: Long? = 0, val token: String? = null, val firstname: String? = null, val username: String?=null)

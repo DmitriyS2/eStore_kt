@@ -51,8 +51,8 @@ class MainViewModel @Inject constructor(
     init {
         getAll()
         Log.d("MyLog", "dataHistoryOrders = ${dataHistoryOrders.value}")
-        auth.authStateFlow.value.login?.let {
-            getHistory(auth.authStateFlow.value.login)
+        auth.authStateFlow.value.username?.let {
+            getHistory(auth.authStateFlow.value.username)
         }
     }
 
