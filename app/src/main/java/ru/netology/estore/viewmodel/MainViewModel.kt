@@ -41,6 +41,7 @@ class MainViewModel @Inject constructor(
                 it.isDiscount
             }
             .toString()
+
     val counterFavorite:MutableLiveData<String> = MutableLiveData<String>(dataFull.value?.products
         ?.count {
             it.isFavorite
@@ -50,13 +51,12 @@ class MainViewModel @Inject constructor(
 
     init {
         getAll()
-        Log.d("MyLog", "dataHistoryOrders = ${dataHistoryOrders.value}")
         auth.authStateFlow.value.username?.let {
             getHistory(auth.authStateFlow.value.username)
         }
     }
 
-    fun getAll() {
+    private fun getAll() {
         dataFull.value = FullProduct(products = repository.fillAllProducts(), status = Data.allGroup)
         repository.allProductsOriginal = dataFull.value?.products.orEmpty() as ArrayList<Product>
     }

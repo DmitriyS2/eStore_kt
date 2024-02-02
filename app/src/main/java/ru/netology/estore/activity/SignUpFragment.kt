@@ -55,7 +55,6 @@ class SignUpFragment : Fragment() {
                             if (it.id != 0L) {
                                 viewModel.getHistory(authViewModel.data.value.username)
                                 Log.d("MyLog", "SignUp OK, login=${it.username}")
-                                //      if(authViewModel.authenticated) {
                                 topTextViewModel.text.value =
                                     ru.netology.estore.dto.Data.basketGroup
                                 viewModel.pointBottomMenu.value = 0
@@ -69,7 +68,6 @@ class SignUpFragment : Fragment() {
                                 toast.setGravity(Gravity.TOP, 0, 0)
                                 toast.show()
                             }
-
                         }
                     }
                 }

@@ -218,14 +218,14 @@ class FragmentOrder : Fragment() {
                     binding.buttonCancelOrder.visibility = View.GONE
                     binding.buttonToWaitingOrder.visibility = View.GONE
                     binding.cardViewFinalOrder.visibility = View.VISIBLE
-                    binding.textInfoWaitingOrder.text = if(orderViewModel.flagPickUp) "Вы сможете забрать Ваш заказ через 1 час в $timeOrderTime" else "Мы привезем Ваш заказ через 1 час в $timeOrderTime"
+                    binding.textInfoWaitingOrder.text = if(orderViewModel.flagPickUp) "Вы сможете забрать Ваш заказ через 1 час в $timeOrderTime"
+                    else "Мы привезем Ваш заказ через 1 час в $timeOrderTime"
                 }
             }
         }
 
-
+        //заказ на сумму
         binding.buttonPoint1Yes.setOnClickListener {
-
             orderViewModel.showPoint1.value = 2
             orderViewModel.showPoint2.value = 1
         }
@@ -237,7 +237,7 @@ class FragmentOrder : Fragment() {
             goToBasket()
         }
 
-
+        //доставка/самовывоз
         binding.buttonDelivery.setOnClickListener {
             showDelivery(2,"Доставка")
             orderViewModel.flagPickUp = false
@@ -263,7 +263,7 @@ class FragmentOrder : Fragment() {
             orderViewModel.showPoint4.value = 0
         }
 
-
+        //самовывоз
         binding.radio.setOnCheckedChangeListener { group, checkedId ->
                 if(checkedId==-1){
                     orderViewModel.showPoint3.value = 0
@@ -290,7 +290,7 @@ class FragmentOrder : Fragment() {
             orderViewModel.showPoint3.value = 1
         }
 
-
+        //доставка
         binding.buttonEnterAddressOk.setOnClickListener {
             if(fillField()) {
                 orderViewModel.addressDelivery = binding.editAddressDelivery.text.toString()
@@ -308,7 +308,7 @@ class FragmentOrder : Fragment() {
             orderViewModel.showPoint4.value = 1
         }
 
-
+        //тип оплаты
         binding.spinnerTypeOfPayment.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -330,7 +330,7 @@ class FragmentOrder : Fragment() {
             orderViewModel.showPoint5.value = 1
         }
 
-
+        //заказать/отменить/завершить
         binding.buttonCancelOrder.setOnClickListener {
             areYouSureCancelOrder()
         }
@@ -340,7 +340,6 @@ class FragmentOrder : Fragment() {
         }
 
         binding.buttonThankYou.setOnClickListener {
-
             orderViewModel.cancelOrder()
             topTextViewModel.text.value = Data.eStoreGroup
             vieModel.cleanBasket()
@@ -379,7 +378,7 @@ class FragmentOrder : Fragment() {
         return flag
     }
 
-    fun areYouSureCancelOrder() {
+    private fun areYouSureCancelOrder() {
         val menuDialog = SignInOutDialogFragment(
             title = "Отмена заказа",
             text = "Вы уверены, что хотите отменить заказ?",

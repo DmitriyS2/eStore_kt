@@ -5,11 +5,9 @@ import kotlin.math.roundToInt
 
 object Data {
 
-    val aZ:String = "qwertyuiopASDFGHJKLzxcvbnmQWERTYUIOPasdfghjklZXCVBNM"
+    val aZ: String = "qwertyuiopASDFGHJKLzxcvbnmQWERTYUIOPasdfghjklZXCVBNM"
     var idProduct = 0
     val discounts = listOf(5, 10, 15, 20, 25, 30)
-
-   // var allProducts = arrayListOf<Product>()
 
     val fruitsPicture = listOf(
         R.drawable.banan, R.drawable.apple,
@@ -43,6 +41,7 @@ object Data {
     val signUpGroup = "SignUp"
     val orderGroup = "Заказ"
     val eStoreGroup = "eStore"
+    val historyGroup = "История заказов"
 
 
     val fruitsPrice = listOf(109.5, 89.9, 179.0, 211.5, 25.0, 189.9)
@@ -58,22 +57,5 @@ object Data {
     val bakeryUnitWeight = listOf("шт", "шт", "шт", "кг", "кг", "кг")
 
 }
-
-enum class Group
-{
-     allGroup,
-     fruitGroup;
-    val vegetableGroup = "Овощи";
-    val bakeryGroup = "Бакалея";
-    val hitGroup = "Хиты продаж"
-    val discountGroup = "АКЦИЯ!!!"
-    val favoriteGroup = "Избранное"
-    val basketGroup = "Корзина"
-    val signInGroup = "SignIn"
-    val signUpGroup = "SignUp"
-    val orderGroup = "Заказ"
-    val eStoreGroup = "eStore";
-    ;
-}
-
-fun getSumWithTwoDecimal(number:Double, del:Double):Double = (number*del.toInt()).roundToInt()/del
+fun getSumWithTwoDecimal(number: Double, del: Double): Double =
+    (number * del.toInt()).roundToInt() / del

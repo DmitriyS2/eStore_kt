@@ -32,38 +32,6 @@ class ProductAdapter(private val listener: Listener) :
     class ProductHolder(item: View, private val listener: Listener) : RecyclerView.ViewHolder(item) {
         val binding = ItemForCatalogProductBinding.bind(item)
 
-        fun bind(payload: Payload) {
-//            payload.liked?.also { liked ->
-//                binding.buttonLike.setImageResource(
-//                    if (liked) R.drawable.like_24 else R.drawable.un_like_24
-//                )
-//                if (liked) {
-//                    ObjectAnimator.ofPropertyValuesHolder(
-//                        binding.buttonLike,
-//                        PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.2F, 1.0F),
-//                        PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.2F, 1.0F)
-//                    ).start()
-//                } else {
-//                    ObjectAnimator.ofFloat(
-//                        binding.buttonLike,
-//                        View.ROTATION,
-//                        0F, 360F
-//                    ).start()
-//                }
-//            }
-//
-//            payload.pushButtonAdd?.let {
-//                if (it) {
-//                    binding.buttonAddToBin.setBackgroundColor(Color.parseColor("#104021"))
-//                    binding.buttonAddToBin.text = "Убрать"
-//                } else {
-//                    binding.buttonAddToBin.setBackgroundColor(Color.BLUE)
-//                    binding.buttonAddToBin.text = "Добавить"
-//                }
-//            }
-        }
-
-
         fun bind(product: Product) = with(binding) {
             if (product.isHit) {
                 hit.visibility = View.VISIBLE
@@ -148,22 +116,6 @@ class ProductAdapter(private val listener: Listener) :
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_for_catalog_product, parent, false)
         return ProductHolder(view, listener)
-    }
-
-    override fun onBindViewHolder(
-        holder: ProductHolder,
-        position: Int,
-        payloads: List<Any>
-    ) {
-     //   if (payloads.isEmpty()) {
-            onBindViewHolder(holder, position)
-//        } else {
-//            payloads.forEach {
-//                if (it is Payload) {
-//                    holder.bind(it)
-//                }
-//            }
-//        }
     }
 
     override fun onBindViewHolder(holder: ProductHolder, position: Int) {

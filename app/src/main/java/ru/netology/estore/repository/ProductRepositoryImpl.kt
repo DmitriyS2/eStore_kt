@@ -1,8 +1,10 @@
 package ru.netology.estore.repository
 
 import android.util.Log
+import ru.netology.estore.api.ApiService
 import ru.netology.estore.dao.DataHistoryDao
 import ru.netology.estore.dao.UserDao
+import ru.netology.estore.dto.AuthRequest
 import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.DataHistory
 import ru.netology.estore.dto.Product
@@ -16,6 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ProductRepositoryImpl @Inject constructor(
+    private val apiService: ApiService,
     private val userDao: UserDao,
     private val dataHistoryDao: DataHistoryDao
 
@@ -221,5 +224,5 @@ class ProductRepositoryImpl @Inject constructor(
     override suspend fun addHistory(dataHistory: DataHistory) {
         dataHistoryDao.insert(DataHistoryEntity.fromDto(dataHistory))
     }
-
+    override suspend fun signInApi(request: AuthRequest) = apiService.auth(request)
 }

@@ -32,17 +32,7 @@ object ApiServiceModule {
     @Singleton
     fun provideOkHttp(
         logging: HttpLoggingInterceptor,
-        appAuth: AppAuth
     ): OkHttpClient = OkHttpClient.Builder()
-//        .addInterceptor { chain ->
-//            appAuth.authStateFlow.value.token?.let { token ->
-//                val newRequest = chain.request().newBuilder()
-//                    .addHeader("Authorization", token)
-//                    .build()
-//                return@addInterceptor chain.proceed(newRequest)
-//            }
-//            chain.proceed(chain.request())
-//        }
         .addInterceptor(logging)
         .build()
 

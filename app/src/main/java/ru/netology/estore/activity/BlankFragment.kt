@@ -30,8 +30,6 @@ class BlankFragment : Fragment() {
     }
 
     companion object {
-
-        fun newInstance() =
-            BlankFragment()
+        fun newInstance() = BlankFragment()
     }
 }

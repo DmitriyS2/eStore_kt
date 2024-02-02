@@ -1,5 +1,7 @@
 package ru.netology.estore.repository
 
+import retrofit2.Response
+import ru.netology.estore.dto.AuthRequest
 import ru.netology.estore.dto.DataHistory
 import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.User
@@ -23,4 +25,6 @@ interface ProductRepository {
     suspend fun signUp(login: String, password: String, name: String):User?
     suspend fun getHistory(login: String): List<DataHistory>?
     suspend fun addHistory(dataHistory: DataHistory)
+
+    suspend fun signInApi(request: AuthRequest):Response<User>
 }

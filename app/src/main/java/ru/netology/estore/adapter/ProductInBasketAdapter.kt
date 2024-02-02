@@ -66,45 +66,25 @@ class ProductInBasketAdapter(private val listener: Listener) :
             txWeight.text = "${getSumWithTwoDecimal(product.weight, 10.0)} ${product.unitWeight}"
 
             buttonLike.setOnClickListener {
-                ObjectAnimator.ofPropertyValuesHolder(
-                    buttonLike,
-                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
-                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
-                ).start()
+                showAnimationView(it)
                 listener.like(product)
             }
 
             buttonDelete.setOnClickListener {
-                ObjectAnimator.ofPropertyValuesHolder(
-                    buttonDelete,
-                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
-                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
-                ).start()
+                showAnimationView(it)
                 listener.deleteFromBasket(product)
             }
 
             buttonPlus.setOnClickListener {
-                ObjectAnimator.ofPropertyValuesHolder(
-                    buttonPlus,
-                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
-                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
-                ).start()
+                showAnimationView(it)
                 listener.weightPlus(product)
             }
             buttonMinus.setOnClickListener {
-                ObjectAnimator.ofPropertyValuesHolder(
-                    buttonMinus,
-                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
-                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
-                ).start()
+                showAnimationView(it)
                 listener.weightMinus(product)
             }
             buttonAdd.setOnClickListener {
-                ObjectAnimator.ofPropertyValuesHolder(
-                    buttonAdd,
-                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
-                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
-                ).start()
+                showAnimationView(it)
                 listener.addToBasketAgain(product)
             }
         }
@@ -120,4 +100,11 @@ class ProductInBasketAdapter(private val listener: Listener) :
         val product = getItem(position)
         holder.bind(product)
     }
+}
+fun showAnimationView(view: View) {
+    ObjectAnimator.ofPropertyValuesHolder(
+        view,
+        PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
+        PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
+    ).start()
 }

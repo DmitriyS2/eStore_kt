@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
+import androidx.core.view.forEach
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -57,7 +58,9 @@ class MainActivity : AppCompatActivity() {
         counterFavorite = MenuItemCompat.getActionView(
             binding.nvMenu.menu.findItem(R.id.favorite)
         ) as TextView
-        initializeCountDrawerHitDiscount()
+
+        showCountDrawerItem(counterHit, viewModel.counterHit)
+        showCountDrawerItem(counterDiscount, viewModel.counterDiscount)
 
         binding.apply {
             nvMenu.setNavigationItemSelectedListener {
@@ -67,27 +70,21 @@ class MainActivity : AppCompatActivity() {
                         R.id.allProducts -> {
                             goToFragment(Data.allGroup)
                         }
-
                         R.id.fruit -> {
                             goToFragment(Data.fruitGroup)
                         }
-
                         R.id.vegetable -> {
                             goToFragment(Data.vegetableGroup)
                         }
-
                         R.id.bakery -> {
                             goToFragment(Data.bakeryGroup)
                         }
-
                         R.id.hit -> {
                             goToFragment(Data.hitGroup)
                         }
-
                         R.id.discount -> {
                             goToFragment(Data.discountGroup)
                         }
-
                         R.id.favorite -> {
                             goToFragment(Data.favoriteGroup)
                         }
@@ -97,25 +94,20 @@ class MainActivity : AppCompatActivity() {
                 true
             }
 
-
-
             bottomMenu.setOnItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.fragmentForCatalog -> {
                         viewModel.pointBottomMenu.value = 0
                         drawer.openDrawer(GravityCompat.START)
                     }
-
                     R.id.fragmentForBasket -> {
                         topTextViewModel.text.value = Data.basketGroup
                         viewModel.pointBottomMenu.value = 1
                         findNavController(R.id.nav_host_fragment)
                             .navigate(R.id.fragmentForBasket)
                     }
-
                     R.id.orderFragment -> {
                         viewModel.deleteFromBasketWeightZero()
-
                         if (authViewModel.authenticated) {
                             if (viewModel.dataFull.value?.emptyBasket == false) {
                                 topTextViewModel.text.value = Data.orderGroup
@@ -141,7 +133,6 @@ class MainActivity : AppCompatActivity() {
                         } else {
                             mustSignIn(if (viewModel.pointBottomMenu.value == 0) R.id.fragmentForCatalog else R.id.fragmentForBasket)
                         }
-
                         Log.d("MyLog", "emptyBasket = ${viewModel.dataFull.value?.emptyBasket}")
                     }
                 }
@@ -154,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.counterFavorite.observe(this) {
-            initializeCountDrawerFavorite(if (it == "0") "" else it)
+            showCountDrawerItem(counterFavorite, if (it == "0") "" else it)
         }
 
         binding.menu.setOnClickListener {
@@ -172,27 +163,24 @@ class MainActivity : AppCompatActivity() {
                                 .navigate(R.id.signInFragment)
                             true
                         }
-
                         R.id.signup -> {
                             topTextViewModel.text.value = Data.signUpGroup
                             findNavController(R.id.nav_host_fragment)
                                 .navigate(R.id.signUpFragment)
                             true
                         }
-
                         R.id.signout -> {
                             areYouSureSignOut()
                             true
                         }
-
                         R.id.historyOfOrders -> {
                             viewModel.getHistory(authViewModel.data.value.username)
+                            topTextViewModel.text.value = Data.historyGroup
                             viewModel.pointBottomMenu.value = -1
                             findNavController(R.id.nav_host_fragment)
                                 .navigate(R.id.fragmentHistory)
                             true
                         }
-
                         else -> false
                     }
                 }
@@ -216,7 +204,6 @@ class MainActivity : AppCompatActivity() {
                     enabledPointBottomMenu(true)
                     turnOnOffPointBottomMenuCheckable(false) //сбросить все нажатые кнопки bottom menu
                 }
-
                 in 0..2 -> {
                     enabledPointBottomMenu(true)
                     turnOnOffPointBottomMenuCheckable(true)
@@ -227,15 +214,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun turnOnOffPointBottomMenuCheckable(flag: Boolean) {
-        binding.bottomMenu.menu.getItem(0).isCheckable = flag
-        binding.bottomMenu.menu.getItem(1).isCheckable = flag
-        binding.bottomMenu.menu.getItem(2).isCheckable = flag
+        binding.bottomMenu.menu.forEach {
+            it.isCheckable = flag
+        }
     }
 
     private fun enabledPointBottomMenu(flag: Boolean) {
-        binding.bottomMenu.menu.getItem(0).isEnabled = flag
-        binding.bottomMenu.menu.getItem(1).isEnabled = flag
-        binding.bottomMenu.menu.getItem(2).isEnabled = flag
+        binding.bottomMenu.menu.forEach {
+            it.isEnabled = flag
+        }
     }
 
     private fun goToFragment(status: String) {
@@ -278,21 +265,10 @@ class MainActivity : AppCompatActivity() {
         menuDialog.show(manager, "Sign in")
     }
 
-    private fun initializeCountDrawerHitDiscount() {
-        counterHit?.gravity = Gravity.CENTER_VERTICAL
-        counterHit?.setTypeface(null, Typeface.BOLD)
-        counterHit?.setTextColor(resources.getColor(R.color.red))
-        counterHit?.text = viewModel.counterHit
-        counterDiscount?.setGravity(Gravity.CENTER_VERTICAL)
-        counterDiscount?.setTypeface(null, Typeface.BOLD)
-        counterDiscount?.setTextColor(resources.getColor(R.color.red))
-        counterDiscount?.setText(viewModel.counterDiscount)
-    }
-
-    private fun initializeCountDrawerFavorite(favorite: String) {
-        counterFavorite?.setGravity(Gravity.CENTER_VERTICAL)
-        counterFavorite?.setTypeface(null, Typeface.BOLD)
-        counterFavorite?.setTextColor(resources.getColor(R.color.red, null))
-        counterFavorite?.setText(favorite)
+    private fun showCountDrawerItem(view:TextView?, text:String) {
+        view?.gravity = Gravity.CENTER_VERTICAL
+        view?.setTypeface(null, Typeface.BOLD)
+        view?.setTextColor(resources.getColor(R.color.red, null))
+        view?.text = text
     }
 }

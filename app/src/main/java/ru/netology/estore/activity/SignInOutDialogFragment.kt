@@ -82,12 +82,9 @@ class SignInOutDialogFragment(
                     } else if (navigateTo == R.id.fragmentForBasket) {
                         viewModel.pointBottomMenu.value = 1
                         topTextViewModel.text.value = Data.basketGroup
-
                     }
-
                     findNavController()
                         .navigate(navigateTo)
-
                 }
             }
             .create()

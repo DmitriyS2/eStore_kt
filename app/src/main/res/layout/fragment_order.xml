@@ -106,14 +106,12 @@
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toBottomOf="@id/cardView1">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-
             >
 
             <TextView
@@ -124,7 +122,6 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="2. Сами заберете или Вам привезти?" />
@@ -138,7 +135,6 @@
                 android:src="@drawable/mode_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/point2delivery"
-
                 app:layout_constraintTop_toTopOf="@id/point2delivery" />
 
             <Button

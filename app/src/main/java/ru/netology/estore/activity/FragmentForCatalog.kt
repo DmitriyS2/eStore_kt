@@ -65,6 +65,7 @@ class FragmentForCatalog : Fragment() {
         viewModel.dataFull.observe(viewLifecycleOwner) { full ->
             val list = when (full.status) {
                 Data.allGroup -> viewModel.dataFull.value?.products
+
                 Data.fruitGroup -> viewModel.dataFull.value?.products?.filter { it.group == Data.fruitGroup }
                     .orEmpty()
 
@@ -75,6 +76,7 @@ class FragmentForCatalog : Fragment() {
                     .orEmpty()
 
                 Data.hitGroup -> viewModel.dataFull.value?.products?.filter { it.isHit }.orEmpty()
+
                 Data.discountGroup -> viewModel.dataFull.value?.products?.filter { it.isDiscount }
                     .orEmpty()
 
@@ -85,7 +87,6 @@ class FragmentForCatalog : Fragment() {
             }
             adapter.productList = list.orEmpty()
             adapter.submitList(list)
-
         }
         return binding.root
     }
