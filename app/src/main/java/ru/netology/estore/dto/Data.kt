@@ -43,6 +43,9 @@ object Data {
     val eStoreGroup = "eStore"
     val historyGroup = "История заказов"
 
+    val country = listOf("Россия", "Эквадор")
+    val storage = listOf("Хранить в сухом прохладном месте", "Хранить в холодильнике")
+    val pack:String = "Пакет"
 
     val fruitsPrice = listOf(109.5, 89.9, 179.0, 211.5, 25.0, 189.9)
     val vegetablesPrice = listOf(22.5, 34.3, 29.0, 109.9, 78.5, 111.0)

@@ -51,5 +51,10 @@
         android:name="ru.netology.estore.activity.FragmentHistory"
         android:label="fragment_history_of_orders"
         tools:layout="@layout/fragment_history_of_orders" />
+    <fragment
+        android:id="@+id/fragmentCurrentProduct"
+        android:name="ru.netology.estore.activity.FragmentCurrentProduct"
+        android:label="fragment_current_product"
+        tools:layout="@layout/fragment_current_product" />
 
 </navigation>

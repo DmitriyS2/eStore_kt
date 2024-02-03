@@ -87,6 +87,10 @@ class ProductInBasketAdapter(private val listener: Listener) :
                 showAnimationView(it)
                 listener.addToBasketAgain(product)
             }
+
+            cardViewItemBasket.setOnClickListener {
+                listener.goToProduct(product)
+            }
         }
     }
 

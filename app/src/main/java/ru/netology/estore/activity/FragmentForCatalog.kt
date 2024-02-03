@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import ru.netology.estore.R
+import ru.netology.estore.activity.FragmentCurrentProduct.Companion.textArgument
 import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductAdapter
 import ru.netology.estore.databinding.FragmentForCatalogBinding
@@ -15,12 +17,14 @@ import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.Product
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
+import ru.netology.estore.viewmodel.TopTextViewModel
 
 
 class FragmentForCatalog : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
     private val authViewModel:AuthViewModel by activityViewModels()
+    private val topTextViewModel:TopTextViewModel by activityViewModels()
 
     lateinit var binding: FragmentForCatalogBinding
 
@@ -55,6 +59,16 @@ class FragmentForCatalog : Fragment() {
             }
 
             override fun deleteFromBasketWeightZero() {
+            }
+
+            override fun goToProduct(product: Product) {
+                findNavController()
+                    .navigate(R.id.fragmentCurrentProduct,
+                        Bundle().apply {
+                            textArgument = product.id.toString()
+                        })
+                topTextViewModel.text.value = product.name
+                viewModel.pointBottomMenu.value = -1
             }
         })
 

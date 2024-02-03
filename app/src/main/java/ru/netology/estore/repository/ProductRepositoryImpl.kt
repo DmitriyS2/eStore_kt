@@ -47,7 +47,9 @@ class ProductRepositoryImpl @Inject constructor(
                     picture = Data.fruitsPicture[i],
                     price = Data.fruitsPrice[i],
                     oneUnit = Data.fruitOneUnit[i],
-                    unitWeight = Data.fruitUnitWeight[i]
+                    unitWeight = Data.fruitUnitWeight[i],
+                    country = (if(i==0 || i==5) Data.country[1] else Data.country[0]),
+                    storage = Data.storage[1]
                 )
             )
         }
@@ -65,7 +67,9 @@ class ProductRepositoryImpl @Inject constructor(
                     picture = Data.vegetablesPicture[i],
                     price = Data.vegetablesPrice[i],
                     oneUnit = Data.vegetablesOneUnit[i],
-                    unitWeight = Data.vegetableUnitWeight[i]
+                    unitWeight = Data.vegetableUnitWeight[i],
+                    country = Data.country[0],
+                    storage = Data.storage[1]
                 )
             )
         }
@@ -83,7 +87,9 @@ class ProductRepositoryImpl @Inject constructor(
                     picture = Data.bakeryPicture[i],
                     price = Data.bakeryPrice[i],
                     oneUnit = Data.bakeryOneUnit[i],
-                    unitWeight = Data.bakeryUnitWeight[i]
+                    unitWeight = Data.bakeryUnitWeight[i],
+                    country = Data.country[0],
+                    storage = Data.storage[0]
                 )
             )
         }

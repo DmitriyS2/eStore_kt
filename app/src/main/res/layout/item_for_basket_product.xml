@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:cardCornerRadius="10dp"
         android:layout_margin="3dp"
+        android:id="@+id/cardViewItemBasket"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

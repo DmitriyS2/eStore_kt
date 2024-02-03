@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.FragmentCurrentProduct">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="20dp"
+
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            >
+
+            <ImageView
+                android:id="@+id/hit"
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/hit"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <ImageView
+                android:id="@+id/pictureDiscount"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:src="@drawable/discount"
+                app:layout_constraintEnd_toEndOf="@id/avatar"
+                app:layout_constraintTop_toTopOf="@id/hit"
+                 />
+
+            <TextView
+                android:id="@+id/textDiscount"
+                android:layout_width="35dp"
+                android:layout_height="20dp"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/pictureDiscount"
+                app:layout_constraintTop_toTopOf="@id/pictureDiscount"
+                tools:text="-10%"
+
+                />
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hit"
+                tools:src="@drawable/banan" />
+
+            <TextView
+                android:id="@+id/txItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@id/avatar"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                app:layout_constraintTop_toBottomOf="@id/avatar"
+                tools:text="Продукт" />
+
+            <TextView
+                android:id="@+id/Price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@id/avatar"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                app:layout_constraintTop_toBottomOf="@id/txItem"
+                tools:text="Price" />
+
+            <TextView
+                android:id="@+id/newPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/avatar"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                app:layout_constraintTop_toBottomOf="@id/Price"
+                tools:text="New Price" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupDiscount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="pictureDiscount, textDiscount, newPrice"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Информация о продукте"
+                app:layout_constraintTop_toBottomOf="@id/newPrice"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                app:layout_constraintEnd_toEndOf="@id/avatar"
+                android:id="@+id/textInfoAboutProduct"
+                android:layout_marginTop="8dp"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Страна-производитель:"
+                app:layout_constraintTop_toBottomOf="@id/textInfoAboutProduct"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                app:layout_constraintEnd_toEndOf="@id/avatar"
+                android:id="@+id/textInfoAboutCountry1"
+                android:layout_marginTop="8dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="Россия"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:gravity="end"
+                app:layout_constraintTop_toBottomOf="@id/textInfoAboutCountry1"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                app:layout_constraintEnd_toEndOf="@id/avatar"
+                android:id="@+id/textInfoAboutCountry"
+                android:layout_marginTop="4dp"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Условия хранения:"
+                app:layout_constraintTop_toBottomOf="@id/textInfoAboutCountry"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                app:layout_constraintEnd_toEndOf="@id/avatar"
+                android:id="@+id/textInfoAboutStorage1"
+                android:layout_marginTop="8dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="В холодильнике"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:gravity="end"
+                app:layout_constraintTop_toBottomOf="@id/textInfoAboutStorage1"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                app:layout_constraintEnd_toEndOf="@id/avatar"
+                android:id="@+id/textInfoAboutStorage"
+                android:layout_marginTop="4dp"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Вид упаковки:"
+                app:layout_constraintTop_toBottomOf="@id/textInfoAboutStorage"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                app:layout_constraintEnd_toEndOf="@id/avatar"
+                android:id="@+id/textInfoAboutPack1"
+                android:layout_marginTop="8dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="Пакет"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:gravity="end"
+                app:layout_constraintTop_toBottomOf="@id/textInfoAboutPack1"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                app:layout_constraintEnd_toEndOf="@id/avatar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/textInfoAboutPack"
+                android:layout_marginTop="4dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

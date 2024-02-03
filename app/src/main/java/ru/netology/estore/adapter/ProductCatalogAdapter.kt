@@ -22,6 +22,7 @@ interface Listener {
     fun weightPlus(product: Product)
     fun weightMinus(product: Product)
     fun deleteFromBasketWeightZero()
+    fun goToProduct(product: Product)
 }
 
 class ProductAdapter(private val listener: Listener) :
@@ -56,7 +57,7 @@ class ProductAdapter(private val listener: Listener) :
                 val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.3F, 1F)
                 ObjectAnimator.ofPropertyValuesHolder(textDiscount, scaleX, scaleY).apply {
                     duration = 1000
-                    repeatCount = 100
+                    repeatCount = 150
                 }.start()
                 Price.alpha = 0.3f
                 newPrice.text = "${
@@ -107,6 +108,10 @@ class ProductAdapter(private val listener: Listener) :
                     PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.1F, 1.0F)
                 ).start()
                 listener.addToBasket(product)
+            }
+
+            cardViewItemCatalog.setOnClickListener {
+                listener.goToProduct(product)
             }
 
         }

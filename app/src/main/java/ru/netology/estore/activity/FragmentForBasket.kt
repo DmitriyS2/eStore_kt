@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.netology.estore.R
+import ru.netology.estore.activity.FragmentCurrentProduct.Companion.textArgument
 import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductInBasketAdapter
 import ru.netology.estore.databinding.FragmentForBasketBinding
@@ -68,6 +69,16 @@ class FragmentForBasket : Fragment() {
 
             override fun deleteFromBasketWeightZero() {
                 viewModel.deleteFromBasketWeightZero()
+            }
+
+            override fun goToProduct(product: Product) {
+                findNavController()
+                    .navigate(R.id.fragmentCurrentProduct,
+                        Bundle().apply {
+                            textArgument = product.id.toString()
+                        })
+                topTextViewModel.text.value = product.name
+                viewModel.pointBottomMenu.value = -1
             }
         })
 

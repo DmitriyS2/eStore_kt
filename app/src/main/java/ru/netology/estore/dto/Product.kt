@@ -14,5 +14,8 @@ data class Product(
     var isFavorite:Boolean = false,
     var weight:Double = 0.0,
     var inBasket:Boolean = false,
-    var sum: Double = 0.0
+    var sum: Double = 0.0,
+    val country:String,
+    val storage:String,
+    val pack:String = Data.pack
 )

@@ -25,7 +25,7 @@ class SignUpViewModel @Inject constructor(
                     }
                 }
             } catch (e:Exception) {
-                throw Exception("error SignUp")
+                e.printStackTrace()
             }
         }
     }

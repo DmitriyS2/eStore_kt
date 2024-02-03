@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import ru.netology.estore.api.ApiService
 import ru.netology.estore.auth.AppAuth
 import ru.netology.estore.dto.AuthRequest
 import ru.netology.estore.repository.ProductRepository
@@ -37,7 +36,7 @@ class SignInViewModel @Inject constructor(
                 }
             }
         } catch (e: Exception) {
-            throw Exception("error SignIn")
+            stateAuth.value = -2
         }
     }
 
@@ -64,7 +63,7 @@ class SignInViewModel @Inject constructor(
                     stateAuth.value = 1
                 }
             } catch (e: IOException) {
-                throw Error(e)
+                stateAuth.value = -1
             }
         }
     }

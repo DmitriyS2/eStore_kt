@@ -1,5 +1,6 @@
 package ru.netology.estore.activity
 
+import android.content.res.Configuration
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -26,6 +27,8 @@ import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
 import ru.netology.estore.viewmodel.OrderViewModel
 import ru.netology.estore.viewmodel.TopTextViewModel
+import java.util.Locale
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
