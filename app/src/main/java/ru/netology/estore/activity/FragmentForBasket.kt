@@ -28,14 +28,14 @@ class FragmentForBasket : Fragment() {
     private val authViewModel:AuthViewModel by activityViewModels()
     private val topTextViewModel:TopTextViewModel by activityViewModels()
     private val orderViewModel:OrderViewModel by activityViewModels()
-    lateinit var binding: FragmentForBasketBinding
+ //   lateinit var binding: FragmentForBasketBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        binding = FragmentForBasketBinding.inflate(inflater)
+        val binding = FragmentForBasketBinding.inflate(inflater)
 
         val adapter = ProductInBasketAdapter(object : Listener {
 
@@ -95,7 +95,7 @@ class FragmentForBasket : Fragment() {
         }
 
         viewModel.amountOrder.observe(viewLifecycleOwner) {
-            binding.amountOrder.text = "$it руб"
+            binding.amountOrder.text = "$it"+getString(R.string.rub)
         }
 
         binding.buttonOrder.setOnClickListener {
@@ -120,13 +120,14 @@ class FragmentForBasket : Fragment() {
         return binding.root
     }
 
+
     private fun mustSignIn() {
         val menuDialog = SignInOutDialogFragment(
-            title = "Нужна регистрация",
-            text = "Для этого действия необходимо войти в систему",
+            title = getString(R.string.need_registration),
+            text = getString(R.string.need_yo_signin),
             icon = R.drawable.info_24,
-            textPosButton = "Sign In",
-            textNegButton = "Позже",
+            textPosButton = getString(R.string.sign_in),
+            textNegButton = getString(R.string.later),
             flagSignIn = true,
             flagOrder = false,
             navigateTo = R.id.fragmentForBasket

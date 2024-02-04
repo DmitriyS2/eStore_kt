@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/fragmentForCatalog"
-        android:title="Каталог"
+        android:title="@string/Catalog"
         android:icon="@drawable/catalog_24"
         android:orderInCategory="1"/>
     <item
         android:id="@+id/fragmentForBasket"
-        android:title="Корзина"
+        android:title="@string/Basket"
         android:icon="@drawable/basket_24"
         android:orderInCategory="2"
         />
     <item
         android:id="@+id/orderFragment"
-        android:title="Заказ"
+        android:title="@string/Order"
         android:icon="@drawable/order_24"
         android:orderInCategory="3"
         />

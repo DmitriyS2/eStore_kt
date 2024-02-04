@@ -20,7 +20,7 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Введите имя"
+            android:hint="@string/enter_name"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -38,7 +38,7 @@
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Введите логин"
+            android:hint="@string/enter_username"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="Введите пароль"
+            android:hint="@string/enter_password"
 
             />
 
@@ -80,7 +80,7 @@
             android:id="@+id/confirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Подтвердите пароль"
+            android:hint="@string/confirm_password"
             android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -90,10 +90,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         app:layout_constraintEnd_toEndOf="@id/textInputLayoutA"
         app:layout_constraintStart_toStartOf="@id/textInputLayoutA"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutD" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

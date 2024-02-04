@@ -2,12 +2,14 @@ package ru.netology.estore.activity
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentCurrentProductBinding
 import ru.netology.estore.dto.getSumWithTwoDecimal
 import ru.netology.estore.util.StringArg
@@ -17,13 +19,14 @@ class FragmentCurrentProduct : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
 
-    lateinit var binding: FragmentCurrentProductBinding
+ //   lateinit var binding: FragmentCurrentProductBinding
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCurrentProductBinding.inflate(inflater, container, false)
+        val binding = FragmentCurrentProductBinding.inflate(inflater, container, false)
 
         val currentId = arguments?.textArgument?.toInt()
 
@@ -67,7 +70,7 @@ class FragmentCurrentProduct : Fragment() {
                                 product.price * (100 - product.minusPercent) / 100,
                                 100.0
                             )
-                        } руб за 1 ${product.unitWeight}"
+                        }"+getString(R.string.rub_za_1)+ product.unitWeight
 
                     } else {
                         Price.alpha = 1f
@@ -78,7 +81,7 @@ class FragmentCurrentProduct : Fragment() {
 
                     txItem.text = product.name
 
-                    Price.text = "${product.price.toString()} руб за 1 ${product.unitWeight}"
+                    Price.text = "${product.price}" + getString(R.string.rub_za_1) + product.unitWeight
 
                     textInfoAboutCountry.text = product.country
                     textInfoAboutStorage.text = product.storage

@@ -1,5 +1,6 @@
 package ru.netology.estore.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +11,14 @@ import ru.netology.estore.R
 import ru.netology.estore.databinding.ItemDataHistoryOfOrdersBinding
 import ru.netology.estore.dto.DataHistory
 
-class DataHistoryAdapter():
+class DataHistoryAdapter:
     ListAdapter<DataHistory, DataHistoryAdapter.DataHistoryOfOrdersHolder>(HistoryDiffCallback()) {
 
     var historyList = emptyList<DataHistory>()
-
     class DataHistoryOfOrdersHolder(item: View) : RecyclerView.ViewHolder(item) {
         val binding = ItemDataHistoryOfOrdersBinding.bind(item)
 
+        @SuppressLint("SetTextI18n")
         fun bind(dataHistory: DataHistory) {
             binding.textHistory1.text = "Заказ на сумму ${dataHistory.sumOrder} руб"
             binding.textHistory2.text = if(dataHistory.pickUp) "Самовывоз" else "Доставка"
@@ -47,8 +48,5 @@ class HistoryDiffCallback : DiffUtil.ItemCallback<DataHistory>() {
     }
 
     override fun getChangePayload(oldItem: DataHistory, newItem: DataHistory): Any =
-        Payload(
-//            liked = newItem.isFavorite.takeIf { oldItem.isFavorite != it },
-//            pushButtonAdd = newItem.inBasket.takeIf { oldItem.inBasket != it },
-        )
+        Payload()
 }

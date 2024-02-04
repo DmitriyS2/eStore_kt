@@ -49,6 +49,8 @@ class MainViewModel @Inject constructor(
 
     val pointBottomMenu:MutableLiveData<Int> = MutableLiveData(-1)
 
+    val language:MutableLiveData<String> = MutableLiveData(null)
+
     init {
         getAll()
         auth.authStateFlow.value.username?.let {

@@ -9,20 +9,20 @@
         <item
             android:id="@+id/allProducts"
             android:icon="@drawable/first_24"
-            android:title="Весь ассортимент" />
+            android:title="@string/whole_range" />
 
         <item
             android:id="@+id/fruit"
             android:icon="@drawable/second_24"
-            android:title="Фрукты" />
+            android:title="@string/Fruits" />
         <item
             android:id="@+id/vegetable"
             android:icon="@drawable/third_24"
-            android:title="Овощи" />
+            android:title="@string/Vegetables" />
         <item
             android:id="@+id/bakery"
             android:icon="@drawable/fourth_24"
-            android:title="Бакалея"
+            android:title="@string/Bakery"
             />
 
 
@@ -30,17 +30,17 @@
             android:id="@+id/hit"
             android:icon="@drawable/hit_24"
             app:actionViewClass="android.widget.TextView"
-            android:title="Хиты продаж" />
+            android:title="@string/Bestsellers" />
         <item
             android:id="@+id/discount"
             android:icon="@drawable/discount_24"
             app:actionViewClass="android.widget.TextView"
-            android:title="Акция" />
+            android:title="@string/Discount" />
         <item
             android:id="@+id/favorite"
             android:icon="@drawable/like_24"
             app:actionViewClass="android.widget.TextView"
-            android:title="Избранное" />
+            android:title="@string/Favorite" />
 
     </group>
 

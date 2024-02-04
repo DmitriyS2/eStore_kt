@@ -4,22 +4,26 @@
     <group android:id="@+id/unauthenticated">
         <item
             android:id="@+id/signin"
-            android:title="Sign In"
+            android:title="@string/sign_in"
             app:showAsAction="never" />
         <item
             android:id="@+id/signup"
-            android:title="Sign Up"
+            android:title="@string/sign_up"
             app:showAsAction="never" />
     </group>
     <group android:id="@+id/authenticated">
         <item
             android:id="@+id/historyOfOrders"
-            android:title="History of orders"
+            android:title="@string/history_of_orders"
             app:showAsAction="never" />
 
         <item
             android:id="@+id/signout"
-            android:title="Sign Out"
+            android:title="@string/signout"
             app:showAsAction="never" />
     </group>
+    <item
+        android:id="@+id/language"
+        android:title="@string/language"
+        app:showAsAction="never" />
 </menu>

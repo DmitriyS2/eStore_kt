@@ -12,7 +12,7 @@ import ru.netology.estore.databinding.FragmentHistoryOfOrdersBinding
 import ru.netology.estore.viewmodel.MainViewModel
 
 class FragmentHistory : Fragment() {
-    lateinit var binding: FragmentHistoryOfOrdersBinding
+  //  lateinit var binding: FragmentHistoryOfOrdersBinding
 
     private val viewModel:MainViewModel by activityViewModels()
 
@@ -20,7 +20,7 @@ class FragmentHistory : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHistoryOfOrdersBinding.inflate(inflater, container, false)
+        val binding = FragmentHistoryOfOrdersBinding.inflate(inflater, container, false)
 
         val adapter = DataHistoryAdapter()
 

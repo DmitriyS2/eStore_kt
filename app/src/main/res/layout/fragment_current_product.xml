@@ -17,7 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:cardCornerRadius="10dp"
         android:layout_margin="20dp"
-
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +33,7 @@
                 android:src="@drawable/hit"
                 app:layout_constraintStart_toStartOf="@id/avatar"
                 app:layout_constraintTop_toTopOf="parent"
-                />
+                android:contentDescription="@string/hit" />
 
             <ImageView
                 android:id="@+id/pictureDiscount"
@@ -43,7 +42,7 @@
                 android:src="@drawable/discount"
                 app:layout_constraintEnd_toEndOf="@id/avatar"
                 app:layout_constraintTop_toTopOf="@id/hit"
-                 />
+                android:contentDescription="@string/discount" />
 
             <TextView
                 android:id="@+id/textDiscount"
@@ -54,7 +53,6 @@
                 app:layout_constraintEnd_toStartOf="@id/pictureDiscount"
                 app:layout_constraintTop_toTopOf="@id/pictureDiscount"
                 tools:text="-10%"
-
                 />
 
             <ImageView
@@ -65,7 +63,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/hit"
-                tools:src="@drawable/banan" />
+                tools:src="@drawable/banan"
+                android:contentDescription="@string/avatar" />
 
             <TextView
                 android:id="@+id/txItem"
@@ -104,7 +103,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="pictureDiscount, textDiscount, newPrice"
-
                 />
 
             <TextView
@@ -121,7 +119,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Страна-производитель:"
+                android:text="@string/country"
                 app:layout_constraintTop_toBottomOf="@id/textInfoAboutProduct"
                 app:layout_constraintStart_toStartOf="@id/avatar"
                 app:layout_constraintEnd_toEndOf="@id/avatar"
@@ -145,7 +143,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Условия хранения:"
+                android:text="@string/storage"
                 app:layout_constraintTop_toBottomOf="@id/textInfoAboutCountry"
                 app:layout_constraintStart_toStartOf="@id/avatar"
                 app:layout_constraintEnd_toEndOf="@id/avatar"
@@ -169,7 +167,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Вид упаковки:"
+                android:text="@string/type_packet"
                 app:layout_constraintTop_toBottomOf="@id/textInfoAboutStorage"
                 app:layout_constraintStart_toStartOf="@id/avatar"
                 app:layout_constraintEnd_toEndOf="@id/avatar"

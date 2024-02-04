@@ -26,9 +26,10 @@ class SignInOutDialogFragment(
     val textNegButton: String,
     val flagSignIn: Boolean = true,
     val flagOrder: Boolean = true,
+    val flagSignOut:Boolean = false,
     val navigateTo: Int
 ) : DialogFragment() {
-    lateinit var binding: FragmentSignInOutDialogBinding
+  //  lateinit var binding: FragmentSignInOutDialogBinding
 
     private val topTextViewModel: TopTextViewModel by activityViewModels()
     private val orderViewModel: OrderViewModel by activityViewModels()
@@ -39,7 +40,7 @@ class SignInOutDialogFragment(
     lateinit var auth: AppAuth
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = FragmentSignInOutDialogBinding.inflate(layoutInflater)
+        val binding = FragmentSignInOutDialogBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(requireContext())
 
         binding.fragmentDialog.text = text
@@ -61,7 +62,7 @@ class SignInOutDialogFragment(
                     viewModel.pointBottomMenu.value = 0
                     findNavController()
                         .navigate(R.id.fragmentForCatalog)
-                } else {
+                } else if(flagSignOut){
                     auth.removeAuth()
                     viewModel.reNewDataFull()
                     topTextViewModel.text.value = Data.allGroup
@@ -70,6 +71,8 @@ class SignInOutDialogFragment(
                     viewModel.pointBottomMenu.value = 0
                     findNavController()
                         .navigate(R.id.fragmentForCatalog)
+                } else {
+                    viewModel.language.value = "ru"
                 }
             }
             .setNegativeButton(textNegButton) { _, _ ->
@@ -85,6 +88,8 @@ class SignInOutDialogFragment(
                     }
                     findNavController()
                         .navigate(navigateTo)
+                } else if(!flagSignOut && !flagOrder) {
+                    viewModel.language.value = "en"
                 }
             }
             .create()

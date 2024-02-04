@@ -26,12 +26,14 @@ class FragmentForCatalog : Fragment() {
     private val authViewModel:AuthViewModel by activityViewModels()
     private val topTextViewModel:TopTextViewModel by activityViewModels()
 
-    lateinit var binding: FragmentForCatalogBinding
+  //  lateinit var binding: FragmentForCatalogBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        val binding = FragmentForCatalogBinding.inflate(inflater, container, false)
 
         val adapter = ProductAdapter(object : Listener {
             override fun like(product: Product) {
@@ -72,29 +74,29 @@ class FragmentForCatalog : Fragment() {
             }
         })
 
-        binding = FragmentForCatalogBinding.inflate(inflater)
+     //   binding = FragmentForCatalogBinding.inflate(inflater)
         binding.rwProducts.layoutManager = GridLayoutManager(activity, 2)
         binding.rwProducts.adapter = adapter
 
         viewModel.dataFull.observe(viewLifecycleOwner) { full ->
             val list = when (full.status) {
-                Data.allGroup -> viewModel.dataFull.value?.products
+                getString(R.string.whole_range) -> viewModel.dataFull.value?.products
 
-                Data.fruitGroup -> viewModel.dataFull.value?.products?.filter { it.group == Data.fruitGroup }
+                getString(R.string.Fruits) -> viewModel.dataFull.value?.products?.filter { it.group == Data.fruitGroup }
                     .orEmpty()
 
-                Data.vegetableGroup -> viewModel.dataFull.value?.products?.filter { it.group == Data.vegetableGroup }
+                getString(R.string.Vegetables) -> viewModel.dataFull.value?.products?.filter { it.group == Data.vegetableGroup }
                     .orEmpty()
 
-                Data.bakeryGroup -> viewModel.dataFull.value?.products?.filter { it.group == Data.bakeryGroup }
+                getString(R.string.Bakery) -> viewModel.dataFull.value?.products?.filter { it.group == Data.bakeryGroup }
                     .orEmpty()
 
-                Data.hitGroup -> viewModel.dataFull.value?.products?.filter { it.isHit }.orEmpty()
+                getString(R.string.Bestsellers) -> viewModel.dataFull.value?.products?.filter { it.isHit }.orEmpty()
 
-                Data.discountGroup -> viewModel.dataFull.value?.products?.filter { it.isDiscount }
+                getString(R.string.Discount) -> viewModel.dataFull.value?.products?.filter { it.isDiscount }
                     .orEmpty()
 
-                Data.favoriteGroup -> viewModel.dataFull.value?.products?.filter { it.isFavorite }
+                getString(R.string.Favorite) -> viewModel.dataFull.value?.products?.filter { it.isFavorite }
                     .orEmpty()
 
                 else -> emptyList()
@@ -112,11 +114,11 @@ class FragmentForCatalog : Fragment() {
 
     private fun mustSignIn() {
         val menuDialog = SignInOutDialogFragment(
-            title = "Нужна регистрация",
-            text = "Для этого действия необходимо войти в систему",
+            title = getString(R.string.need_registration),
+            text = getString(R.string.need_yo_signin),
             icon = R.drawable.info_24,
-            textPosButton = "Sign In",
-            textNegButton = "Позже",
+            textPosButton = getString(R.string.sign_in),
+            textNegButton = getString(R.string.later),
             flagSignIn = true,
             flagOrder = false,
             navigateTo = R.id.fragmentForCatalog

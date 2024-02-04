@@ -1,5 +1,8 @@
 package ru.netology.estore.dto
 
+import android.icu.math.BigDecimal.ROUND_DOWN
+import java.math.BigDecimal
+
 data class Product(
     val id:Int,
     val name:String,
@@ -17,5 +20,14 @@ data class Product(
     var sum: Double = 0.0,
     val country:String,
     val storage:String,
-    val pack:String = Data.pack
-)
+    val pack:String = Data.pack,
+//    val priceN:BigDecimal,
+//    var sumN:BigDecimal,
+
+) {
+    init {
+//        priceN.setScale(2,ROUND_DOWN)
+//        sumN.setScale(2, ROUND_DOWN)
+//        sumN = BigDecimal(0.0)
+    }
+}

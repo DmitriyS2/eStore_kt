@@ -44,9 +44,10 @@
                 android:src="@drawable/mode_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/point1"
-                app:layout_constraintTop_toTopOf="@id/point1" />
+                app:layout_constraintTop_toTopOf="@id/point1"
+                android:contentDescription="@string/correct" />
 
-            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            <ScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
@@ -57,7 +58,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/point1"
                 app:layout_constraintTop_toBottomOf="@id/point1">
-
 
                 <TextView
                     android:id="@+id/textOrder"
@@ -73,7 +73,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
-                android:text="Продолжить"
+                android:text="@string/button_continue"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/scrollView" />
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:text="Корректировать"
+                android:text="@string/button_correct"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/buttonPoint1Yes" />
 
@@ -91,12 +91,11 @@
                 android:id="@+id/groupOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="buttonPoint1No, buttonPoint1Yes, scrollView, textOrder" />
+                app:constraint_referenced_ids="buttonPoint1No, buttonPoint1Yes, scrollView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
-
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -135,7 +134,8 @@
                 android:src="@drawable/mode_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/point2delivery"
-                app:layout_constraintTop_toTopOf="@id/point2delivery" />
+                app:layout_constraintTop_toTopOf="@id/point2delivery"
+                android:contentDescription="@string/correct" />
 
             <Button
                 android:id="@+id/buttonDelivery"
@@ -144,7 +144,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="8dp"
-                android:text="Доставка"
+                android:text="@string/delivery"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/point2delivery" />
@@ -154,7 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:text="Самовывоз"
+                android:text="@string/pickup"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/buttonDelivery" />
 
@@ -192,7 +192,6 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="3. Выберите магазин, откуда заберете" />
@@ -206,7 +205,8 @@
                 android:src="@drawable/mode_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/point3Address"
-                app:layout_constraintTop_toTopOf="@id/point3Address" />
+                app:layout_constraintTop_toTopOf="@id/point3Address"
+                android:contentDescription="@string/correct" />
 
             <RadioGroup
                 android:id="@+id/radio"
@@ -225,9 +225,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_weight="1"
-                    android:text="Магазин №1: К.Маркса, 1"
+                    android:text="@string/shop1"
                     android:textColor="@color/black"
-
                     />
 
                 <RadioButton
@@ -236,7 +235,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_weight="1"
-                    android:text="Магазин №2: Ленина, 67"
+                    android:text="@string/shop2"
                     android:textColor="@color/black" />
 
                 <RadioButton
@@ -245,7 +244,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_weight="1"
-                    android:text="Магазин №3: Космонавтов, 31"
+                    android:text="@string/shop3"
                     android:textColor="@color/black" />
 
                 <RadioButton
@@ -254,7 +253,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_weight="1"
-                    android:text="Магазин №4: Строителей, 103"
+                    android:text="@string/shop4"
                     android:textColor="@color/black" />
             </RadioGroup>
 
@@ -301,15 +300,15 @@
                 android:src="@drawable/mode_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/addressDelivery"
-
-                app:layout_constraintTop_toTopOf="@id/addressDelivery" />
+                app:layout_constraintTop_toTopOf="@id/addressDelivery"
+                android:contentDescription="@string/correct" />
 
             <Button
                 android:id="@+id/buttonEnterAddressOk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="OK"
+                android:text="@string/ok"
                 app:layout_constraintBottom_toBottomOf="@id/textInputLayoutA"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/textInputLayoutA" />
@@ -328,7 +327,7 @@
                     android:id="@+id/editAddressDelivery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Введите адрес"
+                    android:hint="@string/enter_address"
                     android:inputType="text"
                     android:textColor="@color/black" />
 
@@ -374,7 +373,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="4. Оплата картой"
-
                 />
 
             <ImageButton
@@ -386,10 +384,8 @@
                 android:src="@drawable/mode_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/textPayment"
-
                 app:layout_constraintTop_toTopOf="@id/textPayment"
-
-                />
+                android:contentDescription="@string/correct" />
 
             <Spinner
                 android:id="@+id/spinnerTypeOfPayment"
@@ -399,7 +395,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:entries="@array/payment"
-
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/textPayment"
                 app:layout_constraintTop_toBottomOf="@id/textPayment" />
@@ -416,7 +411,7 @@
       android:layout_marginTop="12dp"
       android:layout_marginStart="20dp"
       android:id="@+id/buttonToWaitingOrder"
-      android:text="Заказать"
+      android:text="@string/order"
       />
 
     <Button
@@ -427,7 +422,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
         android:id="@+id/buttonCancelOrder"
-        android:text="Отменить"
+        android:text="@string/cancel"
         />
 
     <androidx.constraintlayout.widget.Group
@@ -474,7 +469,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="Спасибо!"
+                android:text="@string/thankyou"
                 android:textSize="20sp"
                 android:layout_marginTop="50dp"
                 />

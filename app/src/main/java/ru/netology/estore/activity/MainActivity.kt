@@ -21,14 +21,12 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.ActivityMainBinding
-import ru.netology.estore.dto.Data
 import ru.netology.estore.model.FullProduct
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
 import ru.netology.estore.viewmodel.OrderViewModel
 import ru.netology.estore.viewmodel.TopTextViewModel
 import java.util.Locale
-
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -71,25 +69,25 @@ class MainActivity : AppCompatActivity() {
                     viewModel.pointBottomMenu.value = 0
                     when (it.itemId) {
                         R.id.allProducts -> {
-                            goToFragment(Data.allGroup)
+                            goToFragment(getString(R.string.whole_range))
                         }
                         R.id.fruit -> {
-                            goToFragment(Data.fruitGroup)
+                            goToFragment(getString(R.string.Fruits))
                         }
                         R.id.vegetable -> {
-                            goToFragment(Data.vegetableGroup)
+                            goToFragment(getString(R.string.Vegetables))
                         }
                         R.id.bakery -> {
-                            goToFragment(Data.bakeryGroup)
+                            goToFragment(getString(R.string.Bakery))
                         }
                         R.id.hit -> {
-                            goToFragment(Data.hitGroup)
+                            goToFragment(getString(R.string.Bestsellers))
                         }
                         R.id.discount -> {
-                            goToFragment(Data.discountGroup)
+                            goToFragment(getString(R.string.Discount))
                         }
                         R.id.favorite -> {
-                            goToFragment(Data.favoriteGroup)
+                            goToFragment(getString(R.string.Favorite))
                         }
                     }
                 }
@@ -104,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                         drawer.openDrawer(GravityCompat.START)
                     }
                     R.id.fragmentForBasket -> {
-                        topTextViewModel.text.value = Data.basketGroup
+                        topTextViewModel.text.value = getString(R.string.Basket)
                         viewModel.pointBottomMenu.value = 1
                         findNavController(R.id.nav_host_fragment)
                             .navigate(R.id.fragmentForBasket)
@@ -113,7 +111,7 @@ class MainActivity : AppCompatActivity() {
                         viewModel.deleteFromBasketWeightZero()
                         if (authViewModel.authenticated) {
                             if (viewModel.dataFull.value?.emptyBasket == false) {
-                                topTextViewModel.text.value = Data.orderGroup
+                                topTextViewModel.text.value = getString(R.string.order)
                                 val list =
                                     viewModel.dataFull.value?.products?.filter { it.inBasket }
                                         .orEmpty()
@@ -128,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                                 findNavController(R.id.nav_host_fragment)
                                     .navigate(R.id.orderFragment)
                             } else {
-                                topTextViewModel.text.value = Data.orderGroup
+                                topTextViewModel.text.value = getString(R.string.order)
                                 viewModel.pointBottomMenu.value = 1
                                 findNavController(R.id.nav_host_fragment)
                                     .navigate(R.id.orderFragment)
@@ -161,13 +159,13 @@ class MainActivity : AppCompatActivity() {
                     viewModel.pointBottomMenu.value = -1
                     when (item.itemId) {
                         R.id.signin -> {
-                            topTextViewModel.text.value = Data.signInGroup
+                            topTextViewModel.text.value = getString(R.string.sign_in)
                             findNavController(R.id.nav_host_fragment)
                                 .navigate(R.id.signInFragment)
                             true
                         }
                         R.id.signup -> {
-                            topTextViewModel.text.value = Data.signUpGroup
+                            topTextViewModel.text.value = getString(R.string.sign_up)
                             findNavController(R.id.nav_host_fragment)
                                 .navigate(R.id.signUpFragment)
                             true
@@ -178,10 +176,14 @@ class MainActivity : AppCompatActivity() {
                         }
                         R.id.historyOfOrders -> {
                             viewModel.getHistory(authViewModel.data.value.username)
-                            topTextViewModel.text.value = Data.historyGroup
+                            topTextViewModel.text.value = getString(R.string.history_of_orders)
                             viewModel.pointBottomMenu.value = -1
                             findNavController(R.id.nav_host_fragment)
                                 .navigate(R.id.fragmentHistory)
+                            true
+                        }
+                        R.id.language -> {
+                            dialogLanguage()
                             true
                         }
                         else -> false
@@ -214,7 +216,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        viewModel.language.observe(this) {
+            it?.let {lang ->
+                changeLanguage(lang)
+            }
+        }
     }
+
 
     private fun turnOnOffPointBottomMenuCheckable(flag: Boolean) {
         binding.bottomMenu.menu.forEach {
@@ -240,13 +249,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun areYouSureSignOut() {
         val menuDialog = SignInOutDialogFragment(
-            title = "Выход из аккаунта",
-            text = "Вы уверены, что хотите выйти из системы?",
+            title = getString(R.string.signout),
+            text = getString(R.string.are_u_sure_signout),
             icon = R.drawable.warning_24,
-            textPosButton = "Выйти",
-            textNegButton = "Остаться",
+            textPosButton = getString(R.string.log_out),
+            textNegButton = getString(R.string.stay_in_system),
             flagSignIn = false,
             flagOrder = false,
+            flagSignOut = true,
             navigateTo = 0
         )
         val manager = supportFragmentManager
@@ -255,11 +265,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun mustSignIn(number: Int) {
         val menuDialog = SignInOutDialogFragment(
-            title = "Нужна регистрация",
-            text = "Для этого действия необходимо войти в систему",
+            title = getString(R.string.need_registration),
+            text = getString(R.string.need_yo_signin),
             icon = R.drawable.info_24,
-            textPosButton = "Sign In",
-            textNegButton = "Позже",
+            textPosButton = getString(R.string.sign_in),
+            textNegButton = getString(R.string.later),
             flagSignIn = true,
             flagOrder = false,
             navigateTo = number
@@ -268,10 +278,36 @@ class MainActivity : AppCompatActivity() {
         menuDialog.show(manager, "Sign in")
     }
 
+    private fun dialogLanguage() {
+        val menuDialog = SignInOutDialogFragment(
+            title = getString(R.string.language),
+            text = getString(R.string.choose_language),
+            icon = R.drawable.info_24,
+            textPosButton = getString(R.string.rus),
+            textNegButton = getString(R.string.engl),
+            flagSignIn = false,
+            flagOrder = false,
+            navigateTo = 0
+        )
+        val manager = supportFragmentManager
+        menuDialog.show(manager, "Language")
+    }
+
     private fun showCountDrawerItem(view:TextView?, text:String) {
         view?.gravity = Gravity.CENTER_VERTICAL
         view?.setTypeface(null, Typeface.BOLD)
         view?.setTextColor(resources.getColor(R.color.red, null))
         view?.text = text
+    }
+
+    private fun changeLanguage(lang:String) {
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        val configuration = Configuration()
+        configuration.locale = locale
+        baseContext.resources.updateConfiguration(configuration, null)
+        topTextViewModel.text.value = getString(R.string.app_name)
+        viewModel.language.value = null
+        this.recreate()
     }
 }

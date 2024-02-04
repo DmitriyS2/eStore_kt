@@ -1,11 +1,13 @@
 package ru.netology.estore.dto
 
+import android.provider.Settings.System.getString
 import ru.netology.estore.R
+
 import kotlin.math.roundToInt
 
 object Data {
 
-    val aZ: String = "qwertyuiopASDFGHJKLzxcvbnmQWERTYUIOPasdfghjklZXCVBNM"
+    const val aZ: String = "qwertyuiopASDFGHJKLzxcvbnmQWERTYUIOPasdfghjklZXCVBNM"
     var idProduct = 0
     val discounts = listOf(5, 10, 15, 20, 25, 30)
 
@@ -29,23 +31,23 @@ object Data {
     val bakeryName =
         listOf("Ржаной хлеб", "Белый хлеб", "Батон", "Баранки", "Сушки", "Печенье")
 
-    val allGroup = "Весь ассортимент"
-    val fruitGroup = "Фрукты"
-    val vegetableGroup = "Овощи"
-    val bakeryGroup = "Бакалея"
-    val hitGroup = "Хиты продаж"
-    val discountGroup = "АКЦИЯ!!!"
-    val favoriteGroup = "Избранное"
-    val basketGroup = "Корзина"
-    val signInGroup = "SignIn"
-    val signUpGroup = "SignUp"
-    val orderGroup = "Заказ"
-    val eStoreGroup = "eStore"
-    val historyGroup = "История заказов"
+    const val allGroup = "Весь ассортимент"
+    const val fruitGroup = "Фрукты"
+    const val vegetableGroup = "Овощи"
+    const val bakeryGroup = "Бакалея"
+    const val hitGroup = "Хиты продаж"
+    const val discountGroup = "АКЦИЯ!!!"
+    const val favoriteGroup = "Избранное"
+    const val basketGroup = "Корзина"
+    const val signInGroup = "SignIn"
+    const val signUpGroup = "SignUp"
+    const val orderGroup = "Заказ"
+    const val eStoreGroup = "eStore"
+    const val historyGroup = "История заказов"
 
     val country = listOf("Россия", "Эквадор")
     val storage = listOf("Хранить в сухом прохладном месте", "Хранить в холодильнике")
-    val pack:String = "Пакет"
+    const val pack:String = "Пакет"
 
     val fruitsPrice = listOf(109.5, 89.9, 179.0, 211.5, 25.0, 189.9)
     val vegetablesPrice = listOf(22.5, 34.3, 29.0, 109.9, 78.5, 111.0)

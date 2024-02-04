@@ -1,9 +1,80 @@
 <resources>
-    <string name="app_name">eStore</string>
+    <string name="app_name" translatable="false">eStore</string>
+    <string name="rub_za_1"> руб за 1</string>
+    <string name="rub">" руб"</string>
+    <string name="need_registration">Нужна регистрация</string>
+    <string name="need_yo_signin">Для этого действия необходимо войти в систему</string>
+    <string name="sign_in">Войти</string>
+    <string name="later">Позже</string>
+    <string name="first_point">1. Ваш заказ на %1$s руб</string>
+    <string name="final_order_pickup">Вы сможете забрать Ваш заказ через 1 час в %1$s</string>
+    <string name="final_order_delivery">Мы привезем Ваш заказ через 1 час в %1$s</string>
+    <string name="delivery">Доставка</string>
+    <string name="pickup">Самовывоз</string>
+    <string name="ask_delivery">Куда Вам привезти?</string>
+    <string name="ask_pickup">Выберите магазин, откуда заберете</string>
+    <string name="ask_delivery_or_pickup">Сами заберете или Вам привезти?</string>
+    <string name="type_of_payment">Способ оплаты: </string>
+    <string name="select_payment">Выберите способ оплаты</string>
+    <string name="field_must_be_not_empty">Поле должно быть заполнено</string>
+    <string name="cancel_order">Отмена заказа</string>
+    <string name="are_u_sure_cancel_order">Вы уверены, что хотите отменить заказ?</string>
+    <string name="cancel">Отменить</string>
+    <string name="order">Заказать</string>
+    <string name="signout">Выход из аккаунта</string>
+    <string name="are_u_sure_signout">Вы уверены, что хотите выйти из системы?</string>
+    <string name="log_out">Выйти</string>
+    <string name="stay_in_system">Остаться</string>
+    <string name="wrong_username_password">Неверный логин/пароль</string>
+    <string name="login_already_exists">Такой login уже существует</string>
+    <string name="password_doesnt_match">Пароль не совпадает</string>
+    <string name="menu" translatable="false">menu</string>
+    <string name="hit" translatable="false">hit</string>
+    <string name="discount" translatable="false">discount</string>
+    <string name="avatar" translatable="false">avatar</string>
+    <string name="country">Страна-производитель:</string>
+    <string name="storage">Условия хранения:</string>
+    <string name="type_packet">Вид упаковки:</string>
+    <string name="basket_empty">В корзине пусто</string>
+    <string name="checkout">К оформлению</string>
+    <string name="correct" translatable="false">correct</string>
+    <string name="button_continue">Продолжить</string>
+    <string name="button_correct">Корректировать</string>
+    <string name="shop1">Магазин №1: К.Маркса, 1</string>
+    <string name="shop2">Магазин №2: Ленина, 67</string>
+    <string name="shop3">Магазин №3: Космонавтов, 31</string>
+    <string name="shop4">Магазин №4: Строителей, 103</string>
+    <string name="ok">OK</string>
+    <string name="enter_address">Введите адрес</string>
+    <string name="thankyou">Спасибо!</string>
+    <string name="enter_username">Введите логин</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="enter_name">Введите имя</string>
+    <string name="confirm_password">Подтвердите пароль</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="delete" translatable="false">delete</string>
+    <string name="like" translatable="false">like</string>
+    <string name="button_plus" translatable="false">button_plus</string>
+    <string name="button_minus" translatable="false">button_minus</string>
+    <string name="add">Добавить</string>
+    <string name="Catalog">Каталог</string>
+    <string name="Basket">Корзина</string>
+    <string name="Order">Заказ</string>
+    <string name="whole_range">Весь ассортимент</string>
+    <string name="Fruits">Фрукты</string>
+    <string name="Vegetables">Овощи</string>
+    <string name="Bakery">Бакалея</string>
+    <string name="Bestsellers">Хиты продаж</string>
+    <string name="Discount">Акция</string>
+    <string name="Favorite">Избранное</string>
+    <string name="history_of_orders">История заказов</string>
+    <string name="language">Язык</string>
+    <string name="choose_language">Выберите язык</string>
+    <string name="rus">Русский</string>
+    <string name="engl">Английский</string>
     <string-array name="payment">
         <item>Наличными</item>
         <item>Картой</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

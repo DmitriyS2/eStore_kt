@@ -14,13 +14,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="eStore"
+        android:text="@string/app_name"
         android:id="@+id/textEstore"
         android:textSize="100sp"
         android:textColor="@color/orange"
         android:textStyle="italic|bold"
         android:layout_marginBottom="50dp"
         />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package ru.netology.estore.activity
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -38,14 +39,16 @@ class FragmentOrder : Fragment() {
     private val topTextViewModel:TopTextViewModel by activityViewModels()
     private val orderViewModel:OrderViewModel by activityViewModels()
 
-    lateinit var binding: FragmentOrderBinding
+  //  lateinit var binding: FragmentOrderBinding
+    private var fragmentBinding: FragmentOrderBinding? = null
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentOrderBinding.inflate(inflater, container, false)
-
+        val binding = FragmentOrderBinding.inflate(inflater, container, false)
+        fragmentBinding = binding
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.data.collectLatest {
@@ -59,8 +62,7 @@ class FragmentOrder : Fragment() {
             }
         }
 
-
-        binding.point1.text = "1. Ваш заказ на ${vieModel.amountOrder.value} руб"
+        binding.point1.text = getString(R.string.first_point, vieModel.amountOrder.value.toString())
         binding.point2delivery.text = "2. ${orderViewModel.typeOfDelivery}"
         binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
         binding.addressDelivery.text = "3. ${orderViewModel.addressDelivery}"
@@ -218,8 +220,10 @@ class FragmentOrder : Fragment() {
                     binding.buttonCancelOrder.visibility = View.GONE
                     binding.buttonToWaitingOrder.visibility = View.GONE
                     binding.cardViewFinalOrder.visibility = View.VISIBLE
-                    binding.textInfoWaitingOrder.text = if(orderViewModel.flagPickUp) "Вы сможете забрать Ваш заказ через 1 час в $timeOrderTime"
-                    else "Мы привезем Ваш заказ через 1 час в $timeOrderTime"
+                    binding.textInfoWaitingOrder.text = if(orderViewModel.flagPickUp) getString(R.string.final_order_pickup, timeOrderTime.toString())
+                    else getString(R.string.final_order_delivery, timeOrderTime.toString())
+//                    binding.textInfoWaitingOrder.text = if(orderViewModel.flagPickUp) "Вы сможете забрать Ваш заказ через 1 час в $timeOrderTime"
+//                    else "Мы привезем Ваш заказ через 1 час в $timeOrderTime"
                 }
             }
         }
@@ -239,25 +243,25 @@ class FragmentOrder : Fragment() {
 
         //доставка/самовывоз
         binding.buttonDelivery.setOnClickListener {
-            showDelivery(2,"Доставка")
+            showDelivery(2,getString(R.string.delivery))
             orderViewModel.flagPickUp = false
             orderViewModel.showPoint3.value = 0
             orderViewModel.showPoint4.value = 1
-            orderViewModel.addressDelivery = "Куда Вам привезти?"
+            orderViewModel.addressDelivery = getString(R.string.ask_delivery)
             binding.addressDelivery.text = orderViewModel.addressDelivery
         }
 
         binding.buttonPickup.setOnClickListener {
-            showDelivery(2,"Самовывоз")
+            showDelivery(2,getString(R.string.pickup))
             orderViewModel.flagPickUp = true
             orderViewModel.showPoint3.value = 1
             orderViewModel.showPoint4.value = 0
-            orderViewModel.addressPickUp = "Выберите магазин, откуда заберете"
+            orderViewModel.addressPickUp = getString(R.string.ask_pickup)
             binding.point3Address.text = orderViewModel.addressPickUp
         }
 
         binding.buttonCorrectTypeDelivery.setOnClickListener {
-            showDelivery(1, "Сами заберете или Вам привезти?")
+            showDelivery(1, getString(R.string.ask_delivery_or_pickup))
                  binding.radio.clearCheck()
             orderViewModel.showPoint3.value = 0
             orderViewModel.showPoint4.value = 0
@@ -267,7 +271,7 @@ class FragmentOrder : Fragment() {
         binding.radio.setOnCheckedChangeListener { group, checkedId ->
                 if(checkedId==-1){
                     orderViewModel.showPoint3.value = 0
-                    orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
+                    orderViewModel.addressPickUp =  getString(R.string.ask_pickup)
                     binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
                 }
 
@@ -285,7 +289,7 @@ class FragmentOrder : Fragment() {
 
         binding.buttonCorrectPickUp.setOnClickListener {
             binding.radio.clearCheck()
-            orderViewModel.addressPickUp =  "Выберите магазин, откуда заберете"
+            orderViewModel.addressPickUp =  getString(R.string.ask_pickup)
             binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
             orderViewModel.showPoint3.value = 1
         }
@@ -304,7 +308,7 @@ class FragmentOrder : Fragment() {
         }
 
         binding.buttonCorrectDelivery.setOnClickListener {
-            orderViewModel.addressDelivery = "Куда Вам привезти?"
+            orderViewModel.addressDelivery = getString(R.string.ask_delivery)
             orderViewModel.showPoint4.value = 1
         }
 
@@ -315,9 +319,9 @@ class FragmentOrder : Fragment() {
                 itemSelected: View, selectedItemPosition: Int, selectedId: Long
             ) {
                 (parent!!.getChildAt(0) as TextView).setTextColor(Color.BLACK)
-                (parent!!.getChildAt(0) as TextView).textSize = 15f
-                val choose = resources.getStringArray(ru.netology.estore.R.array.payment)
-                orderViewModel.typeOfPayment = "Способ оплаты: ${choose[selectedItemPosition].toString()}"
+                (parent.getChildAt(0) as TextView).textSize = 15f
+                val choose = resources.getStringArray(R.array.payment)
+                orderViewModel.typeOfPayment = getString(R.string.type_of_payment)+choose[selectedItemPosition]
                 binding.textPayment.text = "4. ${orderViewModel.typeOfPayment}"
                 orderViewModel.showPoint5.value = 2
             }
@@ -325,7 +329,7 @@ class FragmentOrder : Fragment() {
         }
 
         binding.buttonCorrectPayment.setOnClickListener {
-            orderViewModel.typeOfPayment = "Выберите способ оплаты"
+            orderViewModel.typeOfPayment = getString(R.string.select_payment)
             binding.textPayment.text = "4. ${orderViewModel.typeOfPayment}"
             orderViewModel.showPoint5.value = 1
         }
@@ -350,15 +354,22 @@ class FragmentOrder : Fragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        fragmentBinding = null
+        super.onDestroyView()
+    }
+
     companion object {
         @JvmStatic
         fun newInstance() = FragmentOrder()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showDelivery(point:Int, text:String) {
         orderViewModel.showPoint2.value = point
         orderViewModel.typeOfDelivery = text
-        binding.point2delivery.text = "2. ${orderViewModel.typeOfDelivery}"
+     //   binding.point2delivery.text = "2. ${orderViewModel.typeOfDelivery}"
+        fragmentBinding?.point2delivery?.text = "2. ${orderViewModel.typeOfDelivery}"
     }
 
     private fun goToBasket() {
@@ -369,22 +380,29 @@ class FragmentOrder : Fragment() {
 
     private fun fillField():Boolean {
         var flag = true
-        binding.apply {
+        fragmentBinding?.apply {
             if (editAddressDelivery.text.isNullOrEmpty()) {
-                editAddressDelivery.error = "Поле должно быть заполнено"
+                editAddressDelivery.error = getString(R.string.field_must_be_not_empty)
                 flag = false
             }
         }
+
+//        binding.apply {
+//            if (editAddressDelivery.text.isNullOrEmpty()) {
+//                editAddressDelivery.error = "Поле должно быть заполнено"
+//                flag = false
+//            }
+//        }
         return flag
     }
 
     private fun areYouSureCancelOrder() {
         val menuDialog = SignInOutDialogFragment(
-            title = "Отмена заказа",
-            text = "Вы уверены, что хотите отменить заказ?",
+            title = getString(R.string.cancel_order),
+            text = getString(R.string.are_u_sure_cancel_order),
             icon = R.drawable.warning_24,
-            textPosButton = "Отменить",
-            textNegButton = "Заказать",
+            textPosButton = getString(R.string.cancel),
+            textNegButton = getString(R.string.order),
             flagSignIn = false,
             flagOrder = true,
             navigateTo = 0

@@ -18,6 +18,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.estore.R
+import ru.netology.estore.databinding.FragmentSignInBinding
 import ru.netology.estore.databinding.FragmentSignUpBinding
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
@@ -26,8 +27,8 @@ import ru.netology.estore.viewmodel.TopTextViewModel
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
-    lateinit var binding: FragmentSignUpBinding
-
+  //  lateinit var binding: FragmentSignUpBinding
+  private var fragmentBinding: FragmentSignUpBinding? = null
     private val signUpViewModel: SignUpViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private val topTextViewModel: TopTextViewModel by activityViewModels()
@@ -37,7 +38,8 @@ class SignUpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        val binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        fragmentBinding = binding
 
         binding.buttonSignUp.setOnClickListener {
             if (isFieldNotNull()) {
@@ -62,7 +64,7 @@ class SignUpFragment : Fragment() {
                             } else {
                                 val toast = Toast.makeText(
                                     requireActivity(),
-                                    "Такой login уже существует",
+                                    getString(R.string.login_already_exists),
                                     Toast.LENGTH_SHORT
                                 )
                                 toast.setGravity(Gravity.TOP, 0, 0)
@@ -76,35 +78,65 @@ class SignUpFragment : Fragment() {
 
         return binding.root
     }
+    override fun onDestroyView() {
+        fragmentBinding = null
+        super.onDestroyView()
+    }
 
     fun isFieldNotNull(): Boolean {
         var flag = true
 
-        binding.apply {
+        fragmentBinding?.apply {
             if (login.text.isNullOrEmpty()) {
-                login.error = "Поле должно быть заполнено"
+                login.error = getString(R.string.field_must_be_not_empty)
                 flag = false
             }
 
             if (password.text.isNullOrEmpty()) {
-                password.error = "Поле должно быть заполнено"
+                password.error = getString(R.string.field_must_be_not_empty)
                 flag = false
             }
             if (name.text.isNullOrEmpty()) {
-                name.error = "Поле должно быть заполнено"
+                name.error = getString(R.string.field_must_be_not_empty)
                 flag = false
             }
 
             if (confirmPassword.text.isNullOrEmpty()) {
-                confirmPassword.error = "Поле должно быть заполнено"
+                confirmPassword.error = getString(R.string.field_must_be_not_empty)
                 flag = false
             }
             if(password.text.toString()!=confirmPassword.text.toString()) {
-                password.error = "Пароль не совпадает"
-                confirmPassword.error = "Пароль не совпадает"
+                password.error = getString(R.string.password_doesnt_match)
+                confirmPassword.error = getString(R.string.password_doesnt_match)
                 flag = false
             }
         }
+
+//        binding.apply {
+//            if (login.text.isNullOrEmpty()) {
+//                login.error = "Поле должно быть заполнено"
+//                flag = false
+//            }
+//
+//            if (password.text.isNullOrEmpty()) {
+//                password.error = "Поле должно быть заполнено"
+//                flag = false
+//            }
+//            if (name.text.isNullOrEmpty()) {
+//                name.error = "Поле должно быть заполнено"
+//                flag = false
+//            }
+//
+//            if (confirmPassword.text.isNullOrEmpty()) {
+//                confirmPassword.error = "Поле должно быть заполнено"
+//                flag = false
+//            }
+//            if(password.text.toString()!=confirmPassword.text.toString()) {
+//                password.error = "Пароль не совпадает"
+//                confirmPassword.error = "Пароль не совпадает"
+//                flag = false
+//            }
+//        }
         return flag
     }
 }

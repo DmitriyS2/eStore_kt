@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.estore.R
+import ru.netology.estore.databinding.FragmentOrderBinding
 import ru.netology.estore.databinding.FragmentSignInBinding
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
@@ -21,8 +22,8 @@ import ru.netology.estore.viewmodel.TopTextViewModel
 
 @AndroidEntryPoint
 class SignInFragment : Fragment() {
-    lateinit var binding:FragmentSignInBinding
-
+  //  lateinit var binding:FragmentSignInBinding
+  private var fragmentBinding: FragmentSignInBinding? = null
     private val signInViewModel: SignInViewModel by activityViewModels()
     private val authViewModel:AuthViewModel by activityViewModels()
     private val topTextViewModel:TopTextViewModel by activityViewModels()
@@ -33,7 +34,8 @@ class SignInFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSignInBinding.inflate(layoutInflater, container, false)
+        val binding = FragmentSignInBinding.inflate(layoutInflater, container, false)
+        fragmentBinding = binding
 
         binding.buttonSignIn.setOnClickListener {
             if (isFieldNotNull()) {
@@ -57,7 +59,7 @@ class SignInFragment : Fragment() {
 
                         // в ДБ тоже нет такого user'а - значит неверный логин/пароль
                         -2 ->  {
-                            val toast = Toast.makeText(requireActivity(), "Неверный login/password", Toast.LENGTH_SHORT)
+                            val toast = Toast.makeText(requireActivity(), getString(R.string.wrong_username_password), Toast.LENGTH_SHORT)
                             toast.setGravity(Gravity.TOP, 0, 0)
                             toast.show()
                             signInViewModel.stateAuth.value = 0
@@ -68,21 +70,38 @@ class SignInFragment : Fragment() {
         }
         return binding.root
     }
+    override fun onDestroyView() {
+        fragmentBinding = null
+        super.onDestroyView()
+    }
 
     private fun isFieldNotNull(): Boolean {
         var flag = true
 
-        binding.apply {
+        fragmentBinding?.apply {
             if (login.text.isNullOrEmpty()) {
-                login.error = "Поле должно быть заполнено"
+                login.error = getString(R.string.field_must_be_not_empty)
                 flag = false
             }
 
             if (password.text.isNullOrEmpty()) {
-                password.error = "Поле должно быть заполнено"
+                password.error = getString(R.string.field_must_be_not_empty)
                 flag = false
             }
         }
+
+//        binding.apply {
+//            if (login.text.isNullOrEmpty()) {
+//                login.error = "Поле должно быть заполнено"
+//                flag = false
+//            }
+//
+//            if (password.text.isNullOrEmpty()) {
+//                password.error = "Поле должно быть заполнено"
+//                flag = false
+//            }
+//        }
         return flag
     }
+
 }

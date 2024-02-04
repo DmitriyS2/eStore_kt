@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rub_za_1"> rub for 1</string>
+    <string-array name="payment">
+        <item>Cash</item>
+        <item>by Card</item>
+    </string-array>
+    <string name="rub">rub</string>
+    <string name="need_registration">Registration required</string>
+    <string name="need_yo_signin">You must be logged in to perform this action</string>
+    <string name="sign_in">Sign In</string>
+    <string name="later">Later</string>
+    <string name="first_point">1. Your order is for %1$s rub</string>
+    <string name="final_order_pickup">You can pick up your order in 1 hour at %1$s</string>
+    <string name="final_order_delivery">We will deliver your order in 1 hour at %1$s</string>
+    <string name="delivery">Delivery</string>
+    <string name="pickup">Pickup</string>
+    <string name="ask_delivery">Where should we bring it to you?</string>
+    <string name="ask_pickup">Select the store where you will pick it up</string>
+    <string name="ask_delivery_or_pickup">Will you pick it up yourself or bring it to you?</string>
+    <string name="type_of_payment">"Type of payment: "</string>
+    <string name="select_payment">Select a payment method</string>
+    <string name="field_must_be_not_empty">Field must be filled in</string>
+    <string name="cancel_order">Cancelation order</string>
+    <string name="are_u_sure_cancel_order">Are you sure you want to cancel your order?</string>
+    <string name="cancel">Cancel</string>
+    <string name="order">Order</string>
+    <string name="signout">SIgn out</string>
+    <string name="are_u_sure_signout">Are you sure you want to sign out?</string>
+    <string name="log_out">Log out</string>
+    <string name="stay_in_system">Stay logged in</string>
+    <string name="wrong_username_password">Wrong username/password</string>
+    <string name="login_already_exists">This username already exists</string>
+    <string name="password_doesnt_match">Password doesn\'t match</string>
+    <string name="country">Manufacturer country</string>
+    <string name="storage">Storage conditions</string>
+    <string name="type_packet">Type of packaging</string>
+    <string name="basket_empty">Basket is empty</string>
+    <string name="checkout">Checkout</string>
+    <string name="button_continue">Continue</string>
+    <string name="button_correct">Correct</string>
+    <string name="shop1">Shop No. 1: K. Marx, 1</string>
+    <string name="shop2">"Shop No. 2: Lenina, 67 "</string>
+    <string name="shop3">Shop No. 3: Kosmonavtov, 31</string>
+    <string name="shop4">Shop No. 4: Stroiteley, 103</string>
+    <string name="ok">Ok</string>
+    <string name="enter_address">Enter address</string>
+    <string name="thankyou">Thank You!</string>
+    <string name="enter_username">Enter username</string>
+    <string name="enter_password">Enter password</string>
+    <string name="enter_name">Enter name</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="sign_up">SIgn up</string>
+    <string name="add">Add</string>
+    <string name="Catalog">Catalog</string>
+    <string name="Basket">Basket</string>
+    <string name="Order">Order</string>
+    <string name="whole_range">Whole range</string>
+    <string name="Fruits">Fruits</string>
+    <string name="Vegetables">Vegetables</string>
+    <string name="Bakery">Bakery</string>
+    <string name="Bestsellers">Bestsellers</string>
+    <string name="Discount">Discount</string>
+    <string name="Favorite">Favorite</string>
+    <string name="history_of_orders">History of orders</string>
+    <string name="language">Language</string>
+    <string name="choose_language">Choose language</string>
+    <string name="rus">Russian</string>
+    <string name="engl">English</string>
+
+</resources>
