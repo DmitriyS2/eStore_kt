@@ -1,6 +1,5 @@
 package ru.netology.estore.dto
 
-import android.provider.Settings.System.getString
 import ru.netology.estore.R
 
 import kotlin.math.roundToInt

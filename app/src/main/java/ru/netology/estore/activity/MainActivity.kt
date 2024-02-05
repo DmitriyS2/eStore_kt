@@ -21,6 +21,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.ActivityMainBinding
+import ru.netology.estore.dto.DataLang
+import ru.netology.estore.dto.DataRus
 import ru.netology.estore.model.FullProduct
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
@@ -220,6 +222,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.language.observe(this) {
             it?.let {lang ->
                 changeLanguage(lang)
+            }
+        }
+        viewModel.dataLanguage.observe(this) {
+            it?.let {
+                viewModel.changeLang()
             }
         }
     }

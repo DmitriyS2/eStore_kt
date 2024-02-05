@@ -8,7 +8,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.netology.estore.auth.AppAuth
 import ru.netology.estore.dto.Data
+import ru.netology.estore.dto.DataEng
 import ru.netology.estore.dto.DataHistory
+import ru.netology.estore.dto.DataLang
+import ru.netology.estore.dto.DataRus
 import ru.netology.estore.model.FullProduct
 import ru.netology.estore.dto.Product
 import ru.netology.estore.repository.ProductRepository
@@ -49,26 +52,40 @@ class MainViewModel @Inject constructor(
 
     val pointBottomMenu:MutableLiveData<Int> = MutableLiveData(-1)
 
-    val language:MutableLiveData<String> = MutableLiveData(null)
+    val language:MutableLiveData<String?> = MutableLiveData("ru")
+    val dataLanguage:MutableLiveData<DataLang?> = MutableLiveData(null)
 
     init {
-        getAll()
+      //  dataLanguage.value = DataRus
+        getAll(DataRus)
         auth.authStateFlow.value.username?.let {
             getHistory(auth.authStateFlow.value.username)
         }
     }
 
-    private fun getAll() {
-        dataFull.value = FullProduct(products = repository.fillAllProducts(), status = Data.allGroup)
+    private fun getAll(dataLang: DataLang) {
+        dataFull.value = FullProduct(products = repository.fillAllProducts(dataLang), status = dataLang.allGroup)
+        initAllProductsOriginal()
+    }
+
+    private fun initAllProductsOriginal() {
         repository.allProductsOriginal = dataFull.value?.products.orEmpty() as ArrayList<Product>
     }
 
     fun reNewDataFull() {
-        dataFull.value = dataFull.value?.copy(products = repository.reNewDataFull(), status = Data.allGroup)
+        dataFull.value = dataFull.value?.copy(products = repository.reNewDataFull(), status = dataLanguage.value?.allGroup ?:"")
         counterFavorite.value = dataFull.value?.products
             ?.count {
                 it.isFavorite
             }.toString()
+    }
+
+    fun changeLang() {
+        dataLanguage.value?.let {
+            dataFull.value = dataFull.value?.copy(products = repository.changeLang(it), status = it.allGroup)
+            initAllProductsOriginal()
+            dataLanguage.value = null
+        }
     }
 
     fun like(product: Product) {

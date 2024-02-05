@@ -12,10 +12,10 @@ import ru.netology.estore.databinding.ItemDataHistoryOfOrdersBinding
 import ru.netology.estore.dto.DataHistory
 
 class DataHistoryAdapter:
-    ListAdapter<DataHistory, DataHistoryAdapter.DataHistoryOfOrdersHolder>(HistoryDiffCallback()) {
+    ListAdapter<DataHistory, DataHistoryAdapter.DataHistoryHolder>(HistoryDiffCallback()) {
 
     var historyList = emptyList<DataHistory>()
-    class DataHistoryOfOrdersHolder(item: View) : RecyclerView.ViewHolder(item) {
+    class DataHistoryHolder(item: View) : RecyclerView.ViewHolder(item) {
         val binding = ItemDataHistoryOfOrdersBinding.bind(item)
 
         @SuppressLint("SetTextI18n")
@@ -26,13 +26,13 @@ class DataHistoryAdapter:
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataHistoryOfOrdersHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataHistoryHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_data_history_of_orders, parent, false)
-        return DataHistoryOfOrdersHolder(view)
+        return DataHistoryHolder(view)
     }
 
-    override fun onBindViewHolder(holder: DataHistoryOfOrdersHolder, position: Int) {
+    override fun onBindViewHolder(holder: DataHistoryHolder, position: Int) {
         val dataOrderForHistory = getItem(position)
         holder.bind(dataOrderForHistory)
     }

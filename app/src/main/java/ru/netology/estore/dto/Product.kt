@@ -5,12 +5,12 @@ import java.math.BigDecimal
 
 data class Product(
     val id:Int,
-    val name:String,
-    val group:String,
+    var name:String,
+    var group:String,
     val picture:Int,
     val price:Double,
     val oneUnit:Double,
-    val unitWeight:String,
+    var unitWeight:String,
     var isHit:Boolean = false,
     var isDiscount:Boolean = false,
     var minusPercent:Int = 0,
@@ -18,9 +18,9 @@ data class Product(
     var weight:Double = 0.0,
     var inBasket:Boolean = false,
     var sum: Double = 0.0,
-    val country:String,
-    val storage:String,
-    val pack:String = Data.pack,
+    var country:String,
+    var storage:String,
+    var pack:String
 //    val priceN:BigDecimal,
 //    var sumN:BigDecimal,
 

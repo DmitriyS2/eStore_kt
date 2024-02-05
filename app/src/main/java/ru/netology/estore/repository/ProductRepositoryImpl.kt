@@ -5,8 +5,8 @@ import ru.netology.estore.api.ApiService
 import ru.netology.estore.dao.DataHistoryDao
 import ru.netology.estore.dao.UserDao
 import ru.netology.estore.dto.AuthRequest
-import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.DataHistory
+import ru.netology.estore.dto.DataLang
 import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.User
 import ru.netology.estore.dto.getSumWithTwoDecimal
@@ -22,89 +22,135 @@ class ProductRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
     private val dataHistoryDao: DataHistoryDao
 
-):ProductRepository {
+) : ProductRepository {
 
     var allProducts = arrayListOf<Product>()
     override var allProductsOriginal = arrayListOf<Product>()
 
-    override fun fillAllProducts(): ArrayList<Product> {
-
-        allProducts.addAll(fillFruits())
-        allProducts.addAll(fillVegetable())
-        allProducts.addAll(fillBakery())
-        addHitAndAction()
+    override fun fillAllProducts(dataLang: DataLang): ArrayList<Product> {
+        allProducts.addAll(fillFruits(dataLang))
+        allProducts.addAll(fillVegetable(dataLang))
+        allProducts.addAll(fillBakery(dataLang))
+        addHitAndAction(dataLang)
         return allProducts
     }
 
-    private fun fillFruits(): List<Product> {
+    private fun fillFruits(dataLang: DataLang): List<Product> {
         val fruits = arrayListOf<Product>()
-        for (i in Data.fruitsPicture.indices) {
+        for (i in dataLang.fruitsPicture.indices) {
             fruits.add(
                 Product(
-                    id = Data.idProduct++,
-                    name = Data.fruitsName[i],
-                    group = Data.fruitGroup,
-                    picture = Data.fruitsPicture[i],
-                    price = Data.fruitsPrice[i],
-                    oneUnit = Data.fruitOneUnit[i],
-                    unitWeight = Data.fruitUnitWeight[i],
-                    country = (if(i==0 || i==5) Data.country[1] else Data.country[0]),
-                    storage = Data.storage[1]
+                    id = dataLang.idProduct++,
+                    name = dataLang.fruitsName[i],
+                    group = dataLang.fruitGroup,
+                    picture = dataLang.fruitsPicture[i],
+                    price = dataLang.fruitsPrice[i],
+                    oneUnit = dataLang.fruitOneUnit[i],
+                    unitWeight = dataLang.fruitUnitWeight[i],
+                    country = (if (i == 0 || i == 5) dataLang.country[1] else dataLang.country[0]),
+                    storage = dataLang.storage[1],
+                    pack = dataLang.pack
                 )
             )
         }
         return fruits
     }
 
-    private fun fillVegetable(): List<Product> {
+    private fun fillVegetable(dataLang: DataLang): List<Product> {
         val vegetables = arrayListOf<Product>()
-        for (i in Data.fruitsPicture.indices) {
+        for (i in dataLang.fruitsPicture.indices) {
             vegetables.add(
                 Product(
-                    id = Data.idProduct++,
-                    name = Data.vegetablesName[i],
-                    group = Data.vegetableGroup,
-                    picture = Data.vegetablesPicture[i],
-                    price = Data.vegetablesPrice[i],
-                    oneUnit = Data.vegetablesOneUnit[i],
-                    unitWeight = Data.vegetableUnitWeight[i],
-                    country = Data.country[0],
-                    storage = Data.storage[1]
+                    id = dataLang.idProduct++,
+                    name = dataLang.vegetablesName[i],
+                    group = dataLang.vegetableGroup,
+                    picture = dataLang.vegetablesPicture[i],
+                    price = dataLang.vegetablesPrice[i],
+                    oneUnit = dataLang.vegetablesOneUnit[i],
+                    unitWeight = dataLang.vegetableUnitWeight[i],
+                    country = dataLang.country[0],
+                    storage = dataLang.storage[1],
+                    pack = dataLang.pack
                 )
             )
         }
         return vegetables
     }
 
-    private fun fillBakery(): List<Product> {
+    private fun fillBakery(dataLang: DataLang): List<Product> {
         val bakeries = arrayListOf<Product>()
-        for (i in Data.fruitsPicture.indices) {
+        for (i in dataLang.fruitsPicture.indices) {
             bakeries.add(
                 Product(
-                    id = Data.idProduct++,
-                    name = Data.bakeryName[i],
-                    group = Data.bakeryGroup,
-                    picture = Data.bakeryPicture[i],
-                    price = Data.bakeryPrice[i],
-                    oneUnit = Data.bakeryOneUnit[i],
-                    unitWeight = Data.bakeryUnitWeight[i],
-                    country = Data.country[0],
-                    storage = Data.storage[0]
+                    id = dataLang.idProduct++,
+                    name = dataLang.bakeryName[i],
+                    group = dataLang.bakeryGroup,
+                    picture = dataLang.bakeryPicture[i],
+                    price = dataLang.bakeryPrice[i],
+                    oneUnit = dataLang.bakeryOneUnit[i],
+                    unitWeight = dataLang.bakeryUnitWeight[i],
+                    country = dataLang.country[0],
+                    storage = dataLang.storage[0],
+                    pack = dataLang.pack
                 )
             )
         }
         return bakeries
     }
 
-    private fun addHitAndAction() {
+    private fun addHitAndAction(dataLang: DataLang) {
         for (i in 0..5) {
             val n = (0 until allProducts.size).random()
             allProducts[n].isHit = true
             val m = (0 until allProducts.size).random()
             allProducts[m].isDiscount = true
-            allProducts[m].minusPercent = Data.discounts.random()
-
+            allProducts[m].minusPercent = dataLang.discounts.random()
         }
+    }
+
+    override fun changeLang(dataLang: DataLang): ArrayList<Product> {
+        allProducts = allProducts.map {
+            when (it.id) {
+                in 0..5 -> {
+                    it.copy(
+                        name = dataLang.fruitsName[it.id],
+                        group = dataLang.fruitGroup,
+                        unitWeight = dataLang.fruitUnitWeight[it.id],
+                        country = (if (it.id == 0 || it.id == 5) dataLang.country[1] else dataLang.country[0]),
+                        storage = dataLang.storage[1],
+                        pack = dataLang.pack
+                    )
+                }
+
+                in 6..11 -> {
+                    it.copy(
+                        name = dataLang.vegetablesName[it.id - 6],
+                        group = dataLang.vegetableGroup,
+                        unitWeight = dataLang.vegetableUnitWeight[it.id - 6],
+                        country = dataLang.country[0],
+                        storage = dataLang.storage[1],
+                        pack = dataLang.pack
+                    )
+                }
+
+                in 12..17 -> {
+                    it.copy(
+                        name = dataLang.bakeryName[it.id - 12],
+                        group = dataLang.bakeryGroup,
+                        unitWeight = dataLang.bakeryUnitWeight[it.id - 12],
+                        country = dataLang.country[0],
+                        storage = dataLang.storage[0],
+                        pack = dataLang.pack
+                    )
+                }
+
+                else -> {
+                    it.copy()
+                }
+            }
+        } as ArrayList<Product>
+
+        return allProducts
     }
 
     override fun like(product: Product): ArrayList<Product> {
@@ -197,38 +243,41 @@ class ProductRepositoryImpl @Inject constructor(
     }
 
     override fun cleanBasket(): ArrayList<Product> {
-        allProducts = allProducts.onEach{
+        allProducts = allProducts.onEach {
             it.weight = 0.0
             it.inBasket = false
             it.sum = 0.0
         }
         return allProducts
     }
+
     override fun reNewDataFull(): ArrayList<Product> {
         allProducts = allProductsOriginal
         return allProducts
     }
 
-    override suspend fun checkSignIn(login: String) =  userDao.getUser(login)?.toDto()
+    override suspend fun checkSignIn(login: String) = userDao.getUser(login)?.toDto()
 
-    override suspend fun signUp(login: String, password: String, name: String):User? {
+    override suspend fun signUp(login: String, password: String, name: String): User? {
         val user = User(firstName = name, username = login, password = password, token = getToken())
         userDao.insert(UserEntity.fromDto(user))
         return checkSignIn(login)
     }
 
-    private fun getToken():String{
-        var token =""
-        for(i in 0..20) {
-            token+=Data.aZ[(0 until Data.aZ.length).random()]
+    private fun getToken(): String {
+        var token = ""
+        for (i in 0..20) {
+            token += DataLang.aZ[(0 until DataLang.aZ.length).random()]
         }
         return token
     }
 
-    override suspend fun getHistory(login: String): List<DataHistory> = dataHistoryDao.getDataHistory(login).toDto()
+    override suspend fun getHistory(login: String): List<DataHistory> =
+        dataHistoryDao.getDataHistory(login).toDto()
 
     override suspend fun addHistory(dataHistory: DataHistory) {
         dataHistoryDao.insert(DataHistoryEntity.fromDto(dataHistory))
     }
+
     override suspend fun signInApi(request: AuthRequest) = apiService.auth(request)
 }

@@ -1,5 +1,6 @@
 package ru.netology.estore.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,6 +31,7 @@ class FragmentForBasket : Fragment() {
     private val orderViewModel:OrderViewModel by activityViewModels()
  //   lateinit var binding: FragmentForBasketBinding
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -104,7 +106,7 @@ class FragmentForBasket : Fragment() {
                 return@setOnClickListener
             }
             if(authViewModel.authenticated) {
-                topTextViewModel.text.value = Data.orderGroup
+                topTextViewModel.text.value = getString(R.string.order)
                 if(orderViewModel.showPoint2.value!=0) {
                     orderViewModel.showPoint1.value = 2
                 } else {

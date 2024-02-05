@@ -345,7 +345,7 @@ class FragmentOrder : Fragment() {
 
         binding.buttonThankYou.setOnClickListener {
             orderViewModel.cancelOrder()
-            topTextViewModel.text.value = Data.eStoreGroup
+            topTextViewModel.text.value = getString(R.string.app_name)
             vieModel.cleanBasket()
             vieModel.pointBottomMenu.value = -1
             findNavController().navigate(R.id.blankFragment)
@@ -405,6 +405,7 @@ class FragmentOrder : Fragment() {
             textNegButton = getString(R.string.order),
             flagSignIn = false,
             flagOrder = true,
+            flagSignOut = false,
             navigateTo = 0
         )
         val manager = childFragmentManager

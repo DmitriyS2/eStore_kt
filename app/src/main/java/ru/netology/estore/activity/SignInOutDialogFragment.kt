@@ -11,6 +11,8 @@ import ru.netology.estore.R
 import ru.netology.estore.auth.AppAuth
 import ru.netology.estore.databinding.FragmentSignInOutDialogBinding
 import ru.netology.estore.dto.Data
+import ru.netology.estore.dto.DataEng
+import ru.netology.estore.dto.DataRus
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
 import ru.netology.estore.viewmodel.OrderViewModel
@@ -52,7 +54,7 @@ class SignInOutDialogFragment(
             .setPositiveButton(textPosButton) { _, _ ->
                 dialog?.cancel()
                 if (flagSignIn) {
-                    topTextViewModel.text.value = Data.signInGroup
+                    topTextViewModel.text.value = getString(R.string.sign_in)
                     viewModel.pointBottomMenu.value = -1
                     findNavController()
                         .navigate(R.id.signInFragment)
@@ -73,6 +75,7 @@ class SignInOutDialogFragment(
                         .navigate(R.id.fragmentForCatalog)
                 } else {
                     viewModel.language.value = "ru"
+                    viewModel.dataLanguage.value = DataRus
                 }
             }
             .setNegativeButton(textNegButton) { _, _ ->
@@ -90,6 +93,7 @@ class SignInOutDialogFragment(
                         .navigate(navigateTo)
                 } else if(!flagSignOut && !flagOrder) {
                     viewModel.language.value = "en"
+                    viewModel.dataLanguage.value = DataEng
                 }
             }
             .create()
