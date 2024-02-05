@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentOrderBinding
-import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.DataHistory
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
@@ -39,7 +38,6 @@ class FragmentOrder : Fragment() {
     private val topTextViewModel:TopTextViewModel by activityViewModels()
     private val orderViewModel:OrderViewModel by activityViewModels()
 
-  //  lateinit var binding: FragmentOrderBinding
     private var fragmentBinding: FragmentOrderBinding? = null
 
     @SuppressLint("SetTextI18n")
@@ -49,12 +47,13 @@ class FragmentOrder : Fragment() {
     ): View {
         val binding = FragmentOrderBinding.inflate(inflater, container, false)
         fragmentBinding = binding
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.data.collectLatest {
                     if(it.id==0L) {
-                        orderViewModel.cancelOrder()
-                        topTextViewModel.text.value = Data.basketGroup
+                        orderViewModel.cancelOrder(vieModel.dataLanguage)
+                        topTextViewModel.text.value = vieModel.dataLanguage.basketGroup
                         vieModel.pointBottomMenu.value = 1
                         findNavController().navigate(R.id.fragmentForBasket)
                     }
@@ -74,7 +73,7 @@ class FragmentOrder : Fragment() {
             }.orEmpty()
 
         for(i in listOrder.indices) {
-            binding.textOrder.append("${i+1}. ${listOrder[i].name} ${listOrder[i].weight} ${listOrder[i].unitWeight}\n")
+            binding.textOrder.append("${i+1}. ${listOrder[i].name} ${listOrder[i].weight}\n")
         }
 
         //заказ на сумму
@@ -222,8 +221,6 @@ class FragmentOrder : Fragment() {
                     binding.cardViewFinalOrder.visibility = View.VISIBLE
                     binding.textInfoWaitingOrder.text = if(orderViewModel.flagPickUp) getString(R.string.final_order_pickup, timeOrderTime.toString())
                     else getString(R.string.final_order_delivery, timeOrderTime.toString())
-//                    binding.textInfoWaitingOrder.text = if(orderViewModel.flagPickUp) "Вы сможете забрать Ваш заказ через 1 час в $timeOrderTime"
-//                    else "Мы привезем Ваш заказ через 1 час в $timeOrderTime"
                 }
             }
         }
@@ -344,7 +341,7 @@ class FragmentOrder : Fragment() {
         }
 
         binding.buttonThankYou.setOnClickListener {
-            orderViewModel.cancelOrder()
+            orderViewModel.cancelOrder(vieModel.dataLanguage)
             topTextViewModel.text.value = getString(R.string.app_name)
             vieModel.cleanBasket()
             vieModel.pointBottomMenu.value = -1
@@ -373,7 +370,7 @@ class FragmentOrder : Fragment() {
     }
 
     private fun goToBasket() {
-        topTextViewModel.text.value = Data.basketGroup
+        topTextViewModel.text.value = vieModel.dataLanguage.basketGroup
         vieModel.pointBottomMenu.value = 1
         findNavController().navigate(R.id.fragmentForBasket)
     }
@@ -386,13 +383,6 @@ class FragmentOrder : Fragment() {
                 flag = false
             }
         }
-
-//        binding.apply {
-//            if (editAddressDelivery.text.isNullOrEmpty()) {
-//                editAddressDelivery.error = "Поле должно быть заполнено"
-//                flag = false
-//            }
-//        }
         return flag
     }
 

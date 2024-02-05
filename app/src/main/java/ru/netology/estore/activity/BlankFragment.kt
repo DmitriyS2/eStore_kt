@@ -10,8 +10,6 @@ import android.view.ViewGroup
 import ru.netology.estore.databinding.FragmentBlankBinding
 
 class BlankFragment : Fragment() {
-
- //   lateinit var binding: FragmentBlankBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

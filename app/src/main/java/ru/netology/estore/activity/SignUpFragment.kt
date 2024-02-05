@@ -18,7 +18,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.estore.R
-import ru.netology.estore.databinding.FragmentSignInBinding
 import ru.netology.estore.databinding.FragmentSignUpBinding
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
@@ -27,12 +26,12 @@ import ru.netology.estore.viewmodel.TopTextViewModel
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
-  //  lateinit var binding: FragmentSignUpBinding
-  private var fragmentBinding: FragmentSignUpBinding? = null
+    private var fragmentBinding: FragmentSignUpBinding? = null
+
     private val signUpViewModel: SignUpViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private val topTextViewModel: TopTextViewModel by activityViewModels()
-    private val viewModel:MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,8 +56,7 @@ class SignUpFragment : Fragment() {
                             if (it.id != 0L) {
                                 viewModel.getHistory(authViewModel.data.value.username)
                                 Log.d("MyLog", "SignUp OK, login=${it.username}")
-                                topTextViewModel.text.value =
-                                    ru.netology.estore.dto.Data.basketGroup
+                                topTextViewModel.text.value = viewModel.dataLanguage.basketGroup
                                 viewModel.pointBottomMenu.value = 0
                                 findNavController().navigate(R.id.fragmentForCatalog)
                             } else {
@@ -78,6 +76,7 @@ class SignUpFragment : Fragment() {
 
         return binding.root
     }
+
     override fun onDestroyView() {
         fragmentBinding = null
         super.onDestroyView()
@@ -105,38 +104,12 @@ class SignUpFragment : Fragment() {
                 confirmPassword.error = getString(R.string.field_must_be_not_empty)
                 flag = false
             }
-            if(password.text.toString()!=confirmPassword.text.toString()) {
+            if (password.text.toString() != confirmPassword.text.toString()) {
                 password.error = getString(R.string.password_doesnt_match)
                 confirmPassword.error = getString(R.string.password_doesnt_match)
                 flag = false
             }
         }
-
-//        binding.apply {
-//            if (login.text.isNullOrEmpty()) {
-//                login.error = "Поле должно быть заполнено"
-//                flag = false
-//            }
-//
-//            if (password.text.isNullOrEmpty()) {
-//                password.error = "Поле должно быть заполнено"
-//                flag = false
-//            }
-//            if (name.text.isNullOrEmpty()) {
-//                name.error = "Поле должно быть заполнено"
-//                flag = false
-//            }
-//
-//            if (confirmPassword.text.isNullOrEmpty()) {
-//                confirmPassword.error = "Поле должно быть заполнено"
-//                flag = false
-//            }
-//            if(password.text.toString()!=confirmPassword.text.toString()) {
-//                password.error = "Пароль не совпадает"
-//                confirmPassword.error = "Пароль не совпадает"
-//                flag = false
-//            }
-//        }
         return flag
     }
 }

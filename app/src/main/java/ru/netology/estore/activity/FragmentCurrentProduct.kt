@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentCurrentProductBinding
 import ru.netology.estore.dto.getSumWithTwoDecimal
 import ru.netology.estore.util.StringArg
@@ -18,8 +17,6 @@ import ru.netology.estore.viewmodel.MainViewModel
 class FragmentCurrentProduct : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
-
- //   lateinit var binding: FragmentCurrentProductBinding
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -70,7 +67,7 @@ class FragmentCurrentProduct : Fragment() {
                                 product.price * (100 - product.minusPercent) / 100,
                                 100.0
                             )
-                        }"+getString(R.string.rub_za_1)+ product.unitWeight
+                        }"+ product.unitWeight
 
                     } else {
                         Price.alpha = 1f
@@ -81,7 +78,7 @@ class FragmentCurrentProduct : Fragment() {
 
                     txItem.text = product.name
 
-                    Price.text = "${product.price}" + getString(R.string.rub_za_1) + product.unitWeight
+                    Price.text = "${product.price}" + product.unitWeight
 
                     textInfoAboutCountry.text = product.country
                     textInfoAboutStorage.text = product.storage

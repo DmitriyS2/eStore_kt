@@ -22,11 +22,11 @@ interface ProductRepository {
     fun countOrder(list:List<Product>):Double
     fun cleanBasket():ArrayList<Product>
     fun reNewDataFull(): ArrayList<Product>
+    fun changeLang(dataLang: DataLang): ArrayList<Product>
+
     suspend fun checkSignIn(login:String): User?
     suspend fun signUp(login: String, password: String, name: String):User?
     suspend fun getHistory(login: String): List<DataHistory>?
     suspend fun addHistory(dataHistory: DataHistory)
-
     suspend fun signInApi(request: AuthRequest):Response<User>
-    fun changeLang(dataLang: DataLang): ArrayList<Product>
 }

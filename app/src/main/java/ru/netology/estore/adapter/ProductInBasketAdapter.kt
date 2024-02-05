@@ -21,7 +21,7 @@ class ProductInBasketAdapter(private val listener: Listener) :
         RecyclerView.ViewHolder(item) {
         val binding = ItemForBasketProductBinding.bind(item)
 
-        @SuppressLint("ResourceAsColor")
+        @SuppressLint("ResourceAsColor", "SetTextI18n")
         fun bind(product: Product) = with(binding) {
             avatar.setImageResource(product.picture)
             txItem.text = product.name
@@ -40,12 +40,12 @@ class ProductInBasketAdapter(private val listener: Listener) :
                     getSumWithTwoDecimal(
                         product.price * (100 - product.minusPercent) / 100,
                         100.0
-                    ).toString()
-                } руб за 1 ${product.unitWeight}"
+                    )
+                } ${product.unitWeight}"
             } else {
                 txMinusPrice.visibility = View.GONE
                 txPrice.setTextColor(R.color.black)
-                txPrice.text = "${product.price.toString()} руб за 1 ${product.unitWeight}"
+                txPrice.text = "${product.price} ${product.unitWeight}"
             }
 
             if (product.weight > product.oneUnit) {
@@ -61,7 +61,7 @@ class ProductInBasketAdapter(private val listener: Listener) :
                 buttonAdd.visibility = View.VISIBLE
             }
 
-            txSumma.text = "${getSumWithTwoDecimal(product.sum, 100.0)} руб"
+            txSumma.text = "${getSumWithTwoDecimal(product.sum, 100.0)}"
 
             txWeight.text = "${getSumWithTwoDecimal(product.weight, 10.0)} ${product.unitWeight}"
 

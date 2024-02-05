@@ -15,7 +15,6 @@ import ru.netology.estore.activity.FragmentCurrentProduct.Companion.textArgument
 import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductInBasketAdapter
 import ru.netology.estore.databinding.FragmentForBasketBinding
-import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.Product
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
@@ -29,7 +28,6 @@ class FragmentForBasket : Fragment() {
     private val authViewModel:AuthViewModel by activityViewModels()
     private val topTextViewModel:TopTextViewModel by activityViewModels()
     private val orderViewModel:OrderViewModel by activityViewModels()
- //   lateinit var binding: FragmentForBasketBinding
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(

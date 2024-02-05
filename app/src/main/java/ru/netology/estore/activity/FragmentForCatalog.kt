@@ -13,7 +13,6 @@ import ru.netology.estore.activity.FragmentCurrentProduct.Companion.textArgument
 import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductAdapter
 import ru.netology.estore.databinding.FragmentForCatalogBinding
-import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.Product
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
@@ -25,8 +24,6 @@ class FragmentForCatalog : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
     private val authViewModel:AuthViewModel by activityViewModels()
     private val topTextViewModel:TopTextViewModel by activityViewModels()
-
-  //  lateinit var binding: FragmentForCatalogBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,7 +71,6 @@ class FragmentForCatalog : Fragment() {
             }
         })
 
-     //   binding = FragmentForCatalogBinding.inflate(inflater)
         binding.rwProducts.layoutManager = GridLayoutManager(activity, 2)
         binding.rwProducts.adapter = adapter
 
@@ -82,13 +78,13 @@ class FragmentForCatalog : Fragment() {
             val list = when (full.status) {
                 getString(R.string.whole_range) -> viewModel.dataFull.value?.products
 
-                getString(R.string.Fruits) -> viewModel.dataFull.value?.products?.filter { it.group == Data.fruitGroup }
+                getString(R.string.Fruits) -> viewModel.dataFull.value?.products?.filter { it.group == viewModel.dataLanguage.fruitGroup }
                     .orEmpty()
 
-                getString(R.string.Vegetables) -> viewModel.dataFull.value?.products?.filter { it.group == Data.vegetableGroup }
+                getString(R.string.Vegetables) -> viewModel.dataFull.value?.products?.filter { it.group == viewModel.dataLanguage.vegetableGroup }
                     .orEmpty()
 
-                getString(R.string.Bakery) -> viewModel.dataFull.value?.products?.filter { it.group == Data.bakeryGroup }
+                getString(R.string.Bakery) -> viewModel.dataFull.value?.products?.filter { it.group == viewModel.dataLanguage.bakeryGroup }
                     .orEmpty()
 
                 getString(R.string.Bestsellers) -> viewModel.dataFull.value?.products?.filter { it.isHit }.orEmpty()

@@ -20,7 +20,9 @@ data class Product(
     var sum: Double = 0.0,
     var country:String,
     var storage:String,
-    var pack:String
+    var pack:String,
+    var buttonAdd:String,
+    var buttonDelete:String
 //    val priceN:BigDecimal,
 //    var sumN:BigDecimal,
 

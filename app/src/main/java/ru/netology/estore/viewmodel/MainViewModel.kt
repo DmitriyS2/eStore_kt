@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.netology.estore.auth.AppAuth
-import ru.netology.estore.dto.Data
-import ru.netology.estore.dto.DataEng
 import ru.netology.estore.dto.DataHistory
 import ru.netology.estore.dto.DataLang
 import ru.netology.estore.dto.DataRus
@@ -23,7 +21,7 @@ class MainViewModel @Inject constructor(
     private val auth: AppAuth
 ) : ViewModel() {
 
-    val dataFull = MutableLiveData(FullProduct())
+    val dataFull:MutableLiveData<FullProduct> = MutableLiveData()
 
     val dataHistoryOrders = MutableLiveData<List<DataHistory>?>()
 
@@ -44,16 +42,12 @@ class MainViewModel @Inject constructor(
                 it.isDiscount
             }
             .toString()
-
-    val counterFavorite:MutableLiveData<String> = MutableLiveData<String>(dataFull.value?.products
-        ?.count {
-            it.isFavorite
-        }.toString())
+    val counterFavorite:MutableLiveData<String> = MutableLiveData(null)
 
     val pointBottomMenu:MutableLiveData<Int> = MutableLiveData(-1)
 
     val language:MutableLiveData<String?> = MutableLiveData("ru")
-    val dataLanguage:MutableLiveData<DataLang?> = MutableLiveData(null)
+    var dataLanguage:DataLang = DataRus
 
     init {
       //  dataLanguage.value = DataRus
@@ -61,6 +55,9 @@ class MainViewModel @Inject constructor(
         auth.authStateFlow.value.username?.let {
             getHistory(auth.authStateFlow.value.username)
         }
+        counterFavorite.value = dataFull.value?.products?.count {
+            it.isFavorite
+        }.toString()
     }
 
     private fun getAll(dataLang: DataLang) {
@@ -73,7 +70,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun reNewDataFull() {
-        dataFull.value = dataFull.value?.copy(products = repository.reNewDataFull(), status = dataLanguage.value?.allGroup ?:"")
+        dataFull.value = dataFull.value?.copy(products = repository.reNewDataFull(), status = dataLanguage.allGroup)
         counterFavorite.value = dataFull.value?.products
             ?.count {
                 it.isFavorite
@@ -81,11 +78,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun changeLang() {
-        dataLanguage.value?.let {
-            dataFull.value = dataFull.value?.copy(products = repository.changeLang(it), status = it.allGroup)
+            dataFull.value = dataFull.value?.copy(products = repository.changeLang(dataLanguage), status = dataLanguage.allGroup)
             initAllProductsOriginal()
-            dataLanguage.value = null
-        }
     }
 
     fun like(product: Product) {

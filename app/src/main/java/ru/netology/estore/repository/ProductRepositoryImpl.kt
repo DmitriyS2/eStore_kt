@@ -49,7 +49,9 @@ class ProductRepositoryImpl @Inject constructor(
                     unitWeight = dataLang.fruitUnitWeight[i],
                     country = (if (i == 0 || i == 5) dataLang.country[1] else dataLang.country[0]),
                     storage = dataLang.storage[1],
-                    pack = dataLang.pack
+                    pack = dataLang.pack,
+                    buttonAdd = dataLang.buttonAdd,
+                    buttonDelete = dataLang.buttonDel
                 )
             )
         }
@@ -70,7 +72,9 @@ class ProductRepositoryImpl @Inject constructor(
                     unitWeight = dataLang.vegetableUnitWeight[i],
                     country = dataLang.country[0],
                     storage = dataLang.storage[1],
-                    pack = dataLang.pack
+                    pack = dataLang.pack,
+                    buttonAdd = dataLang.buttonAdd,
+                    buttonDelete = dataLang.buttonDel
                 )
             )
         }
@@ -91,7 +95,9 @@ class ProductRepositoryImpl @Inject constructor(
                     unitWeight = dataLang.bakeryUnitWeight[i],
                     country = dataLang.country[0],
                     storage = dataLang.storage[0],
-                    pack = dataLang.pack
+                    pack = dataLang.pack,
+                    buttonAdd = dataLang.buttonAdd,
+                    buttonDelete = dataLang.buttonDel
                 )
             )
         }
@@ -118,7 +124,9 @@ class ProductRepositoryImpl @Inject constructor(
                         unitWeight = dataLang.fruitUnitWeight[it.id],
                         country = (if (it.id == 0 || it.id == 5) dataLang.country[1] else dataLang.country[0]),
                         storage = dataLang.storage[1],
-                        pack = dataLang.pack
+                        pack = dataLang.pack,
+                        buttonAdd = dataLang.buttonAdd,
+                        buttonDelete = dataLang.buttonDel
                     )
                 }
 
@@ -129,7 +137,9 @@ class ProductRepositoryImpl @Inject constructor(
                         unitWeight = dataLang.vegetableUnitWeight[it.id - 6],
                         country = dataLang.country[0],
                         storage = dataLang.storage[1],
-                        pack = dataLang.pack
+                        pack = dataLang.pack,
+                        buttonAdd = dataLang.buttonAdd,
+                        buttonDelete = dataLang.buttonDel
                     )
                 }
 
@@ -140,7 +150,9 @@ class ProductRepositoryImpl @Inject constructor(
                         unitWeight = dataLang.bakeryUnitWeight[it.id - 12],
                         country = dataLang.country[0],
                         storage = dataLang.storage[0],
-                        pack = dataLang.pack
+                        pack = dataLang.pack,
+                        buttonAdd = dataLang.buttonAdd,
+                        buttonDelete = dataLang.buttonDel
                     )
                 }
 

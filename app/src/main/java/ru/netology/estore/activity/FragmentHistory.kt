@@ -12,7 +12,6 @@ import ru.netology.estore.databinding.FragmentHistoryOfOrdersBinding
 import ru.netology.estore.viewmodel.MainViewModel
 
 class FragmentHistory : Fragment() {
-  //  lateinit var binding: FragmentHistoryOfOrdersBinding
 
     private val viewModel:MainViewModel by activityViewModels()
 

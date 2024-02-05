@@ -2,7 +2,8 @@ package ru.netology.estore.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.time.OffsetDateTime
+import ru.netology.estore.dto.DataLang
+import ru.netology.estore.dto.DataRus
 
 class OrderViewModel : ViewModel() {
 
@@ -18,20 +19,21 @@ class OrderViewModel : ViewModel() {
     var typeOfPayment: String = "Выберите способ оплаты"
     var flagPickUp = false
 
-    val timeNow: OffsetDateTime
-        get() = OffsetDateTime.now()
+    init {
+        cancelOrder(DataRus)
+    }
 
-    fun cancelOrder() {
+    fun cancelOrder(dataLang: DataLang) {
         showPoint1.value = 0
         showPoint2.value = 0
         showPoint3.value = 0
         showPoint4.value = 0
         showPoint5.value = 0
         goToFinalOrder.value = 0
-        typeOfDelivery = "Сами заберете или Вам привезти?"
-        addressPickUp = "Выберите магазин, откуда заберете"
-        addressDelivery = "Куда Вам привезти?"
-        typeOfPayment = "Выберите способ оплаты"
+        typeOfDelivery = dataLang.typeOfDelivery
+        addressPickUp = dataLang.addressPickUp
+        addressDelivery = dataLang.addressDelivery
+        typeOfPayment = dataLang.typeOfPayment
         flagPickUp = false
     }
 }

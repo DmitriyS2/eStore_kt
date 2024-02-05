@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,8 +21,9 @@ class DataHistoryAdapter:
 
         @SuppressLint("SetTextI18n")
         fun bind(dataHistory: DataHistory) {
-            binding.textHistory1.text = "Заказ на сумму ${dataHistory.sumOrder} руб"
-            binding.textHistory2.text = if(dataHistory.pickUp) "Самовывоз" else "Доставка"
+            binding.textHistory1b.text = dataHistory.sumOrder.toString()
+            binding.textHistory2.isVisible = dataHistory.pickUp
+            binding.textHistory2b.isVisible = !dataHistory.pickUp
             binding.textHistory3.text = dataHistory.dateTime
         }
     }

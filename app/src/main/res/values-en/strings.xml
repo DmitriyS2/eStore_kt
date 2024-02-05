@@ -5,7 +5,7 @@
         <item>Cash</item>
         <item>by Card</item>
     </string-array>
-    <string name="rub">rub</string>
+    <string name="rub">" rub"</string>
     <string name="need_registration">Registration required</string>
     <string name="need_yo_signin">You must be logged in to perform this action</string>
     <string name="sign_in">Sign In</string>
@@ -67,5 +67,6 @@
     <string name="choose_language">Choose language</string>
     <string name="rus">Russian</string>
     <string name="engl">English</string>
+    <string name="zakaz_na_summu">"Order for the amount of "</string>
 
 </resources>

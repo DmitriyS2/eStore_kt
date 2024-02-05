@@ -10,7 +10,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.estore.R
 import ru.netology.estore.auth.AppAuth
 import ru.netology.estore.databinding.FragmentSignInOutDialogBinding
-import ru.netology.estore.dto.Data
 import ru.netology.estore.dto.DataEng
 import ru.netology.estore.dto.DataRus
 import ru.netology.estore.viewmodel.AuthViewModel
@@ -31,8 +30,6 @@ class SignInOutDialogFragment(
     val flagSignOut:Boolean = false,
     val navigateTo: Int
 ) : DialogFragment() {
-  //  lateinit var binding: FragmentSignInOutDialogBinding
-
     private val topTextViewModel: TopTextViewModel by activityViewModels()
     private val orderViewModel: OrderViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
@@ -59,23 +56,24 @@ class SignInOutDialogFragment(
                     findNavController()
                         .navigate(R.id.signInFragment)
                 } else if (flagOrder) {
-                    topTextViewModel.text.value = Data.allGroup
-                    orderViewModel.cancelOrder()
+                    topTextViewModel.text.value = viewModel.dataLanguage.allGroup
+                    orderViewModel.cancelOrder(viewModel.dataLanguage)
                     viewModel.pointBottomMenu.value = 0
                     findNavController()
                         .navigate(R.id.fragmentForCatalog)
                 } else if(flagSignOut){
                     auth.removeAuth()
                     viewModel.reNewDataFull()
-                    topTextViewModel.text.value = Data.allGroup
-                    orderViewModel.cancelOrder()
+                    topTextViewModel.text.value = viewModel.dataLanguage.allGroup
+                    orderViewModel.cancelOrder(viewModel.dataLanguage)
                     viewModel.getHistory(authViewModel.data.value.username)
                     viewModel.pointBottomMenu.value = 0
                     findNavController()
                         .navigate(R.id.fragmentForCatalog)
                 } else {
+                    viewModel.dataLanguage = DataRus
+                    orderViewModel.cancelOrder(viewModel.dataLanguage)
                     viewModel.language.value = "ru"
-                    viewModel.dataLanguage.value = DataRus
                 }
             }
             .setNegativeButton(textNegButton) { _, _ ->
@@ -83,17 +81,18 @@ class SignInOutDialogFragment(
                 if (flagSignIn) {
                     if (navigateTo == R.id.fragmentForCatalog) {
                         viewModel.pointBottomMenu.value = 0
-                        topTextViewModel.text.value = Data.allGroup
+                        topTextViewModel.text.value = viewModel.dataLanguage.allGroup
 
                     } else if (navigateTo == R.id.fragmentForBasket) {
                         viewModel.pointBottomMenu.value = 1
-                        topTextViewModel.text.value = Data.basketGroup
+                        topTextViewModel.text.value = viewModel.dataLanguage.basketGroup
                     }
                     findNavController()
                         .navigate(navigateTo)
                 } else if(!flagSignOut && !flagOrder) {
+                    viewModel.dataLanguage = DataEng
+                    orderViewModel.cancelOrder(viewModel.dataLanguage)
                     viewModel.language.value = "en"
-                    viewModel.dataLanguage.value = DataEng
                 }
             }
             .create()

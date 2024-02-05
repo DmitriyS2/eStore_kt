@@ -10,7 +10,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import ru.netology.estore.BuildConfig
-import ru.netology.estore.auth.AppAuth
 import javax.inject.Singleton
 
 

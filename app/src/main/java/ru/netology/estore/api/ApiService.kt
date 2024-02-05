@@ -7,7 +7,6 @@ import ru.netology.estore.dto.AuthRequest
 import ru.netology.estore.dto.User
 
 interface ApiService {
-
     @POST("auth/login")
     suspend fun auth(@Body authRequest: AuthRequest): Response<User>
 }

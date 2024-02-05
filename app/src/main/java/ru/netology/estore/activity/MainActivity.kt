@@ -21,8 +21,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.estore.R
 import ru.netology.estore.databinding.ActivityMainBinding
-import ru.netology.estore.dto.DataLang
-import ru.netology.estore.dto.DataRus
 import ru.netology.estore.model.FullProduct
 import ru.netology.estore.viewmodel.AuthViewModel
 import ru.netology.estore.viewmodel.MainViewModel
@@ -143,13 +141,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        topTextViewModel.text.observe(this) {
-            binding.txCategory.text = it
-        }
 
-        viewModel.counterFavorite.observe(this) {
-            showCountDrawerItem(counterFavorite, if (it == "0") "" else it)
-        }
 
         binding.menu.setOnClickListener {
             if (viewModel.pointBottomMenu.value == -2) return@setOnClickListener
@@ -221,12 +213,19 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.language.observe(this) {
             it?.let {lang ->
+                viewModel.changeLang()
                 changeLanguage(lang)
             }
         }
-        viewModel.dataLanguage.observe(this) {
+
+        topTextViewModel.text.observe(this) {
+            binding.txCategory.text = it
+        }
+
+        viewModel.counterFavorite.observe(this) {
             it?.let {
-                viewModel.changeLang()
+                showCountDrawerItem(counterFavorite, if (it == "0") "" else it)
+                Log.d("MyLog", "counterFavorite из observe = $it")
             }
         }
     }
@@ -300,11 +299,12 @@ class MainActivity : AppCompatActivity() {
         menuDialog.show(manager, "Language")
     }
 
-    private fun showCountDrawerItem(view:TextView?, text:String) {
+    private fun showCountDrawerItem(view:TextView?, text:String?) {
         view?.gravity = Gravity.CENTER_VERTICAL
         view?.setTypeface(null, Typeface.BOLD)
         view?.setTextColor(resources.getColor(R.color.red, null))
-        view?.text = text
+        view?.text = text ?: ""
+
     }
 
     private fun changeLanguage(lang:String) {

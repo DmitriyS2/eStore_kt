@@ -2,6 +2,7 @@ package ru.netology.estore.adapter
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,7 @@ class ProductAdapter(private val listener: Listener) :
     class ProductHolder(item: View, private val listener: Listener) : RecyclerView.ViewHolder(item) {
         val binding = ItemForCatalogProductBinding.bind(item)
 
+        @SuppressLint("SetTextI18n")
         fun bind(product: Product) = with(binding) {
             if (product.isHit) {
                 hit.visibility = View.VISIBLE
@@ -65,7 +67,7 @@ class ProductAdapter(private val listener: Listener) :
                         product.price * (100 - product.minusPercent) / 100,
                         100.0
                     )
-                } руб за 1 ${product.unitWeight}"
+                } ${product.unitWeight}"
 
             } else {
                 Price.alpha = 1f
@@ -82,14 +84,14 @@ class ProductAdapter(private val listener: Listener) :
 
             txItem.text = product.name
 
-            Price.text = "${product.price.toString()} руб за 1 ${product.unitWeight}"
+            Price.text = "${product.price} ${product.unitWeight}"
 
             if (product.inBasket) {
                 buttonAddToBin.setBackgroundColor(Color.parseColor("#104021"))
-                buttonAddToBin.text = "Убрать"
+                buttonAddToBin.text = product.buttonDelete
             } else {
                 buttonAddToBin.setBackgroundColor(Color.parseColor("#f2570f"))
-                buttonAddToBin.text = "Добавить"
+                buttonAddToBin.text = product.buttonAdd
             }
 
             buttonLike.setOnClickListener {
@@ -143,14 +145,9 @@ class ProductDiffCallback : DiffUtil.ItemCallback<Product>() {
     }
 
     override fun getChangePayload(oldItem: Product, newItem: Product): Any =
-        Payload(
-//            liked = newItem.isFavorite.takeIf { oldItem.isFavorite != it },
-//            pushButtonAdd = newItem.inBasket.takeIf { oldItem.inBasket != it },
-        )
+        Payload()
 }
 
 data class Payload(
     val id:Int? = null
-//    val liked: Boolean? = null,
-//    val pushButtonAdd: Boolean? = null,
 )
