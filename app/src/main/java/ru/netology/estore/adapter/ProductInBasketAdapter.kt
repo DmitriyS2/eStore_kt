@@ -89,7 +89,8 @@ class ProductInBasketAdapter(private val listener: Listener) :
             }
 
             cardViewItemBasket.setOnClickListener {
-                listener.goToProduct(product)
+            //    listener.goToProduct(product)
+                listener.goToProduct(it, product)
             }
         }
     }

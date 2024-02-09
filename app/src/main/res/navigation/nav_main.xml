@@ -14,7 +14,11 @@
         android:id="@+id/fragmentForCatalog"
         android:name="ru.netology.estore.activity.FragmentForCatalog"
         android:label="fragment_for_catalog"
-        tools:layout="@layout/fragment_for_catalog" />
+        tools:layout="@layout/fragment_for_catalog" >
+        <action
+            android:id="@+id/action_fragmentForCatalog_to_fragmentCurrentProduct"
+            app:destination="@id/fragmentCurrentProduct" />
+    </fragment>
     <fragment
         android:id="@+id/signInFragment"
         android:name="ru.netology.estore.activity.SignInFragment"

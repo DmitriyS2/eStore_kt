@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.estore.R
@@ -23,7 +24,8 @@ interface Listener {
     fun weightPlus(product: Product)
     fun weightMinus(product: Product)
     fun deleteFromBasketWeightZero()
-    fun goToProduct(product: Product)
+  //  fun goToProduct(product: Product)
+ fun goToProduct(view:View, product: Product)
 }
 
 class ProductAdapter(private val listener: Listener) :
@@ -32,10 +34,16 @@ class ProductAdapter(private val listener: Listener) :
     var productList = emptyList<Product>()
 
     class ProductHolder(item: View, private val listener: Listener) : RecyclerView.ViewHolder(item) {
+
         val binding = ItemForCatalogProductBinding.bind(item)
+
+        val image = item.findViewById<ViewGroup>(R.id.cardViewItemCatalog)
 
         @SuppressLint("SetTextI18n")
         fun bind(product: Product) = with(binding) {
+
+            ViewCompat.setTransitionName(image, product.id.toString())
+
             if (product.isHit) {
                 hit.visibility = View.VISIBLE
                 ObjectAnimator.ofFloat(hit, View.ROTATION, 0F, 360F).apply {
@@ -113,7 +121,8 @@ class ProductAdapter(private val listener: Listener) :
             }
 
             cardViewItemCatalog.setOnClickListener {
-                listener.goToProduct(product)
+              //  listener.goToProduct(product)
+                listener.goToProduct(image, product)
             }
 
         }

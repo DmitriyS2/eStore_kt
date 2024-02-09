@@ -71,7 +71,7 @@ class FragmentForBasket : Fragment() {
                 viewModel.deleteFromBasketWeightZero()
             }
 
-            override fun goToProduct(product: Product) {
+            override fun goToProduct(view:View, product: Product) {
                 findNavController()
                     .navigate(R.id.fragmentCurrentProduct,
                         Bundle().apply {

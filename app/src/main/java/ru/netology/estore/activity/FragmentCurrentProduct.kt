@@ -4,30 +4,56 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
+import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentCurrentProductBinding
 import ru.netology.estore.dto.getSumWithTwoDecimal
 import ru.netology.estore.util.StringArg
 import ru.netology.estore.viewmodel.MainViewModel
 
+
 class FragmentCurrentProduct : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
+
+    //    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        val inflater = TransitionInflater.from(requireContext())
+//        enterTransition = inflater.inflateTransition(R.transition.slide_right)
+//    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = TransitionInflater.from(requireContext())
+            .inflateTransition(R.transition.shared_image)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        //   val current = arguments?.textArgument
+        val heroImageView = view.findViewById<ViewGroup>(R.id.currentProduct)
+        ViewCompat.setTransitionName(heroImageView, "hero_image")
+        //   ViewCompat.setTransitionName(heroImageView, current)
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         val binding = FragmentCurrentProductBinding.inflate(inflater, container, false)
 
         val currentId = arguments?.textArgument?.toInt()
 
-        viewModel.dataFull.observe(viewLifecycleOwner) { full ->
+        viewModel.dataFull.observe(viewLifecycleOwner)
+        { full ->
             full.products.find {
                 it.id == currentId
             }?.let { product ->
@@ -67,7 +93,7 @@ class FragmentCurrentProduct : Fragment() {
                                 product.price * (100 - product.minusPercent) / 100,
                                 100.0
                             )
-                        }"+ product.unitWeight
+                        }" + product.unitWeight
 
                     } else {
                         Price.alpha = 1f
@@ -86,6 +112,7 @@ class FragmentCurrentProduct : Fragment() {
                 }
             }
         }
+
 
         return binding.root
     }
