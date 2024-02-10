@@ -3,6 +3,7 @@ package ru.netology.estore.activity
 import android.os.Bundle
 import android.text.TextUtils.replace
 import android.transition.TransitionInflater
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +49,15 @@ class FragmentForCatalog : Fragment() {
 //        val inflater = TransitionInflater.from(requireContext())
 //        exitTransition = inflater.inflateTransition(R.transition.fade)
 //    }
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    sharedElementEnterTransition = TransitionInflater.from(requireContext())
+        .inflateTransition(R.transition.shared_image)
+        .setDuration(5000L)
+    sharedElementReturnTransition = TransitionInflater.from(requireContext())
+        .inflateTransition(R.transition.shared_image)
+        .setDuration(5000L)
+}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,15 +141,22 @@ class FragmentForCatalog : Fragment() {
 
             //      override fun goToProduct(product: Product) {
             override fun goToProduct(view: View, product: Product) {
-            //    val itemImageView = view.findViewById<View>(R.id.rwProducts)
-            //    ViewCompat.setTransitionName(view, product.id.toString())
-                val fragment = FragmentCurrentProduct.newInstance()
-           //     val frag = findNavController().navigate(R.id.fragmentCurrentProduct)
-              //  val action = R.id.action_fragmentForCatalog_to_fragmentCurrentProduct
 
-//                val extras = FragmentNavigator.Extras.Builder()
-//                    .addSharedElement(view, ViewCompat.getTransitionName(view)!!)
-//                    .build()
+                val fragment = FragmentCurrentProduct()
+
+                val action:NavDirections = FragmentForCatalogDirections.actionFragmentForCatalogToFragmentCurrentProduct(ViewCompat.getTransitionName(view)!!)
+
+                val extras = FragmentNavigator.Extras.Builder()
+                    .addSharedElement(view, ViewCompat.getTransitionName(view)!!)
+                    .build()
+
+                Log.d("MyLog", "extras = ${ViewCompat.getTransitionName(view)}")
+
+                findNavController().navigate(action, extras)
+                
+//                findNavController().navigate(R.id.fragmentCurrentProduct, Bundle().apply {
+//                            textArgument = ViewCompat.getTransitionName(view)})
+
 //                findNavController()
 ////                    .navigate(R.id.fragmentCurrentProduct, Bundle().apply {
 ////                            textArgument = "hero_image"
@@ -154,11 +171,11 @@ class FragmentForCatalog : Fragment() {
 //                    addToBackStack(null)
 //                }
 
-                findNavController()
-                    .navigate(R.id.fragmentCurrentProduct,
-                        Bundle().apply {
-                            textArgument = product.id.toString()
-                        })
+//                findNavController()
+//                    .navigate(R.id.fragmentCurrentProduct,
+//                        Bundle().apply {
+//                            textArgument = product.id.toString()
+//                        })
                 topTextViewModel.text.value = product.name
                 viewModel.pointBottomMenu.value = -1
             }

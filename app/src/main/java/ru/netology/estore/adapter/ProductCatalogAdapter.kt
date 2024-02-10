@@ -37,7 +37,8 @@ class ProductAdapter(private val listener: Listener) :
 
         val binding = ItemForCatalogProductBinding.bind(item)
 
-        val image = item.findViewById<ViewGroup>(R.id.cardViewItemCatalog)
+     //   val image = item.findViewById<View>(R.id.cardViewItemCatalog)
+        val image = item.findViewById<View>(R.id.avatar)
 
         @SuppressLint("SetTextI18n")
         fun bind(product: Product) = with(binding) {

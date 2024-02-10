@@ -5,6 +5,7 @@ import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,14 +33,21 @@ class FragmentCurrentProduct : Fragment() {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = TransitionInflater.from(requireContext())
             .inflateTransition(R.transition.shared_image)
+            .setDuration(5000L)
+        sharedElementReturnTransition = TransitionInflater.from(requireContext())
+            .inflateTransition(R.transition.shared_image)
+            .setDuration(5000L)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        //   val current = arguments?.textArgument
-        val heroImageView = view.findViewById<ViewGroup>(R.id.currentProduct)
-        ViewCompat.setTransitionName(heroImageView, "hero_image")
-        //   ViewCompat.setTransitionName(heroImageView, current)
+      //  val current = arguments?.textArgument
+        val current= arguments?.let { FragmentCurrentProductArgs.fromBundle(it).transitName }
+     //   val heroImageView = view.findViewById<View>(R.id.cardViewCurrentProduct)
+        val heroImageView = view.findViewById<View>(R.id.avatar)
+        // ViewCompat.setTransitionName(heroImageView, "hero_image")
+        Log.d("MyLog", "current = $current, heroimage=${heroImageView.hashCode()}")
+        ViewCompat.setTransitionName(heroImageView, current)
     }
 
     @SuppressLint("SetTextI18n")
@@ -50,7 +58,9 @@ class FragmentCurrentProduct : Fragment() {
 
         val binding = FragmentCurrentProductBinding.inflate(inflater, container, false)
 
-        val currentId = arguments?.textArgument?.toInt()
+     //   val currentId = arguments?.textArgument?.toInt()
+        val currentId= arguments?.let { FragmentCurrentProductArgs.fromBundle(it).transitName }
+            ?.toInt()
 
         viewModel.dataFull.observe(viewLifecycleOwner)
         { full ->

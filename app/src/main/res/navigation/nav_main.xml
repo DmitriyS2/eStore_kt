@@ -17,7 +17,8 @@
         tools:layout="@layout/fragment_for_catalog" >
         <action
             android:id="@+id/action_fragmentForCatalog_to_fragmentCurrentProduct"
-            app:destination="@id/fragmentCurrentProduct" />
+            app:destination="@id/fragmentCurrentProduct"
+            />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -59,6 +60,13 @@
         android:id="@+id/fragmentCurrentProduct"
         android:name="ru.netology.estore.activity.FragmentCurrentProduct"
         android:label="fragment_current_product"
-        tools:layout="@layout/fragment_current_product" />
+        tools:layout="@layout/fragment_current_product" >
+        <action
+            android:id="@+id/action_fragmentCurrentProduct_to_fragmentForCatalog"
+            app:destination="@id/fragmentForCatalog" />
+        <argument
+            android:name="transitName"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

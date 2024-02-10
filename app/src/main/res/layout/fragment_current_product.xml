@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:cardCornerRadius="10dp"
         android:layout_margin="20dp"
+        android:id="@+id/cardViewCurrentProduct"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
