@@ -11,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.netology.estore.R
-import ru.netology.estore.activity.FragmentCurrentProduct.Companion.textArgument
 import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductInBasketAdapter
 import ru.netology.estore.databinding.FragmentForBasketBinding
@@ -21,13 +20,12 @@ import ru.netology.estore.viewmodel.MainViewModel
 import ru.netology.estore.viewmodel.OrderViewModel
 import ru.netology.estore.viewmodel.TopTextViewModel
 
-
 class FragmentForBasket : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
-    private val authViewModel:AuthViewModel by activityViewModels()
-    private val topTextViewModel:TopTextViewModel by activityViewModels()
-    private val orderViewModel:OrderViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
+    private val topTextViewModel: TopTextViewModel by activityViewModels()
+    private val orderViewModel: OrderViewModel by activityViewModels()
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -40,7 +38,7 @@ class FragmentForBasket : Fragment() {
         val adapter = ProductInBasketAdapter(object : Listener {
 
             override fun like(product: Product) {
-                if(authViewModel.authenticated) {
+                if (authViewModel.authenticated) {
                     viewModel.like(product)
                 } else {
                     mustSignIn()
@@ -71,14 +69,7 @@ class FragmentForBasket : Fragment() {
                 viewModel.deleteFromBasketWeightZero()
             }
 
-            override fun goToProduct(view:View, product: Product) {
-                findNavController()
-                    .navigate(R.id.fragmentCurrentProduct,
-                        Bundle().apply {
-                            textArgument = product.id.toString()
-                        })
-                topTextViewModel.text.value = product.name
-                viewModel.pointBottomMenu.value = -1
+            override fun goToProduct(view: View, product: Product) {
             }
         })
 
@@ -92,20 +83,24 @@ class FragmentForBasket : Fragment() {
             val list = state.products.filter { it.inBasket }
             adapter.submitList(list)
             viewModel.amountOrder.value = viewModel.countOrder(list)
+            if(state.emptyBasket) {
+                orderViewModel.cancelOrder(viewModel.dataLanguage)
+            }
         }
 
         viewModel.amountOrder.observe(viewLifecycleOwner) {
-            binding.amountOrder.text = "$it"+getString(R.string.rub)
+            binding.amountOrder.text = "$it" + getString(R.string.rub)
         }
 
         binding.buttonOrder.setOnClickListener {
             viewModel.deleteFromBasketWeightZero()
-            if(viewModel.dataFull.value?.emptyBasket == true) {
+            if (viewModel.dataFull.value?.emptyBasket == true) {
+                orderViewModel.showPoint1.value = 0
                 return@setOnClickListener
             }
-            if(authViewModel.authenticated) {
+            if (authViewModel.authenticated) {
                 topTextViewModel.text.value = getString(R.string.order)
-                if(orderViewModel.showPoint2.value!=0) {
+                if (orderViewModel.showPoint2.value != 0) {
                     orderViewModel.showPoint1.value = 2
                 } else {
                     orderViewModel.showPoint1.value = 1
@@ -131,7 +126,7 @@ class FragmentForBasket : Fragment() {
             flagSignIn = true,
             flagOrder = false,
             navigateTo = R.id.fragmentForBasket
-            )
+        )
         val manager = childFragmentManager
         menuDialog.show(manager, "Sign in")
     }

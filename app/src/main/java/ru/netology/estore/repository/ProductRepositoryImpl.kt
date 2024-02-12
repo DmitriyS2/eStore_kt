@@ -1,6 +1,5 @@
 package ru.netology.estore.repository
 
-import android.util.Log
 import ru.netology.estore.api.ApiService
 import ru.netology.estore.dao.DataHistoryDao
 import ru.netology.estore.dao.UserDao
@@ -50,8 +49,6 @@ class ProductRepositoryImpl @Inject constructor(
                     country = (if (i == 0 || i == 5) dataLang.country[1] else dataLang.country[0]),
                     storage = dataLang.storage[1],
                     pack = dataLang.pack,
-                    buttonAdd = dataLang.buttonAdd,
-                    buttonDelete = dataLang.buttonDel
                 )
             )
         }
@@ -73,8 +70,6 @@ class ProductRepositoryImpl @Inject constructor(
                     country = dataLang.country[0],
                     storage = dataLang.storage[1],
                     pack = dataLang.pack,
-                    buttonAdd = dataLang.buttonAdd,
-                    buttonDelete = dataLang.buttonDel
                 )
             )
         }
@@ -96,8 +91,6 @@ class ProductRepositoryImpl @Inject constructor(
                     country = dataLang.country[0],
                     storage = dataLang.storage[0],
                     pack = dataLang.pack,
-                    buttonAdd = dataLang.buttonAdd,
-                    buttonDelete = dataLang.buttonDel
                 )
             )
         }
@@ -106,11 +99,17 @@ class ProductRepositoryImpl @Inject constructor(
 
     private fun addHitAndAction(dataLang: DataLang) {
         for (i in 0..5) {
-            val n = (0 until allProducts.size).random()
-            allProducts[n].isHit = true
-            val m = (0 until allProducts.size).random()
-            allProducts[m].isDiscount = true
-            allProducts[m].minusPercent = dataLang.discounts.random()
+            val n = (1..allProducts.size).random()
+            val m = (1..allProducts.size).random()
+            allProducts = ArrayList(
+                allProducts.map {
+                    it.copy(
+                        isHit = if (it.id == n) true else it.isHit,
+                        isDiscount = if (it.id == m) true else it.isDiscount,
+                        minusPercent = if (it.id == m) dataLang.discounts.random() else it.minusPercent
+                    )
+                }
+            )
         }
     }
 
@@ -125,8 +124,6 @@ class ProductRepositoryImpl @Inject constructor(
                         country = (if (it.id == 0 || it.id == 5) dataLang.country[1] else dataLang.country[0]),
                         storage = dataLang.storage[1],
                         pack = dataLang.pack,
-                        buttonAdd = dataLang.buttonAdd,
-                        buttonDelete = dataLang.buttonDel
                     )
                 }
 
@@ -138,8 +135,6 @@ class ProductRepositoryImpl @Inject constructor(
                         country = dataLang.country[0],
                         storage = dataLang.storage[1],
                         pack = dataLang.pack,
-                        buttonAdd = dataLang.buttonAdd,
-                        buttonDelete = dataLang.buttonDel
                     )
                 }
 
@@ -151,8 +146,6 @@ class ProductRepositoryImpl @Inject constructor(
                         country = dataLang.country[0],
                         storage = dataLang.storage[0],
                         pack = dataLang.pack,
-                        buttonAdd = dataLang.buttonAdd,
-                        buttonDelete = dataLang.buttonDel
                     )
                 }
 
@@ -182,7 +175,6 @@ class ProductRepositoryImpl @Inject constructor(
                 sum = if (it.inBasket) 0.0 else (it.oneUnit * (if (it.isDiscount) (it.price * (100 - it.minusPercent) / 100) else it.price))
             )
         } as ArrayList
-        Log.d("MyLog", "${allProducts.filter { it.id == product.id }}")
         return allProducts
     }
 
@@ -193,7 +185,6 @@ class ProductRepositoryImpl @Inject constructor(
                 sum = (it.oneUnit * (if (it.isDiscount) (it.price * (100 - it.minusPercent) / 100) else it.price))
             )
         } as ArrayList
-        Log.d("MyLog", "${allProducts.filter { it.id == product.id }}")
         return allProducts
     }
 
@@ -205,7 +196,6 @@ class ProductRepositoryImpl @Inject constructor(
                 sum = 0.0
             )
         } as ArrayList
-        Log.d("MyLog", "${allProducts.filter { it.id == product.id }}")
         return allProducts
     }
 
@@ -219,7 +209,6 @@ class ProductRepositoryImpl @Inject constructor(
                 )
             )
         } as ArrayList
-        Log.d("MyLog", "${allProducts.filter { it.id == product.id }}")
         return allProducts
     }
 
@@ -233,7 +222,6 @@ class ProductRepositoryImpl @Inject constructor(
                 )
             )
         } as ArrayList
-        Log.d("MyLog", "${allProducts.filter { it.id == product.id }}")
         return allProducts
     }
 
@@ -255,11 +243,15 @@ class ProductRepositoryImpl @Inject constructor(
     }
 
     override fun cleanBasket(): ArrayList<Product> {
-        allProducts = allProducts.onEach {
-            it.weight = 0.0
-            it.inBasket = false
-            it.sum = 0.0
-        }
+        allProducts = ArrayList(
+            allProducts.map {
+                it.copy(
+                    weight = 0.0,
+                    inBasket = false,
+                    sum = 0.0,
+                )
+            }
+        )
         return allProducts
     }
 
@@ -287,9 +279,14 @@ class ProductRepositoryImpl @Inject constructor(
     override suspend fun getHistory(login: String): List<DataHistory> =
         dataHistoryDao.getDataHistory(login).toDto()
 
+    override suspend fun signInApi(request: AuthRequest) = apiService.auth(request)
+
     override suspend fun addHistory(dataHistory: DataHistory) {
         dataHistoryDao.insert(DataHistoryEntity.fromDto(dataHistory))
     }
 
-    override suspend fun signInApi(request: AuthRequest) = apiService.auth(request)
+    override suspend fun deleteHistoryById(id: Int) {
+        dataHistoryDao.deleteHistoryById(id)
+    }
+
 }

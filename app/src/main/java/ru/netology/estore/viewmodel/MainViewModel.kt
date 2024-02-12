@@ -1,6 +1,5 @@
 package ru.netology.estore.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +20,7 @@ class MainViewModel @Inject constructor(
     private val auth: AppAuth
 ) : ViewModel() {
 
-    val dataFull:MutableLiveData<FullProduct> = MutableLiveData()
+    val dataFull: MutableLiveData<FullProduct> = MutableLiveData()
 
     val dataHistoryOrders = MutableLiveData<List<DataHistory>?>()
 
@@ -42,15 +41,14 @@ class MainViewModel @Inject constructor(
                 it.isDiscount
             }
             .toString()
-    val counterFavorite:MutableLiveData<String> = MutableLiveData(null)
+    val counterFavorite: MutableLiveData<String> = MutableLiveData(null)
 
-    val pointBottomMenu:MutableLiveData<Int> = MutableLiveData(-1)
+    val pointBottomMenu: MutableLiveData<Int> = MutableLiveData(-1)
 
-    val language:MutableLiveData<String?> = MutableLiveData("ru")
-    var dataLanguage:DataLang = DataRus
+    val language: MutableLiveData<String?> = MutableLiveData("ru")
+    var dataLanguage: DataLang = DataRus
 
     init {
-      //  dataLanguage.value = DataRus
         getAll(DataRus)
         auth.authStateFlow.value.username?.let {
             getHistory(auth.authStateFlow.value.username)
@@ -61,7 +59,8 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getAll(dataLang: DataLang) {
-        dataFull.value = FullProduct(products = repository.fillAllProducts(dataLang), status = dataLang.allGroup)
+        dataFull.value =
+            FullProduct(products = repository.fillAllProducts(dataLang), status = dataLang.allGroup)
         initAllProductsOriginal()
     }
 
@@ -70,7 +69,10 @@ class MainViewModel @Inject constructor(
     }
 
     fun reNewDataFull() {
-        dataFull.value = dataFull.value?.copy(products = repository.reNewDataFull(), status = dataLanguage.allGroup)
+        dataFull.value = dataFull.value?.copy(
+            products = repository.reNewDataFull(),
+            status = dataLanguage.allGroup
+        )
         counterFavorite.value = dataFull.value?.products
             ?.count {
                 it.isFavorite
@@ -78,16 +80,19 @@ class MainViewModel @Inject constructor(
     }
 
     fun changeLang() {
-            dataFull.value = dataFull.value?.copy(products = repository.changeLang(dataLanguage), status = dataLanguage.allGroup)
-            initAllProductsOriginal()
+        dataFull.value = dataFull.value?.copy(
+            products = repository.changeLang(dataLanguage),
+            status = dataLanguage.allGroup
+        )
+        initAllProductsOriginal()
     }
 
     fun like(product: Product) {
         dataFull.value = dataFull.value?.copy(products = repository.like(product))
         counterFavorite.value = dataFull.value?.products
-        ?.count {
-            it.isFavorite
-        }.toString()
+            ?.count {
+                it.isFavorite
+            }.toString()
     }
 
     fun addToBasket(product: Product) {
@@ -130,27 +135,39 @@ class MainViewModel @Inject constructor(
         dataFull.value = dataFull.value?.copy(products = repository.cleanBasket())
     }
 
-    fun getHistory(login: String?) {
-        if (login == null) {
+    fun getHistory(username: String?) {
+        if (username == null) {
             dataHistoryOrders.value = null
             return
         }
-        try {
-            viewModelScope.launch {
-                dataHistoryOrders.value = repository.getHistory(login)
+        viewModelScope.launch {
+            try {
+                dataHistoryOrders.value = repository.getHistory(username)
+            } catch (e: Exception) {
+                throw Exception("error GetDataHistoryOfOrders")
             }
-        } catch (e: Exception) {
-            throw Exception("error GetDataHistoryOfOrders")
         }
     }
 
     fun addHistory(dataHistory: DataHistory) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repository.addHistory(dataHistory)
+            } catch (e: Exception) {
+                throw Exception("error AddDataHistoryOfOrders")
             }
-        } catch (e: Exception) {
-            throw Exception("error AddDataHistoryOfOrders")
+        }
+    }
+
+    fun deleteHistoryById(id: Int) {
+        viewModelScope.launch {
+            try {
+                repository.deleteHistoryById(id)
+                getHistory(auth.authStateFlow.value.username)
+
+            } catch (e: Exception) {
+                throw Exception("error DeleteOrderById")
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ import ru.netology.estore.dto.DataHistory
 @Entity
 class DataHistoryEntity(
     @PrimaryKey(autoGenerate = true)
-    val id:Long,
+    val id:Int,
     val login:String,
     val sumOrder:Double,
     val pickUp:Boolean,
@@ -22,5 +22,3 @@ class DataHistoryEntity(
 }
 
 fun List<DataHistoryEntity>.toDto(): List<DataHistory> = map(DataHistoryEntity::toDto)
-
-fun List<DataHistory>.toEntity(): List<DataHistoryEntity> = map(DataHistoryEntity::fromDto)

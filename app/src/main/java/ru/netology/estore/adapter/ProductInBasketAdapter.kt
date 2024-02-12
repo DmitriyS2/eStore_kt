@@ -21,7 +21,7 @@ class ProductInBasketAdapter(private val listener: Listener) :
         RecyclerView.ViewHolder(item) {
         val binding = ItemForBasketProductBinding.bind(item)
 
-        @SuppressLint("ResourceAsColor", "SetTextI18n")
+        @SuppressLint("SetTextI18n")
         fun bind(product: Product) = with(binding) {
             avatar.setImageResource(product.picture)
             txItem.text = product.name
@@ -35,7 +35,7 @@ class ProductInBasketAdapter(private val listener: Listener) :
             if (product.isDiscount) {
                 txMinusPrice.visibility = View.VISIBLE
                 txMinusPrice.text = "-${product.minusPercent}%"
-                txPrice.setTextColor(R.color.red)
+                txPrice.setTextColor(itemView.context.getColor(R.color.red))
                 txPrice.text = "${
                     getSumWithTwoDecimal(
                         product.price * (100 - product.minusPercent) / 100,
@@ -44,8 +44,9 @@ class ProductInBasketAdapter(private val listener: Listener) :
                 } ${product.unitWeight}"
             } else {
                 txMinusPrice.visibility = View.GONE
-                txPrice.setTextColor(R.color.black)
+                txPrice.setTextColor(itemView.context.getColor(R.color.black))
                 txPrice.text = "${product.price} ${product.unitWeight}"
+                txPrice.text = itemView.context.getString(R.string.sign_in)
             }
 
             if (product.weight > product.oneUnit) {
@@ -89,7 +90,6 @@ class ProductInBasketAdapter(private val listener: Listener) :
             }
 
             cardViewItemBasket.setOnClickListener {
-            //    listener.goToProduct(product)
                 listener.goToProduct(it, product)
             }
         }

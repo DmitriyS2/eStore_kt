@@ -21,8 +21,8 @@ class SignInViewModel @Inject constructor(
     val stateAuth: MutableLiveData<Int> = MutableLiveData(0)
 
     fun signIn(username: String, password: String) {
-        try {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 val user = repository.checkSignIn(username)
                 if (user == null) {
                     stateAuth.value = -2
@@ -34,9 +34,9 @@ class SignInViewModel @Inject constructor(
                         stateAuth.value = -2
                     }
                 }
+            } catch (e: Exception) {
+                stateAuth.value = -2
             }
-        } catch (e: Exception) {
-            stateAuth.value = -2
         }
     }
 

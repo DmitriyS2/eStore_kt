@@ -7,12 +7,12 @@ import ru.netology.estore.dto.DataRus
 
 class OrderViewModel : ViewModel() {
 
-    var showPoint1 = MutableLiveData(0)
-    var showPoint2 = MutableLiveData(0)
-    var showPoint3 = MutableLiveData(0)
-    var showPoint4 = MutableLiveData(0)
-    var showPoint5 = MutableLiveData(0)
-    var goToFinalOrder = MutableLiveData(0)
+    val showPoint1 = MutableLiveData(0)
+    val showPoint2 = MutableLiveData(0)
+    val showPoint3 = MutableLiveData(0)
+    val showPoint4 = MutableLiveData(0)
+    val showPoint5 = MutableLiveData(0)
+    val goToFinalOrder = MutableLiveData(0)
     var typeOfDelivery: String = "Сами заберете или Вам привезти?"
     var addressPickUp: String = "Выберите магазин, откуда заберете"
     var addressDelivery: String = "Куда Вам привезти?"

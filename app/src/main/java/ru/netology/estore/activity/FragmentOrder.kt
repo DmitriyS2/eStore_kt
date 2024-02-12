@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -33,7 +34,7 @@ import java.time.format.DateTimeFormatter.ofPattern
 @AndroidEntryPoint
 class FragmentOrder : Fragment() {
 
-    private val vieModel:MainViewModel by activityViewModels()
+    private val viewModel:MainViewModel by activityViewModels()
     private val authViewModel:AuthViewModel by activityViewModels()
     private val topTextViewModel:TopTextViewModel by activityViewModels()
     private val orderViewModel:OrderViewModel by activityViewModels()
@@ -52,25 +53,27 @@ class FragmentOrder : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.data.collectLatest {
                     if(it.id==0L) {
-                        orderViewModel.cancelOrder(vieModel.dataLanguage)
-                        topTextViewModel.text.value = vieModel.dataLanguage.basketGroup
-                        vieModel.pointBottomMenu.value = 1
+                        orderViewModel.cancelOrder(viewModel.dataLanguage)
+                        topTextViewModel.text.value = viewModel.dataLanguage.basketGroup
+                        viewModel.pointBottomMenu.value = 1
                         findNavController().navigate(R.id.fragmentForBasket)
                     }
                 }
             }
         }
 
-        binding.point1.text = getString(R.string.first_point, vieModel.amountOrder.value.toString())
+        binding.point1.text = getString(R.string.first_point, viewModel.amountOrder.value.toString())
         binding.point2delivery.text = "2. ${orderViewModel.typeOfDelivery}"
         binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
         binding.addressDelivery.text = "3. ${orderViewModel.addressDelivery}"
         binding.textPayment.text = "4. ${orderViewModel.typeOfPayment}"
 
-        val listOrder = vieModel.dataFull.value?.products
+        val listOrder = viewModel.dataFull.value?.products
             ?.filter {
                 it.inBasket
             }.orEmpty()
+
+        binding.txEmptyOrder.isVisible = listOrder.isEmpty()
 
         for(i in listOrder.indices) {
             binding.textOrder.append("${i+1}. ${listOrder[i].name} ${listOrder[i].weight}\n")
@@ -200,17 +203,17 @@ class FragmentOrder : Fragment() {
             when(it) {
                 0 -> binding.cardViewFinalOrder.visibility = View.GONE
                 1 -> {
-                    vieModel.pointBottomMenu.value = -2
+                    viewModel.pointBottomMenu.value = -2
                     val timeOrder = OffsetDateTime.now().plusHours(1L)
                     val timeOrderTime = timeOrder.format((ofPattern("HH:mm")))
                     val timeOrderDate = timeOrder.format(ofPattern("d MMMM uuuu HH:mm")).toString()
                     val dataHistory = DataHistory(
-                        id=0L,
+                        id=0,
                         login = authViewModel.data.value.username ?: "",
-                        sumOrder = vieModel.amountOrder.value ?: 0.0,
+                        sumOrder = viewModel.amountOrder.value ?: 0.0,
                         pickUp = orderViewModel.flagPickUp,
                         dateTime = timeOrderDate)
-                    vieModel.addHistory(dataHistory)
+                    viewModel.addHistory(dataHistory)
                     binding.cardView1.visibility = View.GONE
                     binding.cardView2.visibility = View.GONE
                     binding.cardView3.visibility = View.GONE
@@ -341,10 +344,10 @@ class FragmentOrder : Fragment() {
         }
 
         binding.buttonThankYou.setOnClickListener {
-            orderViewModel.cancelOrder(vieModel.dataLanguage)
+            orderViewModel.cancelOrder(viewModel.dataLanguage)
             topTextViewModel.text.value = getString(R.string.app_name)
-            vieModel.cleanBasket()
-            vieModel.pointBottomMenu.value = -1
+            viewModel.cleanBasket()
+            viewModel.pointBottomMenu.value = -1
             findNavController().navigate(R.id.blankFragment)
         }
 
@@ -370,8 +373,8 @@ class FragmentOrder : Fragment() {
     }
 
     private fun goToBasket() {
-        topTextViewModel.text.value = vieModel.dataLanguage.basketGroup
-        vieModel.pointBottomMenu.value = 1
+        topTextViewModel.text.value = viewModel.dataLanguage.basketGroup
+        viewModel.pointBottomMenu.value = 1
         findNavController().navigate(R.id.fragmentForBasket)
     }
 

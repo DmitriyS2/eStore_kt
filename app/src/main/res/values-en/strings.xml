@@ -68,5 +68,8 @@
     <string name="rus">Russian</string>
     <string name="engl">English</string>
     <string name="zakaz_na_summu">"Order for the amount of "</string>
+    <string name="Delete">Delete</string>
+    <string name="order_empty">Empty</string>
+    <string name="history_empty">There were no orders</string>
 
 </resources>

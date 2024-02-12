@@ -12,42 +12,27 @@ import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
 import ru.netology.estore.R
 import ru.netology.estore.databinding.FragmentCurrentProductBinding
 import ru.netology.estore.dto.getSumWithTwoDecimal
 import ru.netology.estore.util.StringArg
 import ru.netology.estore.viewmodel.MainViewModel
 
-
 class FragmentCurrentProduct : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
 
-    //    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        val inflater = TransitionInflater.from(requireContext())
-//        enterTransition = inflater.inflateTransition(R.transition.slide_right)
-//    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = TransitionInflater.from(requireContext())
             .inflateTransition(R.transition.shared_image)
-            .setDuration(5000L)
-        sharedElementReturnTransition = TransitionInflater.from(requireContext())
-            .inflateTransition(R.transition.shared_image)
-            .setDuration(5000L)
+            .setDuration(2500L)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-      //  val current = arguments?.textArgument
-        val current= arguments?.let { FragmentCurrentProductArgs.fromBundle(it).transitName }
-     //   val heroImageView = view.findViewById<View>(R.id.cardViewCurrentProduct)
-        val heroImageView = view.findViewById<View>(R.id.avatar)
-        // ViewCompat.setTransitionName(heroImageView, "hero_image")
-        Log.d("MyLog", "current = $current, heroimage=${heroImageView.hashCode()}")
-        ViewCompat.setTransitionName(heroImageView, current)
+        val currentName = arguments?.let { FragmentCurrentProductArgs.fromBundle(it).transitName }
+        val currentImageView = view.findViewById<View>(R.id.avatar)
+        ViewCompat.setTransitionName(currentImageView, currentName)
     }
 
     @SuppressLint("SetTextI18n")
@@ -57,9 +42,7 @@ class FragmentCurrentProduct : Fragment() {
     ): View {
 
         val binding = FragmentCurrentProductBinding.inflate(inflater, container, false)
-
-     //   val currentId = arguments?.textArgument?.toInt()
-        val currentId= arguments?.let { FragmentCurrentProductArgs.fromBundle(it).transitName }
+        val currentId = arguments?.let { FragmentCurrentProductArgs.fromBundle(it).transitName }
             ?.toInt()
 
         viewModel.dataFull.observe(viewLifecycleOwner)
@@ -123,14 +106,10 @@ class FragmentCurrentProduct : Fragment() {
             }
         }
 
-
         return binding.root
     }
 
     companion object {
-
-        var Bundle.textArgument: String? by StringArg
-
         @JvmStatic
         fun newInstance() = FragmentCurrentProduct()
     }

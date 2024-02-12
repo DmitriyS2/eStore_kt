@@ -88,7 +88,6 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/delete"
                 android:src="@drawable/delete_red_24"
-                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/textHistory1" />
 

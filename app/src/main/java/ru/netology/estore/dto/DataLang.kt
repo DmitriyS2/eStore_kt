@@ -57,9 +57,6 @@ abstract class DataLang {
     abstract val vegetableUnitWeight: List<String>
     abstract val bakeryUnitWeight: List<String>
 
-    abstract var buttonAdd: String
-    abstract var buttonDel: String
-
     abstract val typeOfDelivery: String
     abstract val addressPickUp: String
     abstract val addressDelivery: String
@@ -98,9 +95,6 @@ object DataRus : DataLang() {
     override val bakeryUnitWeight =
         listOf("руб/шт", "руб/шт", "руб/шт", "руб/кг", "руб/кг", "руб/кг")
 
-    override var buttonAdd = "Добавить"
-    override var buttonDel = "Убрать"
-
     override val typeOfDelivery: String = "Сами заберете или Вам привезти?"
     override val addressPickUp: String = "Выберите магазин, откуда заберете"
     override val addressDelivery: String = "Куда Вам привезти?"
@@ -137,9 +131,6 @@ object DataEng : DataLang() {
         listOf("rub/kg", "rub/kg", "rub/kg", "rub/kg", "rub/kg", "rub/kg")
     override val bakeryUnitWeight =
         listOf("rub/pc", "rub/pc", "rub/pc", "rub/kg", "rub/kg", "rub/kg")
-
-    override var buttonAdd = "Add"
-    override var buttonDel = "Delete"
 
     override val typeOfDelivery = "Will you pick it up yourself or bring it to you?"
     override val addressPickUp = "Select the store where you will pick it up"

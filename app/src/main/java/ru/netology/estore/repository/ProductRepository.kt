@@ -26,7 +26,9 @@ interface ProductRepository {
 
     suspend fun checkSignIn(login:String): User?
     suspend fun signUp(login: String, password: String, name: String):User?
+    suspend fun signInApi(request: AuthRequest):Response<User>
     suspend fun getHistory(login: String): List<DataHistory>?
     suspend fun addHistory(dataHistory: DataHistory)
-    suspend fun signInApi(request: AuthRequest):Response<User>
+    suspend fun deleteHistoryById(id:Int)
+
 }

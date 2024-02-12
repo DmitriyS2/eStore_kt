@@ -3,7 +3,6 @@ package ru.netology.estore.adapter
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,21 +23,17 @@ interface Listener {
     fun weightPlus(product: Product)
     fun weightMinus(product: Product)
     fun deleteFromBasketWeightZero()
-  //  fun goToProduct(product: Product)
- fun goToProduct(view:View, product: Product)
+    fun goToProduct(view: View, product: Product)
 }
 
 class ProductAdapter(private val listener: Listener) :
     ListAdapter<Product, ProductAdapter.ProductHolder>(ProductDiffCallback()) {
 
-    var productList = emptyList<Product>()
-
-    class ProductHolder(item: View, private val listener: Listener) : RecyclerView.ViewHolder(item) {
+    class ProductHolder(item: View, private val listener: Listener) :
+        RecyclerView.ViewHolder(item) {
 
         val binding = ItemForCatalogProductBinding.bind(item)
-
-     //   val image = item.findViewById<View>(R.id.cardViewItemCatalog)
-        val image = item.findViewById<View>(R.id.avatar)
+        private val image = binding.avatar
 
         @SuppressLint("SetTextI18n")
         fun bind(product: Product) = with(binding) {
@@ -59,10 +54,11 @@ class ProductAdapter(private val listener: Listener) :
                 groupDiscount.visibility = View.VISIBLE
                 val scalePictureX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.3F, 1F)
                 val scalePictureY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.3F, 1F)
-                ObjectAnimator.ofPropertyValuesHolder(pictureDiscount, scalePictureX, scalePictureY).apply {
-                    duration = 1000
-                    repeatCount = 100
-                }.start()
+                ObjectAnimator.ofPropertyValuesHolder(pictureDiscount, scalePictureX, scalePictureY)
+                    .apply {
+                        duration = 1000
+                        repeatCount = 100
+                    }.start()
                 textDiscount.text = "-${product.minusPercent}%"
                 val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.3F, 1F)
                 val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1F, 1.3F, 1F)
@@ -70,7 +66,7 @@ class ProductAdapter(private val listener: Listener) :
                     duration = 1000
                     repeatCount = 150
                 }.start()
-                Price.alpha = 0.3f
+                price.alpha = 0.3f
                 newPrice.text = "${
                     getSumWithTwoDecimal(
                         product.price * (100 - product.minusPercent) / 100,
@@ -79,7 +75,7 @@ class ProductAdapter(private val listener: Listener) :
                 } ${product.unitWeight}"
 
             } else {
-                Price.alpha = 1f
+                price.alpha = 1f
                 groupDiscount.visibility = View.INVISIBLE
             }
 
@@ -93,21 +89,21 @@ class ProductAdapter(private val listener: Listener) :
 
             txItem.text = product.name
 
-            Price.text = "${product.price} ${product.unitWeight}"
+            price.text = "${product.price} ${product.unitWeight}"
 
             if (product.inBasket) {
-                buttonAddToBin.setBackgroundColor(Color.parseColor("#104021"))
-                buttonAddToBin.text = product.buttonDelete
+                buttonAddToBin.setBackgroundColor(itemView.context.getColor(R.color.colorVegetable))
+                buttonAddToBin.text = itemView.context.getString(R.string.Delete)
             } else {
-                buttonAddToBin.setBackgroundColor(Color.parseColor("#f2570f"))
-                buttonAddToBin.text = product.buttonAdd
+                buttonAddToBin.setBackgroundColor(itemView.context.getColor(R.color.orange))
+                buttonAddToBin.text = itemView.context.getString(R.string.add)
             }
 
             buttonLike.setOnClickListener {
                 ObjectAnimator.ofPropertyValuesHolder(
-                buttonLike,
-                PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
-                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
+                    buttonLike,
+                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0F, 1.3F, 1.0F),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0F, 1.3F, 1.0F)
                 ).start()
                 listener.like(product)
             }
@@ -122,10 +118,8 @@ class ProductAdapter(private val listener: Listener) :
             }
 
             cardViewItemCatalog.setOnClickListener {
-              //  listener.goToProduct(product)
                 listener.goToProduct(image, product)
             }
-
         }
     }
 
@@ -138,10 +132,6 @@ class ProductAdapter(private val listener: Listener) :
     override fun onBindViewHolder(holder: ProductHolder, position: Int) {
         val product = getItem(position)
         holder.bind(product)
-    }
-
-    override fun getItemCount(): Int {
-        return productList.size
     }
 }
 
@@ -159,5 +149,5 @@ class ProductDiffCallback : DiffUtil.ItemCallback<Product>() {
 }
 
 data class Payload(
-    val id:Int? = null
+    val id: Int? = null
 )

@@ -1,31 +1,20 @@
 package ru.netology.estore.activity
 
 import android.os.Bundle
-import android.text.TextUtils.replace
 import android.transition.TransitionInflater
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
-import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import ru.netology.estore.R
-import ru.netology.estore.activity.FragmentCurrentProduct.Companion.textArgument
 import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductAdapter
-import ru.netology.estore.databinding.ActivityMainBinding
 import ru.netology.estore.databinding.FragmentForCatalogBinding
 import ru.netology.estore.dto.Product
 import ru.netology.estore.viewmodel.AuthViewModel
@@ -34,74 +23,15 @@ import ru.netology.estore.viewmodel.TopTextViewModel
 
 
 class FragmentForCatalog : Fragment() {
- //   private var fragmentBinding: FragmentForCatalogBinding? = null
-
-    lateinit var binding:FragmentForCatalogBinding
-
     private val viewModel: MainViewModel by activityViewModels()
-    private val authViewModel:AuthViewModel by activityViewModels()
-    private val topTextViewModel:TopTextViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
+    private val topTextViewModel: TopTextViewModel by activityViewModels()
 
-
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        val inflater = TransitionInflater.from(requireContext())
-//        exitTransition = inflater.inflateTransition(R.transition.fade)
-//    }
-override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    sharedElementEnterTransition = TransitionInflater.from(requireContext())
-        .inflateTransition(R.transition.shared_image)
-        .setDuration(5000L)
-    sharedElementReturnTransition = TransitionInflater.from(requireContext())
-        .inflateTransition(R.transition.shared_image)
-        .setDuration(5000L)
-}
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    //     binding = FragmentForCatalogBinding.inflate(layoutInflater)
-       // setContentView(binding.root)
-   //     fragmentBinding = binding
-     //   val itemImageView = view.findViewById<CardView>(R.id.cardViewItemCatalog)
-    //    ViewCompat.setTransitionName(itemImageView, "item_image")
-//        val itemImageView = view.findViewById<RecyclerView>(R.id.rwProducts)
-//        ViewCompat.setTransitionName(itemImageView, "item_image")
-//
-//        itemImageView.setOnClickListener {
-//            val fragment = FragmentCurrentProduct()
-//            parentFragmentManager.commit {
-//                //   setCustomAnimations(...)
-//                setReorderingAllowed(true)
-//                addSharedElement(itemImageView, "hero_image")
-//                replace(R.id.nav_host_fragment, fragment)
-//                addToBackStack(null)
-//            }
-//        }
-
-//        val fragment = FragmentCurrentProduct()
-//        childFragmentManager.commit {
-//            //  setCustomAnimations(...)
-//            view?.let { addSharedElement(it, "hero_image") }
-//            replace(R.id.nav_host_fragment, fragment)
-//            addToBackStack(null)
-//        }
-//        val itemImageView = view.findViewById<ImageView>(R.id.item_image)
-//        ViewCompat.setTransitionName(itemImageView, “item_image”)
-
-//        postponeEnterTransition()
-//
-//        // Wait for the data to load
-//        viewModel.data.observe(viewLifecycleOwner) {
-//            // Set the data on the RecyclerView adapter
-//            adapter.setData(it)
-//            // Start the transition once all views have been
-//            // measured and laid out
-//            (view.parent as? ViewGroup)?.doOnPreDraw {
-//                startPostponedEnterTransition()
-//            }
-//        }
+        sharedElementEnterTransition = TransitionInflater.from(requireContext())
+            .inflateTransition(R.transition.shared_image)
+            .setDuration(2000L)
     }
 
     override fun onCreateView(
@@ -109,11 +39,11 @@ override fun onCreate(savedInstanceState: Bundle?) {
         savedInstanceState: Bundle?
     ): View {
 
-       binding = FragmentForCatalogBinding.inflate(inflater, container, false)
+        val binding = FragmentForCatalogBinding.inflate(inflater, container, false)
 
         val adapter = ProductAdapter(object : Listener {
             override fun like(product: Product) {
-                if(authViewModel.authenticated) {
+                if (authViewModel.authenticated) {
                     viewModel.like(product)
                 } else {
                     mustSignIn()
@@ -139,44 +69,19 @@ override fun onCreate(savedInstanceState: Bundle?) {
             override fun deleteFromBasketWeightZero() {
             }
 
-            //      override fun goToProduct(product: Product) {
             override fun goToProduct(view: View, product: Product) {
-
-                val fragment = FragmentCurrentProduct()
-
-                val action:NavDirections = FragmentForCatalogDirections.actionFragmentForCatalogToFragmentCurrentProduct(ViewCompat.getTransitionName(view)!!)
+                val action: NavDirections =
+                    FragmentForCatalogDirections.actionFragmentForCatalogToFragmentCurrentProduct(
+                        transitName = ViewCompat.getTransitionName(view)!!
+                    )
 
                 val extras = FragmentNavigator.Extras.Builder()
                     .addSharedElement(view, ViewCompat.getTransitionName(view)!!)
                     .build()
 
-                Log.d("MyLog", "extras = ${ViewCompat.getTransitionName(view)}")
-
                 findNavController().navigate(action, extras)
-                
-//                findNavController().navigate(R.id.fragmentCurrentProduct, Bundle().apply {
-//                            textArgument = ViewCompat.getTransitionName(view)})
 
-//                findNavController()
-////                    .navigate(R.id.fragmentCurrentProduct, Bundle().apply {
-////                            textArgument = "hero_image"
-////                        })
-//                    .navigate(R.id.fragmentCurrentProduct, extras)
-
-//                parentFragmentManager.commit {
-//                    //   setCustomAnimations(...)
-//                    setReorderingAllowed(true)
-//                    addSharedElement(view, "hero_image")
-//                    replace(R.id.nav_host_fragment, fragment)
-//                    addToBackStack(null)
-//                }
-
-//                findNavController()
-//                    .navigate(R.id.fragmentCurrentProduct,
-//                        Bundle().apply {
-//                            textArgument = product.id.toString()
-//                        })
-                topTextViewModel.text.value = product.name
+                topTextViewModel.text.value = ""
                 viewModel.pointBottomMenu.value = -1
             }
         })
@@ -197,7 +102,8 @@ override fun onCreate(savedInstanceState: Bundle?) {
                 getString(R.string.Bakery) -> viewModel.dataFull.value?.products?.filter { it.group == viewModel.dataLanguage.bakeryGroup }
                     .orEmpty()
 
-                getString(R.string.Bestsellers) -> viewModel.dataFull.value?.products?.filter { it.isHit }.orEmpty()
+                getString(R.string.Bestsellers) -> viewModel.dataFull.value?.products?.filter { it.isHit }
+                    .orEmpty()
 
                 getString(R.string.Discount) -> viewModel.dataFull.value?.products?.filter { it.isDiscount }
                     .orEmpty()
@@ -207,7 +113,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
                 else -> emptyList()
             }
-            adapter.productList = list.orEmpty()
             adapter.submitList(list)
         }
         return binding.root
