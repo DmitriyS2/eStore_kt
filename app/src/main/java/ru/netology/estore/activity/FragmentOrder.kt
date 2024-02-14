@@ -62,7 +62,8 @@ class FragmentOrder : Fragment() {
             }
         }
 
-        binding.point1.text = getString(R.string.first_point, viewModel.amountOrder.value.toString())
+     //   binding.point1.text = getString(R.string.first_point, viewModel.amountOrder.value.toString())
+        binding.point1.text = getString(R.string.first_point, viewModel.amountOrderN.value.toString())
         binding.point2delivery.text = "2. ${orderViewModel.typeOfDelivery}"
         binding.point3Address.text = "3. ${orderViewModel.addressPickUp}"
         binding.addressDelivery.text = "3. ${orderViewModel.addressDelivery}"
@@ -76,7 +77,8 @@ class FragmentOrder : Fragment() {
         binding.txEmptyOrder.isVisible = listOrder.isEmpty()
 
         for(i in listOrder.indices) {
-            binding.textOrder.append("${i+1}. ${listOrder[i].name} ${listOrder[i].weight}\n")
+          //  binding.textOrder.append("${i+1}. ${listOrder[i].name} ${listOrder[i].weight}\n")
+            binding.textOrder.append("${i+1}. ${listOrder[i].name} ${listOrder[i].weightN}\n")
         }
 
         //заказ на сумму
@@ -210,7 +212,8 @@ class FragmentOrder : Fragment() {
                     val dataHistory = DataHistory(
                         id=0,
                         login = authViewModel.data.value.username ?: "",
-                        sumOrder = viewModel.amountOrder.value ?: 0.0,
+                    //    sumOrder = viewModel.amountOrder.value ?: 0.0,
+                        sumOrder = viewModel.amountOrderN.value?.toDouble() ?: 0.0,
                         pickUp = orderViewModel.flagPickUp,
                         dateTime = timeOrderDate)
                     viewModel.addHistory(dataHistory)

@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.netology.estore.R
 import ru.netology.estore.databinding.ItemForCatalogProductBinding
 import ru.netology.estore.dto.Product
-import ru.netology.estore.dto.getSumWithTwoDecimal
 import androidx.recyclerview.widget.ListAdapter
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 interface Listener {
     fun like(product: Product)
@@ -67,12 +68,13 @@ class ProductAdapter(private val listener: Listener) :
                     repeatCount = 150
                 }.start()
                 price.alpha = 0.3f
-                newPrice.text = "${
-                    getSumWithTwoDecimal(
-                        product.price * (100 - product.minusPercent) / 100,
-                        100.0
-                    )
-                } ${product.unitWeight}"
+//                newPrice.text = "${
+//                    getSumWithTwoDecimal(
+//                        product.price * (100 - product.minusPercent) / 100,
+//                        100.0
+//                    )
+//                } ${product.unitWeight}"
+                newPrice.text = "${(product.priceN * BigDecimal(1.0 - product.minusPercent.toDouble() / 100.0)).setScale(2, RoundingMode.HALF_UP)} ${product.unitWeight}"
 
             } else {
                 price.alpha = 1f
@@ -89,7 +91,8 @@ class ProductAdapter(private val listener: Listener) :
 
             txItem.text = product.name
 
-            price.text = "${product.price} ${product.unitWeight}"
+         //   price.text = "${product.price} ${product.unitWeight}"
+            price.text = "${product.priceN} ${product.unitWeight}"
 
             if (product.inBasket) {
                 buttonAddToBin.setBackgroundColor(itemView.context.getColor(R.color.colorVegetable))

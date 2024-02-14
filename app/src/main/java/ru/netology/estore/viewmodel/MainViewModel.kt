@@ -12,6 +12,8 @@ import ru.netology.estore.dto.DataRus
 import ru.netology.estore.model.FullProduct
 import ru.netology.estore.dto.Product
 import ru.netology.estore.repository.ProductRepository
+import java.math.BigDecimal
+import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +29,8 @@ class MainViewModel @Inject constructor(
     val emptyHistoryOfOrders: Boolean
         get() = dataHistoryOrders.value?.isEmpty() ?: true
 
-    val amountOrder = MutableLiveData<Double>()
+  //  val amountOrder = MutableLiveData<Double>()
+    val amountOrderN = MutableLiveData<BigDecimal>()
 
     val counterHit
         get() = dataFull.value?.products
@@ -127,8 +130,9 @@ class MainViewModel @Inject constructor(
         return repository.deleteFromBasketWeightZero()
     }
 
-    fun countOrder(list: List<Product>): Double {
-        return repository.countOrder(list)
+  //  fun countOrder(list: List<Product>): Double {
+        fun countOrder(list: List<Product>): BigDecimal {
+        return repository.countOrder(list).setScale(2, RoundingMode.HALF_UP)
     }
 
     fun cleanBasket() {

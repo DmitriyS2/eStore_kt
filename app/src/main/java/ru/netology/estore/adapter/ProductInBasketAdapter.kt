@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.estore.R
 import ru.netology.estore.databinding.ItemForBasketProductBinding
+import ru.netology.estore.dto.DataLang.Companion.bigDecZero
 import ru.netology.estore.dto.Product
-import ru.netology.estore.dto.getSumWithTwoDecimal
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 
 class ProductInBasketAdapter(private val listener: Listener) :
@@ -36,35 +38,41 @@ class ProductInBasketAdapter(private val listener: Listener) :
                 txMinusPrice.visibility = View.VISIBLE
                 txMinusPrice.text = "-${product.minusPercent}%"
                 txPrice.setTextColor(itemView.context.getColor(R.color.red))
-                txPrice.text = "${
-                    getSumWithTwoDecimal(
-                        product.price * (100 - product.minusPercent) / 100,
-                        100.0
-                    )
-                } ${product.unitWeight}"
+//                txPrice.text = "${
+//                    getSumWithTwoDecimal(
+//                        product.price * (100 - product.minusPercent) / 100,
+//                        100.0
+//                    )
+//                } ${product.unitWeight}"
+                txPrice.text = "${(product.priceN * BigDecimal((100 - product.minusPercent )/ 100.0)).setScale(2, RoundingMode.HALF_UP)} ${product.unitWeight}"
             } else {
                 txMinusPrice.visibility = View.GONE
                 txPrice.setTextColor(itemView.context.getColor(R.color.black))
-                txPrice.text = "${product.price} ${product.unitWeight}"
-                txPrice.text = itemView.context.getString(R.string.sign_in)
+             //   txPrice.text = "${product.price} ${product.unitWeight}"
+                txPrice.text = "${product.priceN} ${product.unitWeight}"
             }
 
-            if (product.weight > product.oneUnit) {
+      //      if (product.weight > product.oneUnit) {
+                if (product.weightN > product.oneUnitN) {
                 groupWeight.visibility = View.VISIBLE
                 buttonAdd.visibility = View.GONE
                 buttonMinus.setImageResource(R.drawable.button_minus_24)
-            } else if (product.weight == product.oneUnit) {
+      //      } else if (product.weight == product.oneUnit) {
+                } else if (product.weightN == product.oneUnitN) {
                 groupWeight.visibility = View.VISIBLE
                 buttonAdd.visibility = View.GONE
                 buttonMinus.setImageResource(R.drawable.delete_green_24)
-            } else if (product.weight == 0.0) {
+      //      } else if (product.weight == 0.0) {
+                } else if (product.weightN == bigDecZero) {
                 groupWeight.visibility = View.GONE
                 buttonAdd.visibility = View.VISIBLE
             }
 
-            txSumma.text = "${getSumWithTwoDecimal(product.sum, 100.0)}"
+          //  txSumma.text = "${getSumWithTwoDecimal(product.sum, 100.0)}"
+            txSumma.text = "${product.sumN.setScale(2, RoundingMode.HALF_UP)}"
 
-            txWeight.text = "${getSumWithTwoDecimal(product.weight, 10.0)} ${product.unitWeight}"
+         //   txWeight.text = "${getSumWithTwoDecimal(product.weight, 10.0)} ${product.unitWeight}"
+            txWeight.text = "${product.weightN} ${product.unitWeight}"
 
             buttonLike.setOnClickListener {
                 showAnimationView(it)

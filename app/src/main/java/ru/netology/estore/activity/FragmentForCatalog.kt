@@ -2,6 +2,7 @@ package ru.netology.estore.activity
 
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,8 @@ class FragmentForCatalog : Fragment() {
             override fun like(product: Product) {
                 if (authViewModel.authenticated) {
                     viewModel.like(product)
+                    Log.d("MyLog", "priceN=${product.priceN}, 2*priceN=${product.priceN*product.oneUnitN}, " +
+                            "oneUnit=${product.oneUnitN}, sum=${product.sumN}, weight=${product.weightN}")
                 } else {
                     mustSignIn()
                 }

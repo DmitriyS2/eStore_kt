@@ -6,12 +6,15 @@ import ru.netology.estore.dao.UserDao
 import ru.netology.estore.dto.AuthRequest
 import ru.netology.estore.dto.DataHistory
 import ru.netology.estore.dto.DataLang
+import ru.netology.estore.dto.DataLang.Companion.bigDecZero
+import ru.netology.estore.dto.DataLang.Companion.bigDecZeroZero
 import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.User
-import ru.netology.estore.dto.getSumWithTwoDecimal
 import ru.netology.estore.entity.DataHistoryEntity
 import ru.netology.estore.entity.UserEntity
 import ru.netology.estore.entity.toDto
+import java.math.BigDecimal
+import java.math.RoundingMode
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,6 +28,7 @@ class ProductRepositoryImpl @Inject constructor(
 
     var allProducts = arrayListOf<Product>()
     override var allProductsOriginal = arrayListOf<Product>()
+
 
     override fun fillAllProducts(dataLang: DataLang): ArrayList<Product> {
         allProducts.addAll(fillFruits(dataLang))
@@ -43,12 +47,14 @@ class ProductRepositoryImpl @Inject constructor(
                     name = dataLang.fruitsName[i],
                     group = dataLang.fruitGroup,
                     picture = dataLang.fruitsPicture[i],
-                    price = dataLang.fruitsPrice[i],
-                    oneUnit = dataLang.fruitOneUnit[i],
+//                    price = dataLang.fruitsPrice[i],
+//                    oneUnit = dataLang.fruitOneUnit[i],
                     unitWeight = dataLang.fruitUnitWeight[i],
                     country = (if (i == 0 || i == 5) dataLang.country[1] else dataLang.country[0]),
                     storage = dataLang.storage[1],
                     pack = dataLang.pack,
+                    priceN = dataLang.fruitsPriceN[i].setScale(2, RoundingMode.HALF_UP),
+                    oneUnitN = dataLang.fruitOneUnitN[i].setScale(1, RoundingMode.HALF_UP),
                 )
             )
         }
@@ -64,12 +70,14 @@ class ProductRepositoryImpl @Inject constructor(
                     name = dataLang.vegetablesName[i],
                     group = dataLang.vegetableGroup,
                     picture = dataLang.vegetablesPicture[i],
-                    price = dataLang.vegetablesPrice[i],
-                    oneUnit = dataLang.vegetablesOneUnit[i],
+//                    price = dataLang.vegetablesPrice[i],
+//                    oneUnit = dataLang.vegetablesOneUnit[i],
                     unitWeight = dataLang.vegetableUnitWeight[i],
                     country = dataLang.country[0],
                     storage = dataLang.storage[1],
                     pack = dataLang.pack,
+                    priceN = dataLang.vegetablesPriceN[i].setScale(2, RoundingMode.HALF_UP),
+                    oneUnitN = dataLang.vegetablesOneUnitN[i].setScale(1, RoundingMode.HALF_UP),
                 )
             )
         }
@@ -85,12 +93,14 @@ class ProductRepositoryImpl @Inject constructor(
                     name = dataLang.bakeryName[i],
                     group = dataLang.bakeryGroup,
                     picture = dataLang.bakeryPicture[i],
-                    price = dataLang.bakeryPrice[i],
-                    oneUnit = dataLang.bakeryOneUnit[i],
+//                    price = dataLang.bakeryPrice[i],
+//                    oneUnit = dataLang.bakeryOneUnit[i],
                     unitWeight = dataLang.bakeryUnitWeight[i],
                     country = dataLang.country[0],
                     storage = dataLang.storage[0],
                     pack = dataLang.pack,
+                    priceN = dataLang.bakeryPriceN[i].setScale(2, RoundingMode.HALF_UP),
+                    oneUnitN = dataLang.bakeryOneUnitN[i].setScale(1, RoundingMode.HALF_UP),
                 )
             )
         }
@@ -171,8 +181,11 @@ class ProductRepositoryImpl @Inject constructor(
         allProducts = allProducts.map {
             if (it != product) it else it.copy(
                 inBasket = !it.inBasket,
-                weight = (if (!it.inBasket) it.oneUnit else 0.0),
-                sum = if (it.inBasket) 0.0 else (it.oneUnit * (if (it.isDiscount) (it.price * (100 - it.minusPercent) / 100) else it.price))
+             //   weight = (if (!it.inBasket) it.oneUnit else 0.0),
+                weightN = (if (!it.inBasket) it.oneUnitN else bigDecZero).setScale(1, RoundingMode.HALF_UP),
+           //     sum = if (it.inBasket) 0.0 else (it.oneUnit * (if (it.isDiscount) (it.price * (100 - it.minusPercent) / 100) else it.price)),
+                sumN = (if (it.inBasket) bigDecZeroZero else (it.oneUnitN * (if (it.isDiscount) (it.priceN * BigDecimal(
+                    ((100 - it.minusPercent) / 100.0))) else it.priceN)))
             )
         } as ArrayList
         return allProducts
@@ -181,8 +194,10 @@ class ProductRepositoryImpl @Inject constructor(
     override fun addToBasketAgain(product: Product): ArrayList<Product> {
         allProducts = allProducts.map {
             if (it != product) it else it.copy(
-                weight = it.oneUnit,
-                sum = (it.oneUnit * (if (it.isDiscount) (it.price * (100 - it.minusPercent) / 100) else it.price))
+           //     weight = it.oneUnit,
+                weightN = it.oneUnitN,
+         //       sum = (it.oneUnit * (if (it.isDiscount) (it.price * (100 - it.minusPercent) / 100) else it.price)),
+            sumN = (it.oneUnitN * (if (it.isDiscount) (it.priceN * BigDecimal((100 - it.minusPercent) / 100.0)) else it.priceN))
             )
         } as ArrayList
         return allProducts
@@ -192,8 +207,10 @@ class ProductRepositoryImpl @Inject constructor(
         allProducts = allProducts.map {
             if (it != product) it else it.copy(
                 inBasket = false,
-                weight = 0.0,
-                sum = 0.0
+         //       weight = 0.0,
+                weightN = bigDecZero,
+         //       sum = 0.0,
+                sumN = bigDecZeroZero
             )
         } as ArrayList
         return allProducts
@@ -202,11 +219,13 @@ class ProductRepositoryImpl @Inject constructor(
     override fun weightPLus(product: Product): ArrayList<Product> {
         allProducts = allProducts.map {
             if (it != product) it else it.copy(
-                weight = getSumWithTwoDecimal(it.weight + it.oneUnit, 10.0),
-                sum = getSumWithTwoDecimal(
-                    (it.weight + it.oneUnit) * (if (it.isDiscount) (it.price * (100 - it.minusPercent) / 100) else it.price),
-                    10.0
-                )
+           //     weight = getSumWithTwoDecimal(it.weight + it.oneUnit, 10.0),
+                weightN = it.weightN+it.oneUnitN,
+//                sum = getSumWithTwoDecimal(
+//                    (it.weight + it.oneUnit) * (if (it.isDiscount) (it.price * (100 - it.minusPercent) / 100) else it.price),
+//                    10.0
+//                ),
+            sumN = (it.weightN + it.oneUnitN) * (if (it.isDiscount) (it.priceN * BigDecimal((100 - it.minusPercent) / 100.0)) else it.priceN)
             )
         } as ArrayList
         return allProducts
@@ -215,11 +234,13 @@ class ProductRepositoryImpl @Inject constructor(
     override fun weightMinus(product: Product): ArrayList<Product> {
         allProducts = allProducts.map {
             if (it != product) it else it.copy(
-                weight = getSumWithTwoDecimal(it.weight - it.oneUnit, 10.0),
-                sum = getSumWithTwoDecimal(
-                    (it.weight - it.oneUnit) * (if (it.isDiscount) (it.price * (100 - it.minusPercent) / 100) else it.price),
-                    10.0
-                )
+            //    weight = getSumWithTwoDecimal(it.weight - it.oneUnit, 10.0),
+                weightN = it.weightN-it.oneUnitN,
+//                sum = getSumWithTwoDecimal(
+//                    (it.weight - it.oneUnit) * (if (it.isDiscount) (it.price * (100 - it.minusPercent) / 100) else it.price),
+//                    10.0
+//                ),
+                sumN = (it.weightN - it.oneUnitN) * (if (it.isDiscount) (it.priceN * BigDecimal ((100 - it.minusPercent) / 100.0)) else it.priceN)
             )
         } as ArrayList
         return allProducts
@@ -227,28 +248,34 @@ class ProductRepositoryImpl @Inject constructor(
 
     override fun deleteFromBasketWeightZero(): ArrayList<Product> {
         allProducts = allProducts.map {
-            if (it.inBasket && it.weight == 0.0) it.copy(
+            if (it.inBasket && it.weightN==bigDecZero) it.copy(
                 inBasket = false
             ) else it
         } as ArrayList
         return allProducts
     }
 
-    override fun countOrder(list: List<Product>): Double {
+ //   override fun countOrder(list: List<Product>): Double {
+ override fun countOrder(list: List<Product>): BigDecimal {
         var sum = 0.0
+        var sumN= bigDecZeroZero
         for (item in list) {
-            sum += item.sum
+         //   sum += item.sum
+            sumN +=item.sumN
         }
-        return getSumWithTwoDecimal(sum, 100.0)
+    //    return getSumWithTwoDecimal(sum, 100.0)
+        return sumN
     }
 
     override fun cleanBasket(): ArrayList<Product> {
         allProducts = ArrayList(
             allProducts.map {
                 it.copy(
-                    weight = 0.0,
+                 //   weight = 0.0,
+                    weightN = bigDecZero,
                     inBasket = false,
-                    sum = 0.0,
+               //     sum = 0.0,
+                    sumN = bigDecZeroZero
                 )
             }
         )

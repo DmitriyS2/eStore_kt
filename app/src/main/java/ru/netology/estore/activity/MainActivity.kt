@@ -115,8 +115,8 @@ class MainActivity : AppCompatActivity() {
                                 val list =
                                     viewModel.dataFull.value?.products?.filter { it.inBasket }
                                         .orEmpty()
-                                viewModel.amountOrder.value = viewModel.countOrder(list)
-
+                             //   viewModel.amountOrder.value = viewModel.countOrder(list)
+                                viewModel.amountOrderN.value = viewModel.countOrder(list)
                                 if (orderViewModel.showPoint2.value != 0) {
                                     orderViewModel.showPoint1.value = 2
                                 } else {
@@ -311,7 +311,7 @@ class MainActivity : AppCompatActivity() {
         val locale = Locale(lang)
         Locale.setDefault(locale)
         val configuration = Configuration()
-        configuration.locale = locale
+        configuration.setLocale(locale)
         baseContext.resources.updateConfiguration(configuration, null)
         topTextViewModel.text.value = getString(R.string.app_name)
         viewModel.language.value = null

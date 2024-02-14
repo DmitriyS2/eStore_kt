@@ -6,6 +6,7 @@ import ru.netology.estore.dto.DataHistory
 import ru.netology.estore.dto.DataLang
 import ru.netology.estore.dto.Product
 import ru.netology.estore.dto.User
+import java.math.BigDecimal
 
 interface ProductRepository {
 
@@ -19,7 +20,8 @@ interface ProductRepository {
     fun weightPLus(product: Product):ArrayList<Product>
     fun weightMinus(product: Product):ArrayList<Product>
     fun deleteFromBasketWeightZero():ArrayList<Product>
-    fun countOrder(list:List<Product>):Double
+ //   fun countOrder(list:List<Product>):Double
+    fun countOrder(list: List<Product>):BigDecimal
     fun cleanBasket():ArrayList<Product>
     fun reNewDataFull(): ArrayList<Product>
     fun changeLang(dataLang: DataLang): ArrayList<Product>
@@ -27,6 +29,7 @@ interface ProductRepository {
     suspend fun checkSignIn(login:String): User?
     suspend fun signUp(login: String, password: String, name: String):User?
     suspend fun signInApi(request: AuthRequest):Response<User>
+
     suspend fun getHistory(login: String): List<DataHistory>?
     suspend fun addHistory(dataHistory: DataHistory)
     suspend fun deleteHistoryById(id:Int)
