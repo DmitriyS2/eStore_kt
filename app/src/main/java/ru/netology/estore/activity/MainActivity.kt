@@ -3,14 +3,13 @@ package ru.netology.estore.activity
 import android.content.res.Configuration
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
+import android.view.MenuItem
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.MenuItemCompat
 import androidx.core.view.forEach
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -42,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private var counterDiscount: TextView? = null
     private var counterFavorite: TextView? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -50,15 +50,12 @@ class MainActivity : AppCompatActivity() {
         findNavController(R.id.nav_host_fragment)
             .navigate(R.id.blankFragment)
 
-        counterHit = MenuItemCompat.getActionView(
-            binding.nvMenu.menu.findItem(R.id.hit)
-        ) as TextView
-        counterDiscount = MenuItemCompat.getActionView(
-            binding.nvMenu.menu.findItem(R.id.discount)
-        ) as TextView
-        counterFavorite = MenuItemCompat.getActionView(
-            binding.nvMenu.menu.findItem(R.id.favorite)
-        ) as TextView
+        val hitMenuItem: MenuItem = binding.nvMenu.menu.findItem(R.id.hit)
+        counterHit = hitMenuItem.actionView as TextView
+        val discountMenuItem: MenuItem = binding.nvMenu.menu.findItem(R.id.discount)
+        counterDiscount = discountMenuItem.actionView as TextView
+        val favoriteMenuItem: MenuItem = binding.nvMenu.menu.findItem(R.id.favorite)
+        counterFavorite = favoriteMenuItem.actionView as TextView
 
         showCountDrawerItem(counterHit, viewModel.counterHit)
         showCountDrawerItem(counterDiscount, viewModel.counterDiscount)
@@ -71,21 +68,27 @@ class MainActivity : AppCompatActivity() {
                         R.id.allProducts -> {
                             goToFragment(getString(R.string.whole_range))
                         }
+
                         R.id.fruit -> {
                             goToFragment(getString(R.string.Fruits))
                         }
+
                         R.id.vegetable -> {
                             goToFragment(getString(R.string.Vegetables))
                         }
+
                         R.id.bakery -> {
                             goToFragment(getString(R.string.Bakery))
                         }
+
                         R.id.hit -> {
                             goToFragment(getString(R.string.Bestsellers))
                         }
+
                         R.id.discount -> {
                             goToFragment(getString(R.string.Discount))
                         }
+
                         R.id.favorite -> {
                             goToFragment(getString(R.string.Favorite))
                         }
@@ -101,12 +104,14 @@ class MainActivity : AppCompatActivity() {
                         viewModel.pointBottomMenu.value = 0
                         drawer.openDrawer(GravityCompat.START)
                     }
+
                     R.id.fragmentForBasket -> {
                         topTextViewModel.text.value = getString(R.string.Basket)
                         viewModel.pointBottomMenu.value = 1
                         findNavController(R.id.nav_host_fragment)
                             .navigate(R.id.fragmentForBasket)
                     }
+
                     R.id.orderFragment -> {
                         viewModel.deleteFromBasketWeightZero()
                         if (authViewModel.authenticated) {
@@ -115,7 +120,6 @@ class MainActivity : AppCompatActivity() {
                                 val list =
                                     viewModel.dataFull.value?.products?.filter { it.inBasket }
                                         .orEmpty()
-                             //   viewModel.amountOrder.value = viewModel.countOrder(list)
                                 viewModel.amountOrderN.value = viewModel.countOrder(list)
                                 if (orderViewModel.showPoint2.value != 0) {
                                     orderViewModel.showPoint1.value = 2
@@ -134,7 +138,6 @@ class MainActivity : AppCompatActivity() {
                         } else {
                             mustSignIn(if (viewModel.pointBottomMenu.value == 0) R.id.fragmentForCatalog else R.id.fragmentForBasket)
                         }
-                        Log.d("MyLog", "emptyBasket = ${viewModel.dataFull.value?.emptyBasket}")
                     }
                 }
                 true
@@ -158,16 +161,19 @@ class MainActivity : AppCompatActivity() {
                                 .navigate(R.id.signInFragment)
                             true
                         }
+
                         R.id.signup -> {
                             topTextViewModel.text.value = getString(R.string.sign_up)
                             findNavController(R.id.nav_host_fragment)
                                 .navigate(R.id.signUpFragment)
                             true
                         }
+
                         R.id.signout -> {
                             areYouSureSignOut()
                             true
                         }
+
                         R.id.historyOfOrders -> {
                             viewModel.getHistory(authViewModel.data.value.username)
                             topTextViewModel.text.value = getString(R.string.history_of_orders)
@@ -176,10 +182,12 @@ class MainActivity : AppCompatActivity() {
                                 .navigate(R.id.fragmentHistory)
                             true
                         }
+
                         R.id.language -> {
                             dialogLanguage()
                             true
                         }
+
                         else -> false
                     }
                 }
@@ -190,8 +198,6 @@ class MainActivity : AppCompatActivity() {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 authViewModel.data.collectLatest {
                     viewModel.getHistory(authViewModel.data.value.username)
-                    Log.d("MyLog", "MainActivity data.collectLatest, login=${it.username}")
-                    //     invalidateMenu()
                 }
             }
         }
@@ -203,6 +209,7 @@ class MainActivity : AppCompatActivity() {
                     enabledPointBottomMenu(true)
                     turnOnOffPointBottomMenuCheckable(false) //сбросить все нажатые кнопки bottom menu
                 }
+
                 in 0..2 -> {
                     enabledPointBottomMenu(true)
                     turnOnOffPointBottomMenuCheckable(true)
@@ -212,7 +219,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.language.observe(this) {
-            it?.let {lang ->
+            it?.let { lang ->
                 viewModel.changeLang()
                 changeLanguage(lang)
             }
@@ -225,11 +232,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.counterFavorite.observe(this) {
             it?.let {
                 showCountDrawerItem(counterFavorite, if (it == "0") "" else it)
-                Log.d("MyLog", "counterFavorite из observe = $it")
             }
         }
     }
-
 
     private fun turnOnOffPointBottomMenuCheckable(flag: Boolean) {
         binding.bottomMenu.menu.forEach {
@@ -299,15 +304,14 @@ class MainActivity : AppCompatActivity() {
         menuDialog.show(manager, "Language")
     }
 
-    private fun showCountDrawerItem(view:TextView?, text:String?) {
+    private fun showCountDrawerItem(view: TextView?, text: String?) {
         view?.gravity = Gravity.CENTER_VERTICAL
         view?.setTypeface(null, Typeface.BOLD)
         view?.setTextColor(resources.getColor(R.color.red, null))
         view?.text = text ?: ""
-
     }
 
-    private fun changeLanguage(lang:String) {
+    private fun changeLanguage(lang: String) {
         val locale = Locale(lang)
         Locale.setDefault(locale)
         val configuration = Configuration()

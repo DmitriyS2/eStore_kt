@@ -59,7 +59,6 @@ class AppAuth @Inject constructor(
             commit()
         }
     }
-
 }
 
 data class AuthState(

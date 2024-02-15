@@ -15,9 +15,9 @@ interface DataHistoryDao {
 
     //дать все заказы по логину
     @Query("SELECT * FROM DataHistoryEntity WHERE login = :login")
-    suspend fun getDataHistory(login:String): List<DataHistoryEntity>
+    suspend fun getDataHistory(login: String): List<DataHistoryEntity>
 
     //удалить заказ из истории заказов
     @Query("DELETE FROM DataHistoryEntity WHERE id = :id")
-    suspend fun deleteHistoryById(id:Int)
+    suspend fun deleteHistoryById(id: Int)
 }

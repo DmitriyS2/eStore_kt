@@ -8,10 +8,10 @@ import ru.netology.estore.dto.User
 data class UserEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val firstName:String,
-    val username:String,
-    val password:String,
-    val token:String
+    val firstName: String,
+    val username: String,
+    val password: String,
+    val token: String
 ) {
     fun toDto() = User(id, firstName, username, password, token)
 

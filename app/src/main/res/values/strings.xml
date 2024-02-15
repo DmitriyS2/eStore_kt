@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">eStore</string>
-    <string name="rub_za_1"> " руб за 1 "</string>
-    <string name="rub">" руб"</string>
+
+    <string name="rub">"руб"</string>
     <string name="need_registration">Нужна регистрация</string>
     <string name="need_yo_signin">Для этого действия необходимо войти в систему</string>
     <string name="sign_in">Войти</string>
@@ -76,6 +76,7 @@
     <string name="Delete">Убрать</string>
     <string name="order_empty">Пусто</string>
     <string name="history_empty">Не было заказов</string>
+    <string name="dara_history_order_amount">Заказ на сумму %1$s руб</string>
     <string-array name="payment">
         <item>Наличными</item>
         <item>Картой</item>

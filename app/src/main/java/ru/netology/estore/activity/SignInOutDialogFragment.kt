@@ -27,7 +27,7 @@ class SignInOutDialogFragment(
     val textNegButton: String,
     val flagSignIn: Boolean = true,
     val flagOrder: Boolean = true,
-    val flagSignOut:Boolean = false,
+    val flagSignOut: Boolean = false,
     val navigateTo: Int
 ) : DialogFragment() {
     private val topTextViewModel: TopTextViewModel by activityViewModels()
@@ -61,7 +61,7 @@ class SignInOutDialogFragment(
                     viewModel.pointBottomMenu.value = 0
                     findNavController()
                         .navigate(R.id.fragmentForCatalog)
-                } else if(flagSignOut){
+                } else if (flagSignOut) {
                     auth.removeAuth()
                     viewModel.reNewDataFull()
                     topTextViewModel.text.value = viewModel.dataLanguage.allGroup
@@ -89,7 +89,7 @@ class SignInOutDialogFragment(
                     }
                     findNavController()
                         .navigate(navigateTo)
-                } else if(!flagSignOut && !flagOrder) {
+                } else if (!flagSignOut && !flagOrder) {
                     viewModel.dataLanguage = DataEng
                     orderViewModel.cancelOrder(viewModel.dataLanguage)
                     viewModel.language.value = "en"

@@ -1,6 +1,5 @@
 package ru.netology.estore.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -46,16 +45,12 @@ class SignInViewModel @Inject constructor(
                 val request = AuthRequest(username, password)
                 val response = repository.signInApi(request)
                 if (!response.isSuccessful) {
-                    Log.d("MyLog", "signInApiError")
                     stateAuth.value = -1
                     return@launch
                 }
+
                 val body =
                     response.body()
-                Log.d(
-                    "MyLog",
-                    "response: id=${body?.id} firstname=${body?.firstName}, username=${body?.username}, "
-                )
                 if (body == null) {
                     stateAuth.value = -1
                 } else {

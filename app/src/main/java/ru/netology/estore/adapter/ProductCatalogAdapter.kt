@@ -68,13 +68,13 @@ class ProductAdapter(private val listener: Listener) :
                     repeatCount = 150
                 }.start()
                 price.alpha = 0.3f
-//                newPrice.text = "${
-//                    getSumWithTwoDecimal(
-//                        product.price * (100 - product.minusPercent) / 100,
-//                        100.0
-//                    )
-//                } ${product.unitWeight}"
-                newPrice.text = "${(product.priceN * BigDecimal(1.0 - product.minusPercent.toDouble() / 100.0)).setScale(2, RoundingMode.HALF_UP)} ${product.unitWeight}"
+                newPrice.text = "${
+                    (product.priceN * BigDecimal(1.0 - product.minusPercent.toDouble() / 100.0)).setScale(
+                        2,
+                        RoundingMode.HALF_UP
+                    )
+                }" +
+                        " ${itemView.context.getString(R.string.rub)}/${product.unitWeight}"
 
             } else {
                 price.alpha = 1f
@@ -91,8 +91,8 @@ class ProductAdapter(private val listener: Listener) :
 
             txItem.text = product.name
 
-         //   price.text = "${product.price} ${product.unitWeight}"
-            price.text = "${product.priceN} ${product.unitWeight}"
+            price.text =
+                "${product.priceN} ${itemView.context.getString(R.string.rub)}/${product.unitWeight}"
 
             if (product.inBasket) {
                 buttonAddToBin.setBackgroundColor(itemView.context.getColor(R.color.colorVegetable))

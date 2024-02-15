@@ -11,21 +11,26 @@ import ru.netology.estore.R
 import ru.netology.estore.databinding.ItemDataHistoryOfOrdersBinding
 import ru.netology.estore.dto.DataHistory
 
-interface HistoryListener{
+interface HistoryListener {
     fun deleteHistoryById(dataHistory: DataHistory)
 }
 
-class DataHistoryAdapter(private val listener: HistoryListener):
+class DataHistoryAdapter(private val listener: HistoryListener) :
     ListAdapter<DataHistory, DataHistoryAdapter.DataHistoryHolder>(HistoryDiffCallback()) {
 
-    class DataHistoryHolder(item: View, private val listener: HistoryListener) : RecyclerView.ViewHolder(item) {
+    class DataHistoryHolder(item: View, private val listener: HistoryListener) :
+        RecyclerView.ViewHolder(item) {
         val binding = ItemDataHistoryOfOrdersBinding.bind(item)
 
         fun bind(dataHistory: DataHistory) {
-            binding.textHistory1b.text = dataHistory.sumOrder.toString()
+            binding.textHistory1.text = itemView.context.getString(
+                R.string.dara_history_order_amount,
+                dataHistory.sumOrder.toString()
+            )
             binding.textHistory2.isVisible = dataHistory.pickUp
             binding.textHistory2b.isVisible = !dataHistory.pickUp
             binding.textHistory3.text = dataHistory.dateTime
+
             binding.buttonDeleteOrderOfHistory.setOnClickListener {
                 listener.deleteHistoryById(dataHistory)
             }

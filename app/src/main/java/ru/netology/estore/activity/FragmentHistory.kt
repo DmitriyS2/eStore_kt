@@ -24,11 +24,10 @@ class FragmentHistory : Fragment() {
     ): View {
         val binding = FragmentHistoryOfOrdersBinding.inflate(inflater, container, false)
 
-        val adapter = DataHistoryAdapter(object :HistoryListener{
+        val adapter = DataHistoryAdapter(object : HistoryListener {
             override fun deleteHistoryById(dataHistory: DataHistory) {
                 viewModel.deleteHistoryById(dataHistory.id)
             }
-
         })
 
         binding.rwOrderOfHistory.layoutManager = LinearLayoutManager(activity)

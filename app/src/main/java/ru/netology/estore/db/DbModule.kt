@@ -26,12 +26,12 @@ object DbModule {
     @Singleton
     fun provideUserDao(
         appDb: AppDb
-    ):UserDao = appDb.userDao()
+    ): UserDao = appDb.userDao()
 
     @Provides
     @Singleton
     fun provideDataHistoryDao(
         appDb: AppDb
-    ):DataHistoryDao = appDb.dataHistoryDao()
+    ): DataHistoryDao = appDb.dataHistoryDao()
 
 }

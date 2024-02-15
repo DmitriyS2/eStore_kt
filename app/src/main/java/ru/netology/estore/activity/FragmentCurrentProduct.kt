@@ -22,21 +22,12 @@ class FragmentCurrentProduct : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = TransitionInflater.from(requireContext())
             .inflateTransition(R.transition.shared_image)
             .setDuration(2000L)
     }
-
- //   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        val args: FragmentCurrentProductArgs by navArgs()
-//        val text = args.transitName
-//        val currentName = arguments?.let { FragmentCurrentProductArgs.fromBundle(it).transitName }
-//        val currentImageView = view.findViewById<View>(R.id.avatar)
-//        ViewCompat.setTransitionName(currentImageView, currentName)
-//    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -48,15 +39,10 @@ class FragmentCurrentProduct : Fragment() {
 
         val args: FragmentCurrentProductArgs by navArgs()
         val currentName = args.transitName
-        //val currentName = arguments?.let { FragmentCurrentProductArgs.fromBundle(it).transitName }
-     //   val currentImageView = view.findViewById<View>(R.id.avatar)
         val currentImageView = binding.avatar
         ViewCompat.setTransitionName(currentImageView, currentName)
 
         val currentId = currentName.toInt()
-
-     //   val currentId = arguments?.let { FragmentCurrentProductArgs.fromBundle(it).transitName }
-     //       ?.toInt()
 
         viewModel.dataFull.observe(viewLifecycleOwner)
         { full ->
@@ -94,13 +80,13 @@ class FragmentCurrentProduct : Fragment() {
                             repeatCount = 100
                         }.start()
                         price.alpha = 0.3f
-//                        newPrice.text = "${
-//                            getSumWithTwoDecimal(
-//                                product.price * (100 - product.minusPercent) / 100,
-//                                100.0
-//                            )
-//                        } " + product.unitWeight
-                        newPrice.text = "${(product.priceN * BigDecimal ((100 - product.minusPercent) / 100.0)).setScale(2, RoundingMode.HALF_UP)} " + product.unitWeight
+                        newPrice.text = "${
+                            (product.priceN * BigDecimal((100 - product.minusPercent) / 100.0)).setScale(
+                                2,
+                                RoundingMode.HALF_UP
+                            )
+                        } " +
+                                "${getString(R.string.rub)}/${product.unitWeight}"
 
                     } else {
                         price.alpha = 1f
@@ -111,8 +97,8 @@ class FragmentCurrentProduct : Fragment() {
 
                     txItem.text = product.name
 
-                 //   price.text = "${product.price}" + product.unitWeight
-                    price.text = "${product.priceN} " + product.unitWeight
+                    price.text =
+                        "${product.priceN} ${getString(R.string.rub)}/${product.unitWeight}"
 
                     textInfoAboutCountry.text = product.country
                     textInfoAboutStorage.text = product.storage

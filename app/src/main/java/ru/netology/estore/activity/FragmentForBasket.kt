@@ -82,18 +82,14 @@ class FragmentForBasket : Fragment() {
             binding.buttonOrder.isEnabled = !state.emptyBasket
             val list = state.products.filter { it.inBasket }
             adapter.submitList(list)
-         //   viewModel.amountOrder.value = viewModel.countOrder(list)
             viewModel.amountOrderN.value = viewModel.countOrder(list)
-            if(state.emptyBasket) {
+            if (state.emptyBasket) {
                 orderViewModel.cancelOrder(viewModel.dataLanguage)
             }
         }
 
-//        viewModel.amountOrder.observe(viewLifecycleOwner) {
-//            binding.amountOrder.text = "$it" + getString(R.string.rub)
-//        }
         viewModel.amountOrderN.observe(viewLifecycleOwner) {
-            binding.amountOrder.text = "$it" + getString(R.string.rub)
+            binding.amountOrder.text = "$it " + getString(R.string.rub)
         }
 
         binding.buttonOrder.setOnClickListener {
@@ -118,7 +114,6 @@ class FragmentForBasket : Fragment() {
 
         return binding.root
     }
-
 
     private fun mustSignIn() {
         val menuDialog = SignInOutDialogFragment(

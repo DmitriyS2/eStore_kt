@@ -7,18 +7,18 @@ import ru.netology.estore.dto.DataHistory
 @Entity
 class DataHistoryEntity(
     @PrimaryKey(autoGenerate = true)
-    val id:Int,
-    val login:String,
-    val sumOrder:Double,
-    val pickUp:Boolean,
+    val id: Int,
+    val login: String,
+    val sumOrder: Double,
+    val pickUp: Boolean,
     val dateTime: String
 ) {
-        fun toDto() = DataHistory(id, login, sumOrder, pickUp, dateTime)
+    fun toDto() = DataHistory(id, login, sumOrder, pickUp, dateTime)
 
-        companion object {
-            fun fromDto(dto: DataHistory) =
-                DataHistoryEntity(dto.id, dto.login, dto.sumOrder, dto.pickUp, dto.dateTime)
-        }
+    companion object {
+        fun fromDto(dto: DataHistory) =
+            DataHistoryEntity(dto.id, dto.login, dto.sumOrder, dto.pickUp, dto.dateTime)
+    }
 }
 
 fun List<DataHistoryEntity>.toDto(): List<DataHistory> = map(DataHistoryEntity::toDto)

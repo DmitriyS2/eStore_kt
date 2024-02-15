@@ -1,7 +1,6 @@
 package ru.netology.estore.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -42,7 +41,6 @@ class SignUpFragment : Fragment() {
 
         binding.buttonSignUp.setOnClickListener {
             if (isFieldNotNull()) {
-
                 signUpViewModel.signUp(
                     binding.login.text.toString(),
                     binding.password.text.toString(),
@@ -55,7 +53,6 @@ class SignUpFragment : Fragment() {
                             delay(50)
                             if (it.id != 0L) {
                                 viewModel.getHistory(authViewModel.data.value.username)
-                                Log.d("MyLog", "SignUp OK, login=${it.username}")
                                 topTextViewModel.text.value = viewModel.dataLanguage.basketGroup
                                 viewModel.pointBottomMenu.value = 0
                                 findNavController().navigate(R.id.fragmentForCatalog)
