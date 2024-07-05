@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ru.netology.estore.R
 import ru.netology.estore.adapter.Listener
 import ru.netology.estore.adapter.ProductInBasketAdapter
@@ -87,6 +89,26 @@ class FragmentForBasket : Fragment() {
                 orderViewModel.cancelOrder(viewModel.dataLanguage)
             }
         }
+
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.START
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+               return false
+            }
+
+            override fun onSwiped(
+                viewHolder: RecyclerView.ViewHolder,
+                direction: Int
+            ) {
+                val item = adapter.currentList[viewHolder.absoluteAdapterPosition]
+                viewModel.deleteFromBasket(item)
+            }
+        }).attachToRecyclerView(binding.rwProducts)
 
         viewModel.amountOrderN.observe(viewLifecycleOwner) {
             binding.amountOrder.text = "$it " + getString(R.string.rub)
