@@ -25,20 +25,36 @@ import ru.netology.estore.viewmodel.TopTextViewModel
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
-    private var fragmentBinding: FragmentSignUpBinding? = null
+
 
     private val signUpViewModel: SignUpViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private val topTextViewModel: TopTextViewModel by activityViewModels()
     private val viewModel: MainViewModel by activityViewModels()
 
+    private var _binding: FragmentSignUpBinding? = null
+    val binding: FragmentSignUpBinding
+        get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentSignUpBinding.inflate(inflater, container, false)
-        fragmentBinding = binding
+        _binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setListener()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
+    private fun setListener() {
         binding.buttonSignUp.setOnClickListener {
             if (isFieldNotNull()) {
                 signUpViewModel.signUp(
@@ -46,43 +62,39 @@ class SignUpFragment : Fragment() {
                     binding.password.text.toString(),
                     binding.name.text.toString()
                 )
+                setObserver()
+            }
+        }
+    }
 
-                viewLifecycleOwner.lifecycleScope.launch {
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        authViewModel.data.collectLatest {
-                            delay(50)
-                            if (it.id != 0L) {
-                                viewModel.getHistory(authViewModel.data.value.username)
-                                topTextViewModel.text.value = viewModel.dataLanguage.basketGroup
-                                viewModel.pointBottomMenu.value = 0
-                                findNavController().navigate(R.id.fragmentForCatalog)
-                            } else {
-                                val toast = Toast.makeText(
-                                    requireActivity(),
-                                    getString(R.string.login_already_exists),
-                                    Toast.LENGTH_SHORT
-                                )
-                                toast.setGravity(Gravity.TOP, 0, 0)
-                                toast.show()
-                            }
-                        }
+    private fun setObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                authViewModel.data.collectLatest {
+                    delay(50)
+                    if (it.id != 0L) {
+                        viewModel.getHistory(authViewModel.data.value.username)
+                        topTextViewModel.text.value = viewModel.dataLanguage.basketGroup
+                        viewModel.pointBottomMenu.value = 0
+                        findNavController().navigate(R.id.fragmentForCatalog)
+                    } else {
+                        val toast = Toast.makeText(
+                            requireActivity(),
+                            getString(R.string.login_already_exists),
+                            Toast.LENGTH_SHORT
+                        )
+                        toast.setGravity(Gravity.TOP, 0, 0)
+                        toast.show()
                     }
                 }
             }
         }
-
-        return binding.root
     }
 
-    override fun onDestroyView() {
-        fragmentBinding = null
-        super.onDestroyView()
-    }
-
-    fun isFieldNotNull(): Boolean {
+    private fun isFieldNotNull(): Boolean {
         var flag = true
 
-        fragmentBinding?.apply {
+        binding.apply {
             if (login.text.isNullOrEmpty()) {
                 login.error = getString(R.string.field_must_be_not_empty)
                 flag = false

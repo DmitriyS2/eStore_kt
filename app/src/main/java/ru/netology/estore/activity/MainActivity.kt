@@ -41,111 +41,122 @@ class MainActivity : AppCompatActivity() {
     private var counterDiscount: TextView? = null
     private var counterFavorite: TextView? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setNavController()
+        setCountMenuItem()
+        showCountDrawerItem(counterHit, viewModel.counterHit)
+        showCountDrawerItem(counterDiscount, viewModel.counterDiscount)
+        setDrawer()
+        setBottomMenu()
+        setListeners()
+        setObserver()
+    }
+
+    private fun setNavController() {
         findNavController(R.id.nav_host_fragment)
             .navigate(R.id.blankFragment)
+    }
 
+    private fun setCountMenuItem() {
         val hitMenuItem: MenuItem = binding.nvMenu.menu.findItem(R.id.hit)
         counterHit = hitMenuItem.actionView as TextView
         val discountMenuItem: MenuItem = binding.nvMenu.menu.findItem(R.id.discount)
         counterDiscount = discountMenuItem.actionView as TextView
         val favoriteMenuItem: MenuItem = binding.nvMenu.menu.findItem(R.id.favorite)
         counterFavorite = favoriteMenuItem.actionView as TextView
+    }
 
-        showCountDrawerItem(counterHit, viewModel.counterHit)
-        showCountDrawerItem(counterDiscount, viewModel.counterDiscount)
+    private fun setDrawer() {
+        binding.nvMenu.setNavigationItemSelectedListener {
+            if (viewModel.pointBottomMenu.value != -2) {
+                viewModel.pointBottomMenu.value = 0
+                when (it.itemId) {
+                    R.id.allProducts -> {
+                        goToFragment(getString(R.string.whole_range))
+                    }
 
-        binding.apply {
-            nvMenu.setNavigationItemSelectedListener {
-                if (viewModel.pointBottomMenu.value != -2) {
-                    viewModel.pointBottomMenu.value = 0
-                    when (it.itemId) {
-                        R.id.allProducts -> {
-                            goToFragment(getString(R.string.whole_range))
-                        }
+                    R.id.fruit -> {
+                        goToFragment(getString(R.string.Fruits))
+                    }
 
-                        R.id.fruit -> {
-                            goToFragment(getString(R.string.Fruits))
-                        }
+                    R.id.vegetable -> {
+                        goToFragment(getString(R.string.Vegetables))
+                    }
 
-                        R.id.vegetable -> {
-                            goToFragment(getString(R.string.Vegetables))
-                        }
+                    R.id.bakery -> {
+                        goToFragment(getString(R.string.Bakery))
+                    }
 
-                        R.id.bakery -> {
-                            goToFragment(getString(R.string.Bakery))
-                        }
+                    R.id.hit -> {
+                        goToFragment(getString(R.string.Bestsellers))
+                    }
 
-                        R.id.hit -> {
-                            goToFragment(getString(R.string.Bestsellers))
-                        }
+                    R.id.discount -> {
+                        goToFragment(getString(R.string.Discount))
+                    }
 
-                        R.id.discount -> {
-                            goToFragment(getString(R.string.Discount))
-                        }
-
-                        R.id.favorite -> {
-                            goToFragment(getString(R.string.Favorite))
-                        }
+                    R.id.favorite -> {
+                        goToFragment(getString(R.string.Favorite))
                     }
                 }
-                drawer.closeDrawer(GravityCompat.START)
-                true
             }
-
-            bottomMenu.setOnItemSelectedListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.fragmentForCatalog -> {
-                        viewModel.pointBottomMenu.value = 0
-                        drawer.openDrawer(GravityCompat.START)
-                    }
-
-                    R.id.fragmentForBasket -> {
-                        topTextViewModel.text.value = getString(R.string.Basket)
-                        viewModel.pointBottomMenu.value = 1
-                        findNavController(R.id.nav_host_fragment)
-                            .navigate(R.id.fragmentForBasket)
-                    }
-
-                    R.id.orderFragment -> {
-                        viewModel.deleteFromBasketWeightZero()
-                        if (authViewModel.authenticated) {
-                            if (viewModel.dataFull.value?.emptyBasket == false) {
-                                topTextViewModel.text.value = getString(R.string.order)
-                                val list =
-                                    viewModel.dataFull.value?.products?.filter { it.inBasket }
-                                        .orEmpty()
-                                viewModel.amountOrderN.value = viewModel.countOrder(list)
-                                if (orderViewModel.showPoint2.value != 0) {
-                                    orderViewModel.showPoint1.value = 2
-                                } else {
-                                    orderViewModel.showPoint1.value = 1
-                                }
-                                viewModel.pointBottomMenu.value = 1
-                                findNavController(R.id.nav_host_fragment)
-                                    .navigate(R.id.orderFragment)
-                            } else {
-                                topTextViewModel.text.value = getString(R.string.order)
-                                viewModel.pointBottomMenu.value = 1
-                                findNavController(R.id.nav_host_fragment)
-                                    .navigate(R.id.orderFragment)
-                            }
-                        } else {
-                            mustSignIn(if (viewModel.pointBottomMenu.value == 0) R.id.fragmentForCatalog else R.id.fragmentForBasket)
-                        }
-                    }
-                }
-                true
-            }
+            binding.drawer.closeDrawer(GravityCompat.START)
+            true
         }
+    }
 
+    private fun setBottomMenu() {
+        binding.bottomMenu.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.fragmentForCatalog -> {
+                    viewModel.pointBottomMenu.value = 0
+                    binding.drawer.openDrawer(GravityCompat.START)
+                }
 
+                R.id.fragmentForBasket -> {
+                    topTextViewModel.text.value = getString(R.string.Basket)
+                    viewModel.pointBottomMenu.value = 1
+                    findNavController(R.id.nav_host_fragment)
+                        .navigate(R.id.fragmentForBasket)
+                }
 
+                R.id.orderFragment -> {
+                    viewModel.deleteFromBasketWeightZero()
+                    if (authViewModel.authenticated) {
+                        if (viewModel.dataFull.value?.emptyBasket == false) {
+                            topTextViewModel.text.value = getString(R.string.order)
+                            val list =
+                                viewModel.dataFull.value?.products?.filter { it.inBasket }
+                                    .orEmpty()
+                            viewModel.amountOrderN.value = viewModel.countOrder(list)
+                            if (orderViewModel.showPoint2.value != 0) {
+                                orderViewModel.showPoint1.value = 2
+                            } else {
+                                orderViewModel.showPoint1.value = 1
+                            }
+                            viewModel.pointBottomMenu.value = 1
+                            findNavController(R.id.nav_host_fragment)
+                                .navigate(R.id.orderFragment)
+                        } else {
+                            topTextViewModel.text.value = getString(R.string.order)
+                            viewModel.pointBottomMenu.value = 1
+                            findNavController(R.id.nav_host_fragment)
+                                .navigate(R.id.orderFragment)
+                        }
+                    } else {
+                        mustSignIn(if (viewModel.pointBottomMenu.value == 0) R.id.fragmentForCatalog else R.id.fragmentForBasket)
+                    }
+                }
+            }
+            true
+        }
+    }
+
+    private fun setListeners() {
         binding.menu.setOnClickListener {
             if (viewModel.pointBottomMenu.value == -2) return@setOnClickListener
             PopupMenu(it.context, it).apply {
@@ -201,7 +212,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
+    private fun setObserver() {
         viewModel.pointBottomMenu.observe(this) {
             when (it) {
                 -2 -> enabledPointBottomMenu(false) //заблокировать bottom_menu, main_menu и drawer_menu

@@ -30,6 +30,7 @@ import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter.ofPattern
 
 @AndroidEntryPoint
+@SuppressLint("SetTextI18n")
 class FragmentOrder : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
@@ -37,29 +38,31 @@ class FragmentOrder : Fragment() {
     private val topTextViewModel: TopTextViewModel by activityViewModels()
     private val orderViewModel: OrderViewModel by activityViewModels()
 
-    private var fragmentBinding: FragmentOrderBinding? = null
+    private var _binding: FragmentOrderBinding? = null
+    val binding: FragmentOrderBinding
+        get() = _binding!!
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentOrderBinding.inflate(inflater, container, false)
-        fragmentBinding = binding
+        _binding = FragmentOrderBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                authViewModel.data.collectLatest {
-                    if (it.id == 0L) {
-                        orderViewModel.cancelOrder(viewModel.dataLanguage)
-                        topTextViewModel.text.value = viewModel.dataLanguage.basketGroup
-                        viewModel.pointBottomMenu.value = 1
-                        findNavController().navigate(R.id.fragmentForBasket)
-                    }
-                }
-            }
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setPoint1()
+        setListener()
+        setObserver()
+    }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
+    private fun setPoint1() {
         binding.point1.text =
             getString(R.string.first_point, viewModel.amountOrderN.value.toString())
         binding.point2delivery.text = "2. ${orderViewModel.typeOfDelivery}"
@@ -71,13 +74,13 @@ class FragmentOrder : Fragment() {
             ?.filter {
                 it.inBasket
             }.orEmpty()
-
         binding.txEmptyOrder.isVisible = listOrder.isEmpty()
-
         for (i in listOrder.indices) {
             binding.textOrder.append("${i + 1}. ${listOrder[i].name} ${listOrder[i].weightN} ${listOrder[i].unitWeight}\n")
         }
+    }
 
+    private fun setObserver() {
         //заказ на сумму
         orderViewModel.showPoint1.observe(viewLifecycleOwner) {
             when (it) {
@@ -240,6 +243,21 @@ class FragmentOrder : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setListener() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                authViewModel.data.collectLatest {
+                    if (it.id == 0L) {
+                        orderViewModel.cancelOrder(viewModel.dataLanguage)
+                        topTextViewModel.text.value = viewModel.dataLanguage.basketGroup
+                        viewModel.pointBottomMenu.value = 1
+                        findNavController().navigate(R.id.fragmentForBasket)
+                    }
+                }
+            }
+        }
 
         //заказ на сумму
         binding.buttonPoint1Yes.setOnClickListener {
@@ -365,25 +383,12 @@ class FragmentOrder : Fragment() {
             viewModel.pointBottomMenu.value = -1
             findNavController().navigate(R.id.blankFragment)
         }
-
-        return binding.root
     }
 
-    override fun onDestroyView() {
-        fragmentBinding = null
-        super.onDestroyView()
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = FragmentOrder()
-    }
-
-    @SuppressLint("SetTextI18n")
     private fun showDelivery(point: Int, text: String) {
         orderViewModel.showPoint2.value = point
         orderViewModel.typeOfDelivery = text
-        fragmentBinding?.point2delivery?.text = "2. ${orderViewModel.typeOfDelivery}"
+        binding.point2delivery.text = "2. ${orderViewModel.typeOfDelivery}"
     }
 
     private fun goToBasket() {
@@ -394,7 +399,7 @@ class FragmentOrder : Fragment() {
 
     private fun fillField(): Boolean {
         var flag = true
-        fragmentBinding?.apply {
+        binding.apply {
             if (editAddressDelivery.text.isNullOrEmpty()) {
                 editAddressDelivery.error = getString(R.string.field_must_be_not_empty)
                 flag = false

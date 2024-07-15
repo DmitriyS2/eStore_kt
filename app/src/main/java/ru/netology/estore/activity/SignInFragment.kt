@@ -20,70 +20,81 @@ import ru.netology.estore.viewmodel.TopTextViewModel
 
 @AndroidEntryPoint
 class SignInFragment : Fragment() {
-    private var fragmentBinding: FragmentSignInBinding? = null
 
     private val signInViewModel: SignInViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private val topTextViewModel: TopTextViewModel by activityViewModels()
     private val viewModel: MainViewModel by activityViewModels()
 
-    @SuppressLint("ShowToast")
+    private var _binding: FragmentSignInBinding? = null
+    val binding: FragmentSignInBinding
+        get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentSignInBinding.inflate(layoutInflater, container, false)
-        fragmentBinding = binding
+        _binding = FragmentSignInBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setListener()
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
+    private fun setListener() {
         binding.buttonSignIn.setOnClickListener {
             if (isFieldNotNull()) {
                 signInViewModel.signInApi(
                     binding.login.text.toString(),
                     binding.password.text.toString()
                 )
+                setObserver()
+            }
+        }
+    }
 
-                signInViewModel.stateAuth.observe(viewLifecycleOwner) {
-                    when (it) {
-                        // SignIn Ok
-                        1 -> {
-                            viewModel.getHistory(authViewModel.data.value.username)
-                            viewModel.pointBottomMenu.value = 1
-                            topTextViewModel.text.value = viewModel.dataLanguage.basketGroup
-                            findNavController().navigate(R.id.fragmentForBasket)
-                            signInViewModel.stateAuth.value = 0
-                        }
-                        // на сервере нет такого user'а - начинаем поиск в ДБ
-                        -1 -> signInViewModel.signIn(
-                            binding.login.text.toString(),
-                            binding.password.text.toString()
-                        )
-                        // в ДБ тоже нет такого user'а - значит неверный логин/пароль
-                        -2 -> {
-                            val toast = Toast.makeText(
-                                requireActivity(),
-                                getString(R.string.wrong_username_password),
-                                Toast.LENGTH_SHORT
-                            )
-                            toast.setGravity(Gravity.TOP, 0, 0)
-                            toast.show()
-                            signInViewModel.stateAuth.value = 0
-                        }
-                    }
+    private fun setObserver() {
+        signInViewModel.stateAuth.observe(viewLifecycleOwner) {
+            when (it) {
+                // SignIn Ok
+                1 -> {
+                    viewModel.getHistory(authViewModel.data.value.username)
+                    viewModel.pointBottomMenu.value = 1
+                    topTextViewModel.text.value = viewModel.dataLanguage.basketGroup
+                    findNavController().navigate(R.id.fragmentForBasket)
+                    signInViewModel.stateAuth.value = 0
+                }
+                // на сервере нет такого user'а - начинаем поиск в ДБ
+                -1 -> signInViewModel.signIn(
+                    binding.login.text.toString(),
+                    binding.password.text.toString()
+                )
+                // в ДБ тоже нет такого user'а - значит неверный логин/пароль
+                -2 -> {
+                    val toast = Toast.makeText(
+                        requireActivity(),
+                        getString(R.string.wrong_username_password),
+                        Toast.LENGTH_SHORT
+                    )
+                    toast.setGravity(Gravity.TOP, 0, 0)
+                    toast.show()
+                    signInViewModel.stateAuth.value = 0
                 }
             }
         }
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        fragmentBinding = null
-        super.onDestroyView()
     }
 
     private fun isFieldNotNull(): Boolean {
         var flag = true
 
-        fragmentBinding?.apply {
+        binding.apply {
             if (login.text.isNullOrEmpty()) {
                 login.error = getString(R.string.field_must_be_not_empty)
                 flag = false

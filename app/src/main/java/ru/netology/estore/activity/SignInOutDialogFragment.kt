@@ -94,7 +94,6 @@ class SignInOutDialogFragment(
                     orderViewModel.cancelOrder(viewModel.dataLanguage)
                     viewModel.language.value = "en"
                 }
-            }
-            .create()
+            }.create()
     }
 }

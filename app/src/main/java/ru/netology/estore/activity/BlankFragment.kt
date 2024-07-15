@@ -26,8 +26,8 @@ class BlankFragment : Fragment() {
 
         return binding.root
     }
-
-    companion object {
-        fun newInstance() = BlankFragment()
-    }
+//
+//    companion object {
+//        fun newInstance() = BlankFragment()
+//    }
 }

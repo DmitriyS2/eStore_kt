@@ -109,9 +109,9 @@ class FragmentCurrentProduct : Fragment() {
 
         return binding.root
     }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = FragmentCurrentProduct()
-    }
+//
+//    companion object {
+//        @JvmStatic
+//        fun newInstance() = FragmentCurrentProduct()
+//    }
 }
